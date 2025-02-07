@@ -21,6 +21,18 @@ export default function Signup({ onSwitch, onReset }: SigninProps) {
   const router = useRouter();
 
   const goToDashboard = () => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(formData.email)) {
+      setError("Please enter a valid email address.");
+      setLoading(false);
+      return;
+    }
+
+    if (!formData.password) {
+      setError('Enter your password.')
+      setLoading(false)
+      return;
+    }
     router.push('/admin')
   }
 

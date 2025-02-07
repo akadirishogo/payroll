@@ -15,6 +15,7 @@ import { IoIosPeople } from "react-icons/io";
 
 export default function PayrollDetailPage() {
     const params = useParams();
+
     
     
     return (
@@ -83,7 +84,7 @@ export default function PayrollDetailPage() {
         <div className='flex gap-x-40 mt-10'>
             <div className='bg-white rounded-xl p-4 pr-32'>
               <GiTakeMyMoney size={45} color={Colors.primary}/>
-              <p className='text-[20px]'>Employee Salary</p>
+              <p className='text-[20px]'>Payroll Size</p>
               <p className='text-4xl font-semi'>₦154,097.00</p>
               <button className='bg-primary text-white text-[15px] px-[6px] py-[2px] mt-[4px]'>View</button>
             </div>

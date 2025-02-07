@@ -2,22 +2,20 @@ import { useState } from "react";
 import { Input } from "@/app/components/Inputs"; // shadcn input component
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/app/components/Table";
 import Link from "next/link";
+import users from "@/Employees";
+import { useEmployeeStore } from "@/store/employeeStore";
 
-const employees = [
-    { id: 1, name: "John Doe", email: "john@example.com", designation: "Manager", bank: "Bank A", account: "12345678", gross: "$5000", department: "HR", phone: "123-456-7890" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", designation: "Developer", bank: "Bank B", account: "87654321", gross: "$4000", department: "IT", phone: "987-654-3210" },
-    { id: 3, name: "Alice Johnson", email: "alice@example.com", designation: "Designer", bank: "Bank C", account: "11223344", gross: "$4500", department: "Marketing", phone: "555-123-4567" },
-  ];
 
 
   export default function FilterEmployees() {
+    const employees = useEmployeeStore((state) => state.employees);
     const [search, setSearch] = useState("");
   
     // Filtering function
     const filteredEmployees = employees.filter(
       (employee) =>
-        employee.name.toLowerCase().includes(search.toLowerCase()) ||
-        employee.phone.includes(search)
+        employee.firstName.toLowerCase().includes(search.toLowerCase()) ||
+        employee.phoneNumber.includes(search)
     );
 
 
@@ -56,14 +54,14 @@ const employees = [
                         filteredEmployees.map((employee) => (
                         <TableRow key={employee.id}>
                             <TableCell>{employee.id}</TableCell>
-                            <TableCell>{employee.name}</TableCell>
+                            <TableCell>{employee.lastName} {employee.firstName}</TableCell>
                             <TableCell>{employee.email}</TableCell>
-                            <TableCell>{employee.designation}</TableCell>
+                            <TableCell>{employee.role}</TableCell>
                             <TableCell>{employee.bank}</TableCell>
-                            <TableCell>{employee.account}</TableCell>
-                            <TableCell>{employee.gross}</TableCell>
+                            <TableCell>{employee.accountNumber}</TableCell>
+                            <TableCell>{employee.monthlyGross}</TableCell>
                             <TableCell>{employee.department}</TableCell>
-                            <TableCell>{employee.phone}</TableCell>
+                            <TableCell>{employee.phoneNumber}</TableCell>
                             <TableCell>
                             <Link href={`/admin/employee/${employee.id}/employeeDetails`}><button className='text-white bg-black text-[10px] px-[7px] py-[1px]'>View</button></Link>
                             </TableCell>

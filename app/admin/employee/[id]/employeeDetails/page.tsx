@@ -1,16 +1,51 @@
-import React from 'react'
+'use client';
+
+import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/Cards'
 import Image from 'next/image'
 import { IoChevronBackSharp } from "react-icons/io5";
+import { Input } from '@/app/components/Inputs';
+import { useParams } from "next/navigation";
+import EmployeeSalaryForm from './employeeSalaryForm';
+import EmployeeIdCard from './employeeIdCard';
+import EmployeePersonal from './employeePersonal';
+import users from '@/Employees';
+
+interface Employee {
+    id: number;
+    firstName: string;
+    lastName: string;
+    deductions: any;
+    email: string;
+    role: string;
+    startDate: any;
+    monthlyGross: any;
+    netSalary: string;
+    department: string;
+    phoneNumber: string;
+    accountNumber: string;
+    bank: string;
+  }
 
 
 export default function EmployeeDetails() {
+   
+    const [employee, setEmployee] = useState<Employee | null>();
+    const { id } = useParams();
 
+    useEffect(() => {
+        const clickedEmployee = users.find((user) => user.id === Number(id));
+        if(clickedEmployee) {
+          setEmployee(clickedEmployee)
+        }
+    }, [])
 
-    const handleSubmit = (e: React.FormEvent) => {
-       
-      };
+   
+     
+    console.log(employee)
+  
 
+      
   return (
     <div className='px-14 py-6'>
         <div className='flex gap-x-2 items-center mb-6'>
@@ -22,73 +57,8 @@ export default function EmployeeDetails() {
             </span>
         </div>
         <div className='flex gap-x-14'>
-            <Card className='w-[25%] bg-gradient-to-t from-fromGradient via-throughGradient to-primary'>
-                <CardHeader className='border-white border-b-2'>
-                    <CardTitle className='text-white'>Employee</CardTitle>
-                </CardHeader>
-                <CardContent className='mt-12 flex flex-col items-center pb-10'>
-                    <div className='w-44 h-44 rounded-full relative overflow-hidden'>
-                        <Image src={'/user.jpg'} fill className="object-cover" alt="user image"/>
-                    </div>
-                    <div className='flex flex-col items-center mt-6 gap-y-1'>
-                        <p className='text-white'>Lisa Ademola</p>
-                        <div className='border-white border-2 max-w-fit rounded-[7px] px-[10px] py-[5px]'>
-                            <p className='text-white'>HR Assistant</p>
-                        </div>
-                    </div>
-                    <div className='flex flex-col items-center text-white text-[12px] mt-6'>
-                        <p>trigmark87@gmail.com</p>
-                        <p>+234 8104870343</p>
-                    </div>
-                </CardContent>
-            </Card>
-
-            <Card className='flex-1 bg-white'>
-                <CardHeader className='border-primary border-b-2'>
-                    <CardTitle className='text-primary'>Personal information</CardTitle>
-                </CardHeader>
-                <CardContent>
-                <form>
-                    <div className="mt-10">
-                        <div className="mb-2 flex gap-x-20 items-center">
-                            <div className='w-max'>
-                                <label className="font-medium">Full Name</label>
-                            </div>
-                            <div className='bg-lightGrey w-2/3 p-2'>Ademola Lisa Ebunoluwa</div>
-                        </div>
-                        <div className="mb-2 flex gap-x-24 items-center">
-                            <div className='w-max'>
-                                <label className="font-medium">Gender</label>
-                            </div>
-                            <div className='bg-lightGrey w-2/3 p-2'>Female</div>
-                        </div>
-                        <div className="mb-2 flex gap-x-12 items-center">
-                            <label className="font-medium">Marital Status</label>
-                            <div className='bg-lightGrey w-2/3 p-2'>Single</div>
-                        </div>
-                        <div className="mb-2 flex gap-x-14 items-center">
-                            <label className="font-medium">Date Of Birth</label>
-                            <div className='bg-lightGrey p-2'>10th October, 1987</div>
-                        </div>
-                        <div className="mb-2 flex gap-x-28 items-center">
-                            <label className="font-medium">Email</label>
-                            <div className='bg-lightGrey w-2/3 p-2'>lissarey123@gmail.com</div>
-                        </div>
-                        <div className="mb-2 flex gap-x-10 items-center">
-                            <label className="font-medium">Phone Number</label>
-                            <div className='bg-lightGrey w-2/3 p-2'>+234-8104870343</div>
-                        </div>
-                        <div className="mb-2 flex gap-x-10 items-center">
-                            <label className="font-medium">Residential Address</label>
-                            <div className='bg-lightGrey w-2/3 p-2'>18th Avenue Boma quarters, Opp. Coca Cola Junction</div>
-                        </div>
-                    </div>
-                </form>
-                </CardContent>
-            </Card>
-
-            
-
+            <EmployeeIdCard employeeDetails={employee} />
+            <EmployeePersonal employeeDetails={employee} />
         </div>
         <div className='mt-6'>
             <Card className='flex-1 bg-white'>
@@ -96,42 +66,62 @@ export default function EmployeeDetails() {
                     <CardTitle className='text-primary'>Official information</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <form>
-                        <div className="mt-10">
-                            <div className="mb-2 flex gap-x-20 items-center">
-                                <div className='w-max'>
-                                    <label className="font-medium">Full Name</label>
+                    <div>
+                        <form>
+                            <div className="mt-10">
+                                <div className="mb-2 flex gap-x-14 items-center">
+                                    <div className='w-max'>
+                                        <label className="font-medium">Designation/Role</label>
+                                    </div>
+                                    <div className='bg-lightGrey w-2/3 p-2'>{employee?.role}</div>
                                 </div>
-                                <div className='bg-lightGrey w-2/3 p-2'>Ademola Lisa Ebunoluwa</div>
-                            </div>
-                            <div className="mb-2 flex gap-x-24 items-center">
-                                <div className='w-max'>
-                                    <label className="font-medium">Gender</label>
+                                <div className="mb-2 flex gap-x-24 items-center">
+                                    <div className='w-max'>
+                                        <label className="font-medium">Department</label>
+                                    </div>
+                                    <div className='bg-lightGrey w-2/3 p-2'>{employee?.department}</div>
                                 </div>
-                                <div className='bg-lightGrey w-2/3 p-2'>Female</div>
+                                <div className="mb-2 flex gap-x-20 items-center">
+                                    <label className="font-medium">Date Joined</label>
+                                    <div className='bg-lightGrey w-2/3 p-2'>{employee?.startDate}</div>
+                                </div>
                             </div>
-                            <div className="mb-2 flex gap-x-12 items-center">
-                                <label className="font-medium">Marital Status</label>
-                                <div className='bg-lightGrey w-2/3 p-2'>Single</div>
+                        </form>
+                        <div className='text-primary font-semi mt-14'>Salary information</div>
+                    
+                        <div className='flex p-4 gap-x-4'>
+                            <div className='p-4 border-lightGrey border-2 w-1/3 rounded-xl'>
+                                <div className='flex'>
+                                    <p className='font-regular'>Net Salary</p>
+                                </div>
+                                <div className='flex justify-end'>
+                                    <p className='text-3xl font-bold text-primary'>{employee?.netSalary}</p>
+                                </div>
                             </div>
-                            <div className="mb-2 flex gap-x-14 items-center">
-                                <label className="font-medium">Date Of Birth</label>
-                                <div className='bg-lightGrey p-2'>10th October, 1987</div>
+
+                            <div className='p-4 border-lightGrey border-2 w-1/3 rounded-xl'>
+                                <div className='flex'>
+                                    <p className='font-regular'>Gross Salary</p>
+                                </div>
+                                <div className='flex justify-end'>
+                                    <p className='text-3xl font-bold text-primary'>{employee?.monthlyGross}</p>
+                                </div>
                             </div>
-                            <div className="mb-2 flex gap-x-28 items-center">
-                                <label className="font-medium">Email</label>
-                                <div className='bg-lightGrey w-2/3 p-2'>lissarey123@gmail.com</div>
-                            </div>
-                            <div className="mb-2 flex gap-x-10 items-center">
-                                <label className="font-medium">Phone Number</label>
-                                <div className='bg-lightGrey w-2/3 p-2'>+234-8104870343</div>
-                            </div>
-                            <div className="mb-2 flex gap-x-10 items-center">
-                                <label className="font-medium">Residential Address</label>
-                                <div className='bg-lightGrey w-2/3 p-2'>18th Avenue Boma quarters, Opp. Coca Cola Junction</div>
+
+                            <div className='p-4 border-lightGrey border-2 w-1/3 rounded-xl'>
+                                <div className='flex'>
+                                    <p className='font-regular'>Deductions</p>
+                                </div>
+                                <div className='flex justify-end'>
+                                    <p className='text-3xl font-bold text-primary'>{employee?.deductions ? employee.deductions : '0.00'}</p>
+                                </div>
                             </div>
                         </div>
-                    </form>
+                    <EmployeeSalaryForm employeeDetails={employee} />
+
+                </div>
+                    
+                    
                 </CardContent>
                 </Card>
             </div>
