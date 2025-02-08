@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Input } from "@/app/components/Inputs"; // shadcn input component
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/app/components/Table";
+import { Input } from "@/components/Inputs"; // shadcn input component
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/Table";
 import Link from "next/link";
-import users from "@/Employees";
 import { useEmployeeStore } from "@/store/employeeStore";
 
 

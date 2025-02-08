@@ -1,16 +1,15 @@
 import { useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/Cards'
-import { Input } from '@/app/components/Inputs';
-import { IoCheckmarkOutline } from "react-icons/io5";
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/Cards'
+import { Input } from '@/components/Inputs';
 import { FiEdit, FiCheck } from "react-icons/fi";
 import { IoCloseOutline } from "react-icons/io5";
 import { GoPlus } from "react-icons/go";
-import users from '@/Employees'
 
 
 
 
 
+/* 
 interface Employee {
     id: number;
     firstName: string;
@@ -23,16 +22,16 @@ interface Employee {
     netSalary: string;
     department: string;
     phoneNumber: string
-  }
+  } */
 
 
 
-function EmployeeSalaryForm({employeeDetails}: any) {
+function EmployeeSalaryForm({employeeDetails}) {
     const [isEditing, setIsEditing] = useState(false);
     const [selectedDeduction, setSelectedDeduction] = useState<string>("");
-    const [deductions, setDeductions] = useState<{ name: string; amount: string }[]>([]);
+    const [deductions, setDeductions] = useState({})
     const [selectedAllowance, setSelectedAllowance] = useState<string>(""); 
-    const [allowances, setAllowances] = useState<{ name: string; amount: string }[]>([]);
+    const [allowances, setAllowances] = useState({});
     const [tempSalary, setTempSalary] = useState(employeeDetails?.monthlyGross || "");
 
 
@@ -49,7 +48,7 @@ function EmployeeSalaryForm({employeeDetails}: any) {
         setIsEditing(false);
       };
 
-      const handleInputChange = (value: string) => {
+      const handleInputChange = (value) => {
         setTempSalary(value);
     };
 
@@ -67,7 +66,7 @@ function EmployeeSalaryForm({employeeDetails}: any) {
         ]
 
  // Handle input change for added allowances
- const handleAllowanceChange = (index: number, value: string) => {
+ const handleAllowanceChange = (index, value) => {
     setAllowances((prev) =>
         prev.map((allowance, i) =>
             i === index ? { ...allowance, amount: value } : allowance
@@ -77,7 +76,7 @@ function EmployeeSalaryForm({employeeDetails}: any) {
 
 
 // Handle input change for added allowances
-const handleDeductionChange = (index: number, value: string) => {
+const handleDeductionChange = (index, value) => {
     setDeductions((prev) =>
         prev.map((deduction, i) =>
             i === index ? { ...deduction, amount: value } : deduction
@@ -102,11 +101,11 @@ const handleDeductionChange = (index: number, value: string) => {
 };
 
 // Remove allowance from UI
-const handleRemoveAllowance = (index: number) => {
+const handleRemoveAllowance = (index) => {
     setAllowances((prev) => prev.filter((_, i) => i !== index));
 };
 
-const handleRemoveDeduction = (index: number) => {
+const handleRemoveDeduction = (index) => {
     setDeductions((prev) => prev.filter((_, i) => i !== index));
 };
 

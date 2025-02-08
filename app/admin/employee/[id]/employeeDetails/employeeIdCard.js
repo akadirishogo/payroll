@@ -1,10 +1,10 @@
 import React from 'react'
-import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/Cards'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/Cards'
 import Image from 'next/image'
 
 
 
-export default function EmployeeIdCard({employeeDetails}: any) {
+export default function EmployeeIdCard({employeeDetails}) {
   return (
         <Card className='w-[25%] bg-gradient-to-t from-fromGradient via-throughGradient to-primary'>
             <CardHeader className='border-white border-b-2'>

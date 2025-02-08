@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/Cards";
-import { Input } from "@/app/components/Inputs";
-import { Checkbox } from "@/app/components/Checkbox";
-import { RadioGroup, RadioGroupItem } from "@/app/components/Radio"
-import { Label } from "@/app/components/Label"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/app/components/Dialog";
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/Cards";
+import { Input } from "@/components/Inputs";
+import { Checkbox } from "@/components/Checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/Radio"
+import { Label } from "@/components/Label"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/Dialog";
 
 
 
@@ -62,11 +62,6 @@ export default function AdminSettings() {
   };
 
   
-
-
-  const handleSubmit = (e: React.FormEvent) => {
-  
-  };
 
   return (
     <div className="my-4 px-4">

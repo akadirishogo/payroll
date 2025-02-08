@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState } from 'react'
-import { useParams, useRouter } from 'next/navigation';
+import React from 'react'
 import AddEmployee from './AddEmployees';
 import FilterEmployees from './FilterEmployees';
 

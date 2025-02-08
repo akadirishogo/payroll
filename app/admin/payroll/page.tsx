@@ -1,20 +1,18 @@
 "use client";
 
 import React, { useState } from 'react'
-import SelectFilter from '@/app/components/SelectFilter'
+import SelectFilter from '@/components/SelectFilter'
 import Link from "next/link";
-import { useParams, useRouter } from 'next/navigation';
+
 
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-  TableFooter,
-} from "@/app/components/Table"
+} from "@/components/Table"
 import { Colors } from '@/Colors';
 
 const months = [
@@ -168,8 +166,6 @@ export default function PayrollListPage() {
   const [selectedYear, setSelectedYear] = useState<string>(`Year ${new Date().getFullYear()}`);
 
   
-
-  const router = useRouter();
 
   const handleFilterChange = (value: string) => {
     console.log("Selected Year:", value);

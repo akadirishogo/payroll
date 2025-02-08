@@ -1,7 +1,7 @@
 import React from 'react'
-import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/Cards'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/Cards'
 
-export default function EmployeePersonal({employeeDetails}: any) {
+export default function EmployeePersonal({employeeDetails}) {
 
   return (
     <Card className='flex-1 bg-white'>

@@ -2,41 +2,18 @@
 
 
 import Image from "next/image";
-import { useState } from "react";
-import { useAuthStore } from "@/store/authStore";
-import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 
-type SigninProps = {
-    onSwitch: () => void;
-    onReset: () => void;
-  };
 
-export default function Signup({ onSwitch, onReset }: SigninProps) {
+
+
+export default function SignupForm(){
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     confirmPassword: ""
   });
-  const router = useRouter();
-
-  const goToDashboard = () => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(formData.email)) {
-      setError("Please enter a valid email address.");
-      setLoading(false);
-      return;
-    }
-
-    if (!formData.password) {
-      setError('Enter your password.')
-      setLoading(false)
-      return;
-    }
-    router.push('/admin')
-  }
-
-  const { login } = useAuthStore();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -57,15 +34,8 @@ export default function Signup({ onSwitch, onReset }: SigninProps) {
 
     setLoading(true);
 
-
-    try {
-      await login(formData.email, formData.password)
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
     }
-  };
+   
 
   return (
         <div className="relative bg-backImage bg-cover min-h-[100vh]">
@@ -83,15 +53,11 @@ export default function Signup({ onSwitch, onReset }: SigninProps) {
                             <p className="text-white text-[20px] font-regular">Start managing your workforce Salaries with
                                 automation, precision and security. </p>
                         </div>
-                        <button 
-                            onClick={onSwitch}
-                            className="bg-primary rounded-2xl text-white px-7 py-3 mt-10 font-semi tracking-widest">
-                            Get Started
-                        </button>
+                        <button className="bg-primary rounded-2xl	text-white px-7 py-3 mt-10 font-semi tracking-widest">Get Started</button>
                     </div>
                     <div className="flex items-center justify-center">
-                        <div className="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                            <h2 className="text-2xl font-bold text-center mb-4">Sign In</h2>
+                        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+                            <h2 className="text-2xl font-semi text-center mb-4">Sign Up</h2>
                             {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                             <form onSubmit={handleSubmit} className="space-y-4 font-regular">
                                 <input
@@ -106,34 +72,44 @@ export default function Signup({ onSwitch, onReset }: SigninProps) {
                                 <input
                                     type="password"
                                     name="password"
-                                    placeholder="Password"
+                                    placeholder="Set Password"
                                     className="w-full p-3 border border-gray-300 rounded-[7px]"
                                     value={formData.password}
                                     onChange={handleChange}
                                     required
                                 />
-                                <button
-                                onClick={()=>goToDashboard()}
-                                type="submit"
-                                className="w-full bg-primary text-white p-3 rounded-[7px] font-semibold"
-                                disabled={loading}
-                                >
-                                {loading ? "Please wait..." : "Sign In"}
-                                </button>
-                            </form>
-                        <div className="flex justify-center font-regular mb-12">
-                            <p>Forgot Password? </p>
-                            <p onClick={onReset} className="text-primary ml-2">Reset</p>
-                        </div>
-                        <div className="flex justify-center mt-20 -mb-4">
-                            <Image height={40} width={100} src={'/logo_blue.png'} alt="logo"/>
-                        </div>
+                                <input
+                                    type="password"
+                                    name="confirmPassword"
+                                    placeholder="Confirm Password"
+                                    className="w-full p-3 border border-gray-300 rounded-[7px]"
+                                    value={formData.confirmPassword}
+                                    onChange={handleChange}
+                                    required
+                                />
+                        <button
+                            type="submit"
+                            className="w-full bg-primary text-white p-3 rounded-[7px] font-semibold"
+                            disabled={loading}
+                            >
+                            {loading ? "Registering..." : "Register"}
+                        </button>
+                        
+                    </form>
+
+                    <div className="flex justify-center font-regular mb-12">
+                        <p>Already have an account? </p>
+                        <p className="text-primary ml-2">Sign In</p>
                     </div>
-                 </div>
+                    <div className="flex justify-center mt-10">
+                        <Image height={50} width={100} src={'/logo_blue.png'} alt="logo"/>
+                    </div>
+                </div>
             </div>
         </div>
                     
     </div>
+</div>
   );
-}
+  }
 

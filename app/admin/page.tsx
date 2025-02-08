@@ -1,5 +1,5 @@
 import React from 'react'
-import GraphComponent from '../components/Charts'
+import GraphComponent from '../../components/Charts'
 
 export default function Home() {
   return (

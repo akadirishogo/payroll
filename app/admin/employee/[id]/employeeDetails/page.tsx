@@ -1,10 +1,9 @@
 'use client';
 
 import React, { useEffect, useState } from 'react'
-import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/Cards'
-import Image from 'next/image'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/Cards'
 import { IoChevronBackSharp } from "react-icons/io5";
-import { Input } from '@/app/components/Inputs';
+
 import { useParams } from "next/navigation";
 import EmployeeSalaryForm from './employeeSalaryForm';
 import EmployeeIdCard from './employeeIdCard';
@@ -15,11 +14,11 @@ interface Employee {
     id: number;
     firstName: string;
     lastName: string;
-    deductions: any;
+    deductions: string;
     email: string;
     role: string;
-    startDate: any;
-    monthlyGross: any;
+    startDate: string;
+    monthlyGross: string;
     netSalary: string;
     department: string;
     phoneNumber: string;

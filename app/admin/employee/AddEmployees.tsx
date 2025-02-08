@@ -1,33 +1,29 @@
 "use client";
 
 import React, { useState } from 'react'
-import SelectFilter from '@/app/components/SelectFilter'
-import Link from "next/link";
-import { useParams, useRouter } from 'next/navigation';
+
 
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-  TableFooter,
-} from "@/app/components/Table"
+} from "@/components/Table"
 
-import { Input } from '@/app/components/Inputs';
-import { Colors } from '@/Colors';
+import { Input } from '@/components/Inputs';
+
 
 interface Employee {
     id: number;
     firstName: string;
     lastName: string;
-    deductions: any;
+    deductions: string;
     email: string;
     role: string;
-    startDate: any;
-    monthlyGross: any;
+    startDate: string;
+    monthlyGross: string;
     department: string;
     phoneNumber: string
   }
@@ -50,12 +46,8 @@ export default function AddEmployee() {
         }, // Initial empty row
       ]);
 
-     const router = useRouter();
+ 
 
-     const handleFilterChange = (value: string) => {
-        console.log("Selected Year:", value);
-        // Use this function elsewhere in ParentComponent
-    };
 
       // Function to handle input changes
   const handleInputChange = (id: number, field: keyof Employee, value: string) => {

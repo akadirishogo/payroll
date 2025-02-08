@@ -1,6 +1,6 @@
 "use client";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import SelectFilter from '../components/SelectFilter'
+import SelectFilter from './SelectFilter'
 import { useState } from "react";
 
 
@@ -28,6 +28,7 @@ export default function GraphComponent() {
     const handleFilterChange = (value: string) => {
         console.log("Selected Year:", value);
         setSelectedYear(value);
+        console.log(selectedYear)
         // Use this function elsewhere in ParentComponent
     };
 

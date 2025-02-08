@@ -1,18 +1,16 @@
 "use client";
 
-import React, { useState } from 'react'
+import React from 'react'
 import Link from "next/link";
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-  TableFooter,
-} from "@/app/components/Table"
+} from "@/components/Table"
 
 const payrolls = [
   {
@@ -68,10 +66,9 @@ const payrolls = [
 
 
 export default function Payrolls() {
-  const [selectedYear, setSelectedYear] = useState<string>(`${new Date().getFullYear()}`);
+  const selectedYear = new Date().getFullYear();
   const params = useParams();
 
-  const router = useRouter()
 
 
   return (

@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/Cards";
-import { Input } from "@/app/components/Inputs";
-import { Checkbox } from "@/app/components/Checkbox";
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/app/components/Table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/Cards";
+import { Input } from "@/components/Inputs";
+import { Checkbox } from "@/components/Checkbox";
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/Table";
 
 interface Employee {
   id: number;
@@ -137,7 +137,7 @@ export default function PayrollForm() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {employees.map((employee, index) => (
+              {employees.map((employee) => (
                 <TableRow key={employee.id}>
                   <TableCell>{employee.id}</TableCell>
                   <TableCell>{employee.fullName}</TableCell>

@@ -6,7 +6,7 @@ interface FilterDropdownProps {
     color?: (string)
 }
 
-const FilterComponent: React.FC<FilterDropdownProps> = ({ onFilterChange, color }) => {
+const FilterComponent: React.FC<FilterDropdownProps> = ({ onFilterChange }) => {
   const [selectedFilter, setSelectedFilter] = useState<string>('');
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
