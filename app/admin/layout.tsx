@@ -31,7 +31,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     </Link>
                     
                     <Link href="/admin/employee" className= {`${pathname.startsWith("/admin/employee") ? "bg-white" : ""}  
-                    ${pathname.startsWith("/admin/employee") ? "text-primary" : ""} p-2 max-w-[80%] rounded-[7px] flex gap-x-2`}>
+                    ${pathname.startsWith("/admin/employee") ? "text-primary" : ""} p-2 max-w-[85%] rounded-[7px] flex gap-x-2`}>
                         <BsPeople className="h-5 w-5" />
                         Employee Records
                     </Link>
