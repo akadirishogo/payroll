@@ -19,7 +19,7 @@ export default function PayrollDetailPage() {
     
     
     return (
-      <div className='px-6'>
+      <div className='px-6 my-15'>
         <div>
           <span className='bg-clip-text 
               text-transparent bg-gradient-to-r from-fromGreetGradient 
