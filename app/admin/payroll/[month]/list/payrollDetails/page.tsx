@@ -95,7 +95,7 @@ export default function PayrollDetailPage() {
               <p className='text-4xl font-semi'>150</p>
             </div>
         </div>
-        <div className='flex justify-end text-white gap-x-4 mt-10 bg-yellow-500 py-14'>
+        <div className='flex justify-end text-white gap-x-4 mt-10 min-h-[50px]'>
             <button className='bg-unPaid px-10 py-4 rounded-[7px] font-semi'>Reject Payroll</button>
             <button className='bg-approved px-10 py-4 rounded-[7px] font-semi'>Approve Payroll</button>
             <button className='bg-primary px-10 py-4 rounded-[7px] font-semi'>Make Payments</button>
