@@ -18,6 +18,7 @@ import { useEmployeeStore } from "@/store/employeeStore";
     );
 
 
+
     return (
         <div className='bg-white mx-6 rounded-t-2xl my-10'>
             <div className='mb-4 rounded-t-2xl flex text-white bg-gradient-to-r from-fromGreetGradient via-throughGreet to-primary justify-between items-center text-[15px] p-2'>

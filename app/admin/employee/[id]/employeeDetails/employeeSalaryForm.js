@@ -28,10 +28,10 @@ interface Employee {
 
 function EmployeeSalaryForm({employeeDetails}) {
     const [isEditing, setIsEditing] = useState(false);
-    const [selectedDeduction, setSelectedDeduction] = useState<string>("");
-    const [deductions, setDeductions] = useState({})
-    const [selectedAllowance, setSelectedAllowance] = useState<string>(""); 
-    const [allowances, setAllowances] = useState({});
+    const [selectedDeduction, setSelectedDeduction] = useState("");
+    const [deductions, setDeductions] = useState()
+    const [selectedAllowance, setSelectedAllowance] = useState(""); 
+    const [allowances, setAllowances] = useState();
     const [tempSalary, setTempSalary] = useState(employeeDetails?.monthlyGross || "");
 
 
@@ -150,7 +150,7 @@ const handleRemoveDeduction = (index) => {
                 
 
                      {/* Render Added Allowances */}
-                     {allowances.map((allowance, index) => (
+                     {allowances?.map((allowance, index) => (
                         <div key={index} className="mt-4">
                             <label className="font-medium">{allowance?.name}</label>
                             <div className="flex items-center gap-x-4">
@@ -205,7 +205,7 @@ const handleRemoveDeduction = (index) => {
             </CardHeader>
             <CardContent className='mt-6 flex flex-col items-start pb-10'>
                      {/* Render Added Deductions */}
-                     {deductions.map((deduction, index) => (
+                     {deductions?.map((deduction, index) => (
                         <div key={index} className="mb-4">
                             <label className="font-medium">{deduction?.name}</label>
                             <div className="flex items-start gap-x-4">
