@@ -34,11 +34,11 @@
     "**/*.tsx",
     "**/*.jsx",
     ".next/types/**/*.ts",
-    "app/admin/employee/[id]/employeeDetails/employeeIdCard.js",
+    "components/employee/employeeIdCard.js",
     "app/admin/employee/[id]/employeeDetails/employeeSalaryForm.tsx",
-    "app/admin/employee/[id]/employeeDetails/employeePersonal.js",
+    "components/employee/employeePersonal.js",
     "lib/utils.js"
-  ],
+, "utilityFunctions.js"  ],
   "exclude": [
     "node_modules"
   ]

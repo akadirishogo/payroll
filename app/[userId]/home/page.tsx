@@ -2,13 +2,13 @@
 
 import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/Cards'
-import { IoChevronBackSharp } from "react-icons/io5";
 
 import { useParams } from "next/navigation";
-import EmployeeSalaryForm from '@/components/employee/employeeSalaryForm';
-import EmployeeIdCard from '@/components/employee/employeeIdCard';
-import EmployeePersonal from '@/components/employee/employeePersonal';
+import EmployeeSalaryForm from '@/components/userHome/employeeSalaryForm';
+import EmployeeIdCard from '@/components/userHome/employeeIdCard';
+import EmployeePersonal from '@/components/userHome/employeePersonal';
 import users from '@/Employees';
+import { Loader2 } from 'lucide-react';
 
 interface Employee {
     id: number;
@@ -27,34 +27,33 @@ interface Employee {
   }
 
 
-export default function EmployeeDetails() {
-   
+export default function HomePage() {
+
+    const params = useParams();
+
     const [employee, setEmployee] = useState<Employee | null>();
-    const { id } = useParams();
+    const id = params.userId
+
 
     useEffect(() => {
-        const clickedEmployee = users.find((user) => user.id === Number(id));
-        if(clickedEmployee) {
-          setEmployee(clickedEmployee)
+        const employee = users.find((user) => user.id === Number(id));
+        if(employee) {
+          setEmployee(employee)
         }
     }, [])
 
-   
-     
-    console.log(employee)
-  
+    if(!employee)
+    return (
+        <div className="flex items-center justify-center h-screen">
+          <Loader2 className="w-10 h-10 text-blue-500 animate-spin" />
+        </div>
+      );
 
-      
+
+
+
   return (
     <div className='px-14 py-6'>
-        <div className='flex gap-x-2 items-center mb-6'>
-            <IoChevronBackSharp size={25} />
-            <span className='bg-clip-text 
-            text-transparent bg-gradient-to-r from-fromGreetGradient 
-            via-throughGreet to-primary text-2xl font-semi'>
-            Back to records
-            </span>
-        </div>
         <div className='flex gap-x-14'>
             <EmployeeIdCard employeeDetails={employee} />
             <EmployeePersonal employeeDetails={employee} />

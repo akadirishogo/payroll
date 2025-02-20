@@ -3,6 +3,7 @@ const users = [
         id: 1,
         firstName: "John",
         lastName: "Doe",
+        maritalStatus: "Single",
         gender: 'Male',
         deductions: "",
         email: "john.doe@example.com",
@@ -13,12 +14,14 @@ const users = [
         netSalary: "₦450,000",
         phoneNumber: "08012345678",
         bank: 'Access Bank',
-        accountNumber: '0123456278'
+        accountNumber: '0123456278',
+        address: '18, Fate road off basin round-about Ilorin'
     },
     {
         id: 2,
         firstName: "Jane",
         lastName: "Smith",
+        maritalStatus: "Single",
         gender: 'Female',
         deductions: "",
         email: "jane.smith@example.com",
@@ -29,12 +32,14 @@ const users = [
         netSalary: "₦550,000",
         phoneNumber: "08098765432",
         bank: 'UBA',
-        accountNumber: '0123456278'
+        accountNumber: '0123456278',
+        address: '18, Fate road off basin round-about Ilorin'
     },
     {
         id: 3,
         firstName: "David",
         lastName: "Johnson",
+        maritalStatus: "Married",
         gender: 'Male',
         deductions: "",
         email: "david.johnson@example.com",
@@ -45,12 +50,14 @@ const users = [
         netSalary: "₦400,000",
         phoneNumber: "08023456789",
         bank: 'Sterling Bank',
-        accountNumber: '0123456278'
+        accountNumber: '0123456278',
+        address: '18, Fate road off basin round-about Ilorin'
     },
     {
         id: 4,
         firstName: "Emily",
         lastName: "Brown",
+        maritalStatus: "Single",
         gender: 'Female',
         deductions: "",
         email: "emily.brown@example.com",
@@ -61,12 +68,14 @@ const users = [
         netSalary: "₦430,000",
         phoneNumber: "08034567890",
         bank: 'FCMB',
-        accountNumber: '0123456278'
+        accountNumber: '0123456278',
+        address: '18, Fate road off basin round-about Ilorin'
     },
     {
         id: 5,
         firstName: "Michael",
         lastName: "Williams",
+        maritalStatus: "Married",
         gender: 'Male',
         deductions: "",
         email: "michael.williams@example.com",
@@ -77,7 +86,8 @@ const users = [
         netSalary: "₦500,000",
         phoneNumber: "08045678901",
         bank: 'GTB',
-        accountNumber: '0123456278'
+        accountNumber: '0123456278',
+        address: '18, Fate road off basin round-about Ilorin'
     }
 ];
 

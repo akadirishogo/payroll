@@ -1,16 +1,24 @@
 "use client";
 
-import SigninForm from "./landing/signin/page";
+import Form from "@/components/userAuthForms/Form";
+import LandingLayout from "@/components/layouts/LandingLayout";
+import { useRouter } from "next/navigation";
+
+
+
 
 
 import React from "react";
 
 
 export default function LandingPage() {
+
+  const router = useRouter()
+
  
   return (
-    <>
-      <SigninForm />
-    </>
+   <LandingLayout>
+      <Form />
+   </LandingLayout>
   )
 }

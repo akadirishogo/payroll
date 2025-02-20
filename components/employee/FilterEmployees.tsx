@@ -14,6 +14,7 @@ import { useEmployeeStore } from "@/store/employeeStore";
     const filteredEmployees = employees.filter(
       (employee) =>
         employee.firstName.toLowerCase().includes(search.toLowerCase()) ||
+      employee.lastName.toLowerCase().includes(search.toLowerCase()) ||
         employee.phoneNumber.includes(search)
     );
 
