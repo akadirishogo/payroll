@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useRouter } from "next/navigation";
+import Loading from '../Loading';
 
 export default function BasicProfile() { 
     const [loading, setLoading] = useState(false);
@@ -36,6 +37,9 @@ export default function BasicProfile() {
     }
   };
 
+  if (loading) {
+    <Loading />
+  }
 
   return (
     <>

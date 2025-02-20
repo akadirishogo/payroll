@@ -6,17 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '../Cards'
 import { Button } from '../Button'
 import { Input } from '../Inputs'
 import { RiDeleteBin6Line } from 'react-icons/ri'
-import addBankAccount from '@/utilityFunctions'
 import { Loader2 } from 'lucide-react'
 import users from '@/Employees'
 import { useParams } from 'next/navigation'
-
-interface BankAccount {
-    id: number;
-    bankName: string;
-    accountNumber: string;
-    isDefault: boolean;
-  }
 
 interface Employee {
     id: number;
@@ -42,9 +34,7 @@ export default function ProfileDetails() {
 
     const [employee, setEmployee] = useState<Employee | null>(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [accountsDetails, setAccountsDetails] = useState<BankAccount[]>([
-        { id: 1, bankName: "First Bank", accountNumber: "1234567890", isDefault: true }
-    ])
+   
     
     const id = params.userId
 

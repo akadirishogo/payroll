@@ -33,7 +33,6 @@ export default function BankDetails() {
         accountName: "",
       });
     const [accountNumber, setAccountNumber] = useState<string>("");
-    const [accountName, setAccountName] = useState<string>("");
     const [bankList, setBankList] = useState<Bank[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalTwoOpen, setIsModalTwoOpen] = useState(false);
@@ -247,7 +246,7 @@ console.log(bankAccounts)
                     <label className="block text-left font-medium">Account Name</label>
                     <input
                     type="text"
-                    value={accountName}
+                    value='Account Name'
                     readOnly
                     className="w-full p-2 border rounded-lg"
                     />

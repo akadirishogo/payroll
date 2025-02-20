@@ -38,9 +38,9 @@ export default function PersonalProfile() {
   };
 
 
-  {loading && (
+  if (loading) {
     <Loading />
-  )}
+  }
 
 
   return (

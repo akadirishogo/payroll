@@ -86,9 +86,9 @@ export default function BankProfile() {
         }
       };
 
-      {loading && (
-        <Loading />
-      )}
+     if (loading) {
+      <Loading />
+     }
     
 
   return (
