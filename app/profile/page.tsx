@@ -14,7 +14,7 @@ export default function ProfileCompletion() {
 
   return (
     <div className="relative">
-        <div className="absolute top-0 w-full h-14 bg-primary px-10">
+        <div className="sticky z-50 -mt-[35px] top-0 w-full h-14 bg-primary px-10">
           <div className="flex justify-between items-center h-full">
             <div className="flex items-center">
                 <Image height={50} width={100} src={'/logo_white.png'} alt="logo"/>

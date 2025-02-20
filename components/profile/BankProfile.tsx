@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from "next/navigation";
+import Loading from '../Loading';
 
 
 interface BankAccount {
@@ -84,6 +85,10 @@ export default function BankProfile() {
           setLoading(false);
         }
       };
+
+      {loading && (
+        <Loading />
+      )}
     
 
   return (

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useRouter } from "next/navigation";
+import React, { useState } from 'react'
+
 
   
   
@@ -15,7 +15,6 @@ export default function BankProfile() {
         businessName: "",
         businessAddress: "",
     })
-      const router = useRouter();
 
 
 
@@ -27,7 +26,10 @@ export default function BankProfile() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-       
+       setBusinessData({
+          businessName: businessData.businessName,
+          businessAddress: businessData.businessAddress
+       })
       };
     
 

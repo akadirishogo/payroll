@@ -45,7 +45,7 @@ export default function ProfileDetails() {
     const [accountsDetails, setAccountsDetails] = useState<BankAccount[]>([
         { id: 1, bankName: "First Bank", accountNumber: "1234567890", isDefault: true }
     ])
-    const [defaultAccount, setDefaultAccount] = useState()
+    
     const id = params.userId
 
     useEffect(() => {
@@ -70,9 +70,6 @@ export default function ProfileDetails() {
     setEmployee({ ...employee, [e.target.name]: e.target.value });
   };
 
-  const handleAddBank = (newBank: BankAccount) => {
-    setAccountsDetails(addBankAccount(accountsDetails, newBank));
-  };
 
 
 

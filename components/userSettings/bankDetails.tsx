@@ -3,20 +3,14 @@ import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '../Cards'
 import { Button } from '../Button'
 import Modal from '../Modal'
-import addBankAccount from '@/utilityFunctions'
 import { GoPlus } from "react-icons/go";
-import { Input } from '../Inputs'
+
 
 interface Bank {
     name: string;
     code?: string; // Some banks might not have a code
 }
 
-interface DefaultBank {
-    name: string;
-    accountNumber: string;
-    accountName: string;
-}
 
 
 
@@ -33,7 +27,6 @@ interface BankAccount {
   const BANKS_API_URL = "https://nigerianbanks.xyz"
 
 export default function BankDetails() {
-    const [bankCode, setBankCode] = useState<string>("");  // Instead of nameBank
     const [selectedBank, setSelectedBank] = useState<Partial<BankAccount>>({
         bankName: "",
         accountNumber: "",
@@ -86,7 +79,6 @@ export default function BankDetails() {
 
 
     if (selectedBank) {
-        setBankCode(selectedBank.code || ""); 
         setNewBank(prevState => ({
             ...prevState,
             bankName: selectedBank.name,  // Update bank name

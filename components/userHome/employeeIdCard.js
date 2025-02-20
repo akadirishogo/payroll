@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/Cards'
-import Image from 'next/image'
+
 
 
 

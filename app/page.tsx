@@ -13,7 +13,7 @@ import React from "react";
 
 export default function LandingPage() {
 
-  const router = useRouter()
+ 
 
  
   return (
