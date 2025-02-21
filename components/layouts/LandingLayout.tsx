@@ -23,7 +23,7 @@ export default function LandingLayout({ children }: LandingLayoutProps) {
         <div>
             <Image height={50} width={100} src={"/logo_white.png"} alt="logo" />
         </div>
-        <div className="mt-20 flex items-center justify-around -ml-[15px]">
+        <div className="mt-6 flex items-center justify-around -ml-[15px]">
             <div>
                 <div>
                     <p className="font-boldItalic text-6xl inline-block mr-3 text-splash">Smart</p><p className="inline-block font-extraBold text-6xl text-white"> Payroll for</p>

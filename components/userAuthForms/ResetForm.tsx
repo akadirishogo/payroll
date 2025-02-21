@@ -48,9 +48,9 @@ const ResetForm = () => {
       }
 
 return (
-    <div className="flex items-center justify-center mt-16">
+    <div className="flex items-center justify-center mt-14">
         <div className="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center">Forgot Password</h2>
+        <h2 className="text-xl font-semi text-center">Forgot Password</h2>
         <p className="mb-4 font-regular text-Inactive text-center text-[14px]">No worries, we will send you instructions for reset</p>
         {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-4 font-regular">

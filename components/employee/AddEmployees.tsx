@@ -58,7 +58,9 @@ export default function AddEmployee() {
 
   // Function to add a new row
   const addEmployee = () => {
-    setEmployees([...employees, { id: employees.length + 1, 
+    setEmployees([...employees,
+            { 
+            id: employees.length + 1, 
             firstName: '',
             lastName: '',
             deductions: '',
@@ -106,7 +108,7 @@ export default function AddEmployee() {
             </div>
                 <div className='px-4 pb-4'>
                     <div className='flex p-2 justify-end gap-x-4'>
-                        <button onClick={()=>addEmployee} className='bg-primary text-white px-4 py-2 text-[15px]'>Add Record</button> 
+                        <button onClick={()=>addEmployee()} className='bg-primary text-white px-4 py-2 text-[15px]'>Add Record</button> 
                         <button className='bg-primary text-white px-4 py-2 text-[15px]'>Save Record</button> 
                     </div>
                     <Table className=''>

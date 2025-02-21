@@ -9,8 +9,8 @@ import BasicProfile from "@/components/profile/BasicProfile";
 import BankProfile from "@/components/profile/BankProfile";
 
 
-
 export default function ProfileCompletion() {
+
 
   return (
     <div className="relative">

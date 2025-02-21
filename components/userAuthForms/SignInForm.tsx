@@ -67,8 +67,8 @@ const SignInForm = () => {
 
 return (
     <div className="flex items-center justify-center">
-        <div className="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-4">Sign In</h2>
+        <div className="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-md mt-6">
+        <h2 className="text-xl font-semi text-center mb-4">Sign In</h2>
         {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-4 font-regular">
             <input
