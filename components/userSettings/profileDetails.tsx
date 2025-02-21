@@ -96,7 +96,7 @@ export default function ProfileDetails() {
                         className="min-w-[300px]"
                     />
                 </div>
-                <div className="absolute right-44 -top-6">
+                <div className="absolute right-16 -top-6">
                     <div className="w-[150px] h-[150px] flex items-center justify-center rounded-full overflow-hidden">
                         <img src='/user.jpg' className="w-full h-full object-cover" alt="User" />
                     </div>

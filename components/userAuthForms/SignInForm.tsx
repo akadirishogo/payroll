@@ -7,11 +7,6 @@ import users from '@/Employees';
 import Image from "next/image";
 
 
-
-
-
-
-
 const SignInForm = () => {
     const [loading, setLoading] = useState(false);
    const [error, setError] = useState("");
@@ -71,48 +66,46 @@ return (
         <h2 className="text-xl font-semi text-center mb-4">Sign In</h2>
         {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-4 font-regular">
-            <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                className="w-full p-3 border border-gray-300 rounded-[7px]"
-                value={formData.email}
-                onChange={handleChange}
-                required
-            />
-            <input
-                type="password"
-                name="password"
-                placeholder="Set Password"
-                className="w-full p-3 border border-gray-300 rounded-[7px]"
-                value={formData.password}
-                onChange={handleChange}
-                required
-            />
-        <button
-        onClick={()=>goToDashboard()}
-        type="submit"
-        className="w-full bg-primary text-white p-3 rounded-[7px] font-semibold"
-        disabled={loading}
-        >
-        {loading ? "Please wait..." : "Sign In"}
-        </button>
-                    
+          <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              className="w-full p-3 border border-gray-300 rounded-[7px]"
+              value={formData.email}
+              onChange={handleChange}
+              required
+          />
+          <input
+              type="password"
+              name="password"
+              placeholder="Set Password"
+              className="w-full p-3 border border-gray-300 rounded-[7px]"
+              value={formData.password}
+              onChange={handleChange}
+              required
+          />
+          <button
+            onClick={()=>goToDashboard()}
+            type="submit"
+            className="w-full bg-primary text-white p-3 rounded-[7px] font-semibold"
+            disabled={loading}
+            >
+            {loading ? "Please wait..." : "Sign In"}
+          </button>           
         </form>
         <div className="flex justify-center font-regular mb-12">
-            <p>Forgot Password? </p>
-            <p 
-            onClick={getResetPage}
-            className="text-primary ml-2 cursor-pointer">
-              Reset
-            </p>
+          <p>Forgot Password? </p>
+          <p onClick={getResetPage}
+          className="text-primary ml-2 cursor-pointer">
+            Reset
+          </p>
         </div>
         <div className="flex justify-center mt-20 -mb-4">
-            <Image height={40} width={100} src={'/logo_blue.png'} alt="logo"/>
+          <Image height={40} width={100} src={'/logo_blue.png'} alt="logo"/>
         </div>
+      </div>
     </div>
-    </div>
-        )
+  )
 }   
 
 export default SignInForm;
