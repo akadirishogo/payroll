@@ -90,7 +90,7 @@ return (
             </form>
             <div 
                 onClick={getSignIn}
-                 className="flex justify-center font-regular mb-12 mt-2">
+                 className="flex justify-center font-regular mb-12 mt-2 cursor-pointer">
                 <p>Already have an account? </p>
                 <p className="text-primary ml-2">Sign In</p>
             </div>

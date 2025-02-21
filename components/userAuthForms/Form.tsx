@@ -5,12 +5,7 @@ import SignUpForm from "./SignUpForm";
 
 
 
-export default function Form(){
-
-
-
- 
-
+export default function Form() {
   return (
     <>
         <SignUpForm />

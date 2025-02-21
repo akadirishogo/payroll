@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 
+
+
 type ModalProps = {
   isOpen: boolean;
   title?: string;
@@ -14,8 +16,10 @@ export default function Modal({ isOpen, title, message, onClose, icon, children 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70">
-      <div className="bg-white p-6 rounded-xl shadow-lg w-1/2 text-center font-light">
+    <div 
+    onClick={onClose}
+    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70">
+      <div className="bg-white p-4 rounded-xl shadow-lg w-[500px] text-center font-light">
         {icon && <div className="mb-3 flex justify-center">{icon}</div>}
 
         {title && <h2 className="text-lg font-medium">{title}</h2>}
@@ -32,13 +36,6 @@ export default function Modal({ isOpen, title, message, onClose, icon, children 
 
         {/* ✅ Render children (like a form) if provided */}
         {children}
-
-        <button
-          onClick={onClose}
-          className="mt-4 w-full bg-primary text-white py-2 rounded-lg"
-        >
-          OK
-        </button>
       </div>
     </div>
   );

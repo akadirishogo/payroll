@@ -135,7 +135,7 @@ export default function BankProfile() {
                 <input
                     type="text"
                     name="fullName"
-                    placeholder="Full Name"
+                    placeholder="Account Name"
                     value={formData.contactAddress}
                     disabled
                     onChange={handleChange}
