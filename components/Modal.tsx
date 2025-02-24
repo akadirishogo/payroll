@@ -32,13 +32,6 @@ export default function Modal({ isOpen, title, message, onClose, icon, children 
 
         {/* ✅ Render children (like a form) if provided */}
         {children}
-
-        <button
-          onClick={onClose}
-          className="mt-4 w-full bg-primary text-white py-2 rounded-lg"
-        >
-          OK
-        </button>
       </div>
     </div>
   );

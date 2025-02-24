@@ -160,7 +160,7 @@ export default function PayrollForm() {
           
 
            <div className="flex justify-end gap-x-10">
-                <button className="flex mt-4 w-full bg-primary text-white max-w-fit px-[10px] py-[5px]">
+                <button className="flex mt-4 w-full max-w-fit px-[10px] py-[5px]">
                     Payroll Size: ₦{totalSalary.toLocaleString()}
                 </button>
                 <button className="flex mt-4 w-full bg-primary text-white max-w-fit px-[10px] py-[5px]">

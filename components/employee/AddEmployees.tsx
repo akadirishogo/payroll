@@ -109,7 +109,6 @@ export default function AddEmployee() {
                 <div className='px-4 pb-4'>
                     <div className='flex p-2 justify-end gap-x-4'>
                         <button onClick={()=>addEmployee()} className='bg-primary text-white px-4 py-2 text-[15px]'>Add Record</button> 
-                        <button className='bg-primary text-white px-4 py-2 text-[15px]'>Save Record</button> 
                     </div>
                     <Table className=''>
                     <TableHeader className='bg-Inactive text-white'>
@@ -213,7 +212,11 @@ export default function AddEmployee() {
                         </TableRow>
                     </TableFooter> */}
                     </Table>
-      </div>    
+      </div>
+      <div className='flex justify-end p-2 mr-2'>
+        <button className='bg-primary text-white px-4 py-2 text-[15px]'>Save Record</button>  
+      </div>
+         
     </div>
 </div>
   )

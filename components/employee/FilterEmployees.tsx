@@ -35,7 +35,7 @@ import { useEmployeeStore } from "@/store/employeeStore";
                     className="w-max"
                     />
                 </div>
-                <Table className="">
+                <Table className="w-full">
                     <TableHeader className="bg-Inactive text-white">
                     <TableRow>
                         <TableHead>Id</TableHead>

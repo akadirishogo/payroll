@@ -155,7 +155,7 @@ export default function PayrollListPage() {
           <SelectFilter onFilterChange={handleFilterChange}/>
       </div>
       <div className='px-4'>
-          <Table className=''>
+          <Table className='w-full'>
           <TableHeader className='bg-Inactive text-white'>
             <TableRow>
               <TableHead>Month</TableHead>

@@ -191,7 +191,7 @@ export default function PayrollListPage() {
           <SelectFilter onFilterChange={handleFilterChange} color={Colors.onPrimary} />
       </div>
       <div className='px-4'>
-          <Table className=''>
+          <Table className='w-full'>
           <TableHeader className='bg-Inactive text-white'>
             <TableRow>
               <TableHead>Month</TableHead>
@@ -210,14 +210,14 @@ export default function PayrollListPage() {
               <TableRow key={month.index}>
                 <TableCell className="font-medium">{month.month}</TableCell>
                 <TableCell className="text-right">{month.payrollSize}</TableCell>
-                <TableCell>{month.employeeSize}</TableCell>
+                <TableCell className='text-center'>{month.employeeSize}</TableCell>
                 <TableCell className={`h-[25px] mt-[6px] text-[10px] text-white rounded-[5px] flex justify-center items-center 
     ${month.status === "Approved" ? "bg-approved" : "bg-progress"}`}>{month.status}</TableCell>
-                <TableCell>{month.requestBy}</TableCell>
-                <TableCell>{month.dateOfRequest}</TableCell>
+                <TableCell className='text-center'>{month.requestBy}</TableCell>
+                <TableCell className='text-center'>{month.dateOfRequest}</TableCell>
                 <TableCell>{month.approvedBy}</TableCell>
-                <TableCell>{month.dateOfApproval}</TableCell>
-                <TableCell><Link href={`/admin/payroll/${month.month.toLowerCase()}/list`}><button className='text-white bg-black text-[10px] px-[7px] py-[1px]'>View</button></Link></TableCell>
+                <TableCell className='text-center'>{month.dateOfApproval}</TableCell>
+                <TableCell className='flex justify-center'><Link href={`/admin/payroll/${month.month.toLowerCase()}/list`}><button className='text-white bg-black text-[10px] px-[7px] py-[1px]'>View</button></Link></TableCell>
               </TableRow>
             ))}
           </TableBody>

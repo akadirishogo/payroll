@@ -11,10 +11,6 @@ interface Bank {
     code?: string; // Some banks might not have a code
 }
 
-
-
-
-
 interface BankAccount {
     id: number;
     bankName: string;
@@ -147,6 +143,7 @@ console.log(bankAccounts)
     setBankAccounts(newAccounts);
     setIsModalOpen(false); // Close modal
     setNewBank({ bankName: "", accountNumber: "", accountName: "" }); // Reset form
+
   };
 
 
@@ -298,9 +295,16 @@ console.log(bankAccounts)
                     />
                 </div>
 
-                <button type="button" onClick={()=>handleMakeDefaultAccount(selectedBank?.id)} className="w-full bg-primary text-white py-2 rounded-lg">
-                    Make Default
-                </button>
+                <div className='flex gap-x-2'>
+                    <button type="button" onClick={()=>handleMakeDefaultAccount(selectedBank?.id)} className="w-full bg-primary text-white py-2 rounded-lg">
+                        Make Default
+                    </button>
+
+                    <button type="button" onClick={()=>setIsModalTwoOpen(false)} className="w-full bg-primary text-white py-2 rounded-lg">
+                        Close
+                    </button>
+                </div>
+               
             </form>
       </Modal>       
     </div>

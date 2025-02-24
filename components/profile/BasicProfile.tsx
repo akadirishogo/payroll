@@ -49,7 +49,7 @@ export default function BasicProfile() {
             <form onSubmit={handleSubmit} className="gap-x-2">
               <div className="flex gap-x-4">
                 <div className="flex flex-col w-full">
-                    <label>Full name</label>
+                    <label className='font-regular'>Full name</label>
                     <input
                         type="text"
                         name="fullName"
@@ -62,7 +62,7 @@ export default function BasicProfile() {
                 </div>
               
                 <div className="flex flex-col w-full">
-                    <label>Email</label>
+                    <label className='font-regular'>Email</label>
                     <input
                         type="text"
                         name="email"
@@ -78,7 +78,7 @@ export default function BasicProfile() {
 
             <div className="flex w-full gap-x-10 mt-4">
                 <div className="flex flex-col min-w-[60%]">
-                <label>Contact Address</label>
+                <label className='font-regular'>Contact Address</label>
                 <input
                     type="text"
                     name="contactAddress"
