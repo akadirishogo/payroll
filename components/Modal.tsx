@@ -5,12 +5,12 @@ type ModalProps = {
   isOpen: boolean;
   title?: string;
   message?: string | string[];
-  onClose: () => void;
+  onClose?: () => void;
   icon?: React.ReactNode;
   children?: React.ReactNode; // ✅ Add children prop
 };
 
-export default function Modal({ isOpen, title, message, onClose, icon, children }: ModalProps) {
+export default function Modal({ isOpen, title, message, icon, children }: ModalProps) {
   if (!isOpen) return null;
 
   return (
