@@ -1,35 +1,40 @@
 import React, { useState } from 'react'
+import { registerBusiness } from '@/apiService';
+import { useRouter } from 'next/navigation';
 
-
+type BasicProfileProps = {
+  email: string;
+};
   
   
 
-export default function BankProfile() {
-    const [formData, setFormData] = useState({
-        fullName: "",
-        email: "",
-        contactAddress: "",
-        phoneNumber: ""
-      });
+export default function BankProfile({ email }: BasicProfileProps) {
     const [businessData, setBusinessData] = useState({
+        email: email,
         businessName: "",
         businessAddress: "",
     })
+
+    const router = useRouter()
 
 
 
 
       const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setBusinessData({ ...businessData, [e.target.name]: e.target.value });
       };
 
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        const result = await registerBusiness(email, businessData.businessName, businessData.businessAddress)
        setBusinessData({
+          email: businessData.email,
           businessName: businessData.businessName,
           businessAddress: businessData.businessAddress
        })
+       console.log(result.message)
+       router.push("/signin")
       };
     
 

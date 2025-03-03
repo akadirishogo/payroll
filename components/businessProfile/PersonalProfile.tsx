@@ -1,13 +1,20 @@
 import React, { useState } from 'react'
 import { useRouter } from "next/navigation";
 import Loading from '../Loading';
+import { updateAdminRecords } from '@/apiService';
 
-export default function PersonalProfile() { 
+type BasicProfileProps = {
+  email: string;
+};
+
+
+export default function PersonalProfile({ email }: BasicProfileProps) { 
     const [loading, setLoading] = useState(false);
+    const [isSaved, setIsSaved] = useState(false); 
     const [formData, setFormData] = useState({
-        fullName: "",
-        email: "",
-        contactAddress: "",
+        firstName: "",
+        lastName: "",
+        email: email,
         phoneNumber: ""
       });
 
@@ -18,18 +25,17 @@ export default function PersonalProfile() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const updateUserProfile = (data = { ...formData }) => {
-    console.log(data)
-  }
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    console.log(formData.email)
 
     try {
-      await updateUserProfile(formData); // Save details to DB
-      router.push("/dashboard"); // Redirect to dashboard after saving
+      const result = await updateAdminRecords(formData); 
+      setIsSaved(true);
+      console.log(result?.message)// Save details to DB // Redirect to dashboard after saving
     } catch (error) {
       console.error("Error updating profile:", error);
     } finally {
@@ -39,7 +45,7 @@ export default function PersonalProfile() {
 
 
   if (loading) {
-    <Loading />
+    return <Loading />
   }
 
 
@@ -50,27 +56,29 @@ export default function PersonalProfile() {
         <div>
             <form onSubmit={handleSubmit} className="gap-x-2">
               <div className="flex gap-x-4">
-                <div className="flex flex-col w-full">
-                    <label>Full name</label>
+                <div className="flex flex-col w-full font-regular">
+                    <label>First Name</label>
                     <input
                         type="text"
-                        name="fullName"
-                        placeholder="Full Name"
-                        value={formData.fullName}
+                        name="firstName"
+                        placeholder="First Name"
+                        value={formData.firstName}
                         onChange={handleChange}
+                        disabled={isSaved}
                         required
                         className="flex-1 px-4 py-2 border rounded"
                     />
                 </div>
               
-                <div className="flex flex-col w-full">
-                    <label>Email</label>
+                <div className="flex flex-col w-full font-regular">
+                    <label>Last Name</label>
                     <input
                         type="text"
-                        name="email"
-                        placeholder="Email Address"
-                        value={formData.email}
+                        name="lastName"
+                        placeholder="Last Name"
+                        value={formData.lastName}
                         onChange={handleChange}
+                        disabled={isSaved}
                         required
                         className="flex-1 px-4 py-2 border rounded"
                     />
@@ -79,20 +87,7 @@ export default function PersonalProfile() {
             
 
             <div className="flex w-full gap-x-10 mt-4">
-                <div className="flex flex-col min-w-[60%]">
-                <label>Contact Address</label>
-                <input
-                    type="text"
-                    name="contactAddress"
-                    placeholder="Contact Address"
-                    value={formData.contactAddress}
-                    onChange={handleChange}
-                    required
-                    className="flex-1 px-4 py-2 border rounded"
-                />
-                </div>
-
-                <div className="flex flex-col min-w-[30%]">
+                <div className="flex flex-col min-w-[30%] font-regular">
                 <label>Phone number</label>
                 <input
                     type="text"
@@ -100,14 +95,29 @@ export default function PersonalProfile() {
                     placeholder="Phone number"
                     value={formData.phoneNumber}
                     onChange={handleChange}
+                    disabled={isSaved}
                     required
                     className="flex-1 px-4 py-2 border rounded"
                 />
                 </div>
+
+                <div className="flex flex-col w-full font-regular">
+                    <label>Email</label>
+                    <input
+                        type="text"
+                        name="email"
+                        placeholder="Email Address"
+                        value={email}
+                        onChange={handleChange}
+                        readOnly
+                        required
+                        className="flex-1 px-4 py-2 border rounded"
+                    />
+                </div>
             </div>
            
             
-            <button className="mt-6 bg-primary text-white px-10 py-[2px] font-regular rounded-[5px]">Save</button>
+            <button onClick={handleSubmit} className="mt-6 bg-primary text-white px-10 py-[2px] font-regular rounded-[5px]">Save</button>
             
             </form>
         </div>

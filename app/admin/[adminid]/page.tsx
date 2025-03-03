@@ -1,11 +1,36 @@
-import React from 'react'
-import GraphComponent from '../../components/Charts'
+"use client"
+
+import React, { useEffect, useState } from 'react'
+import GraphComponent from '@/components/Charts'
+
+
+type User = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  accessToken: string;
+};
+
 
 export default function Home() {
+  const [userData, setUserData] = useState<User | null>(null);
+
+  useEffect(() => {
+    // Retrieve user data from localStorage
+    const storedUser = localStorage.getItem("userInfo");
+    if (storedUser) {
+      setUserData(JSON.parse(storedUser)); // Parse JSON string back to object
+    }
+  }, []);
+
+
+
+
   return (
     <div className='px-6'>
       <div className='font-semibold text-[25px] mb-4'>
-        <span className='bg-clip-text text-transparent bg-gradient-to-r from-fromGreetGradient via-throughGreet to-primary'>Welcome, Shogo!</span>
+        <span className='bg-clip-text text-transparent bg-gradient-to-r from-fromGreetGradient via-throughGreet to-primary'>{`Welcome, ${userData?.firstName}`}</span>
       </div>
       <div className='flex gap-6'>
           <div className='bg-gradient-to-t from-fromGreenCard to-toGreenCard w-64 p-2 text-white rounded-xl'>

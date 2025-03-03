@@ -56,20 +56,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </div>
                 <p className="text-white text-xl font-semi mb-4">Main Menu</p>
                 <div className="flex flex-col gap-y-2 font-regular text-white">
-                    <Link href={`/${id}/home`} className= {`${pathname.includes("/home") ? "bg-white" : ""} 
-                    ${pathname.includes("/home") ? "text-primary" : ""} p-2 max-w-[80%] rounded-[7px] flex gap-x-2`}>
+                    <Link href={`/user/${id}`} className= {`${pathname === `/user/${id}` ? "bg-white" : ""} 
+                    ${pathname === `/user/${id}` ? "text-primary" : ""} p-2 max-w-[80%] rounded-[7px] flex gap-x-2`}>
                         <BiHomeAlt2 className="h-5 w-5" />
                         Home
                     </Link>
                     
 
-                    <Link href= {`/${id}/payroll`} className= {`${pathname.includes("/payroll") ? "bg-white" : ""} 
-                        ${pathname.includes("/payroll") ? "text-primary" : ""} p-2 max-w-[80%] rounded-[7px] flex gap-x-2`}>
+                    <Link href= {`/user/${id}/payroll`} className= {`${pathname.startsWith(`/user/${id}/payroll`) ? "bg-white" : ""} 
+                        ${pathname.startsWith(`/user/${id}/payroll`) ? "text-primary" : ""} p-2 max-w-[80%] rounded-[7px] flex gap-x-2`}>
                         <MdOutlineLibraryBooks className="h-5 w-5" />
                         Payroll History
                     </Link>
-                    <Link href={`/${id}/settings`} className= {`${pathname.includes("/settings") ? "bg-white" : ""}  
-                    ${pathname.includes("/settings") ? "text-primary" : ""} p-2 max-w-[80%] rounded-[7px] flex gap-x-2`}>
+                    <Link href={`/user/${id}/settings`} className= {`${pathname.startsWith(`/user/${id}/settings`) ? "bg-white" : ""}  
+                    ${pathname.includes(`/user/${id}/settings`) ? "text-primary" : ""} p-2 max-w-[80%] rounded-[7px] flex gap-x-2`}>
                         <IoSettingsOutline className="h-5 w-5" />
                         Settings
                     </Link>

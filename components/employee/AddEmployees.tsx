@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState } from 'react'
-
-
+import React, { useEffect, useState } from 'react'
+import Loading from '../Loading';
 import {
   Table,
   TableBody,
@@ -13,83 +12,188 @@ import {
 } from "@/components/Table"
 
 import { Input } from '@/components/Inputs';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/Select'
+import { createEmployee, getAccountName } from '@/apiService';
 
+
+
+interface BankDetails {
+  bankName: string;
+  bankCode: string;
+  isDefault: boolean;
+  accountNumber: string;
+}
 
 interface Employee {
-    id: number;
-    firstName: string;
-    lastName: string;
-    deductions: string;
-    email: string;
-    role: string;
-    startDate: string;
-    monthlyGross: string;
-    department: string;
-    phoneNumber: string
-  }
+  firstname: string;
+  lastname: string;
+  email: string;
+  phone: string;
+  department: string;
+  role: string;
+  startDate: string; // Keep as string if stored as ISO date format
+  grossSalary: number | null;
+  netSalary: number | null;
+  bankDetails: BankDetails;
+}
+
+// If you have an array of employees
+type Employees = Employee[];
 
 
+  
+type User = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  accessToken: string;
+  company: string;
+  companyId: string;
+};
 
+  const BANKS_API_URL = "https://nigerianbanks.xyz"
+
+let token: string;
 
 export default function AddEmployee() {
+    const [userData, setUserData] = useState<User | null>(null);
+    const [loading, setLoading] = useState(false)
+    const [selectedBank, setSelectedBank] = useState("")
+    const [accountName, setAccountName] = useState("")
+    const [banks, setBanks] = useState<{ name: string, code: string }[]>([]);
     const [employees, setEmployees] = useState<Employee[]>([
-        {   id: 1,
-            firstName: '',
-            lastName: '',
-            deductions: '',
+        {
+            firstname: '',
+            lastname: '',
             email: '',
+            phone: '',
             role: '',
             startDate: '',
-            monthlyGross: '',
+            grossSalary: 0,
+            netSalary: 0,
             department: '',
-            phoneNumber: ''  
+            bankDetails: {
+              bankName: '',
+              bankCode: '',
+              isDefault: true,
+              accountNumber: '',
+            }
         }, // Initial empty row
       ]);
 
- 
+      useEffect(() => {
+        const userInfo = JSON.parse(localStorage.getItem("userInfo")|| "{}")
+        token = sessionStorage.getItem("accessToken") || "";
+        setUserData(userInfo)
+      }, [employees])
 
 
-      // Function to handle input changes
-  const handleInputChange = (id: number, field: keyof Employee, value: string) => {
-    setEmployees((prev) =>
-      prev.map((emp) => (emp.id === id ? { ...emp, [field]: value } : emp))
-    );
-  };
+      const handleInputChange = (index: number, field: string, value: string) => {
+  const newEmployees = [...employees];
+
+  if (field.startsWith("bankDetails.")) {
+    const key = field.split(".")[1]; // Extract the actual key inside bankDetails
+    newEmployees[index].bankDetails = {
+      ...newEmployees[index].bankDetails,
+      [key]: value,
+    };
+  } else {
+    newEmployees[index] = {
+      ...newEmployees[index],
+      [field]: value,
+    };
+  }
+
+  setEmployees(newEmployees);
+
+  // Auto-fetch account name when bank and account number are selected
+  if (field === "bankDetails.accountNumber" && value.length > 9 && newEmployees[index].bankDetails.bankName) {
+    fetchAccountName(index, newEmployees[index].bankDetails.bankName, value, userData?.companyId || "", token);
+  }
+};
+
+
+if (loading) {
+  return <Loading />
+}
+  
+
+
+      
+    /*   const handleInputChange = (index: number, field: keyof Employee, value: string) => {
+     const newEmployees: any = [...employees];
+        newEmployees[index][field] = value;
+        setEmployees(newEmployees);
+    
+        // Auto-fetch account name when bank and account number are selected
+        if (field === 'bankDetails' && newEmployees[index].bankDetails.accountNumber.length > 9 && newEmployees[index].bankDetails.bankName) {
+          fetchAccountName(index, newEmployees[index].bankDetails.accountNumber, value, userData?.companyId || "", token);
+        }
+      }; */
+
+      const fetchAccountName = async (index: number, bankName: string, accountNumber: string, companyId: string, token: string) => {
+        try {
+          const bankCode = banks.find((bank) => bankName === bank.name)?.code
+          const res = await getAccountName(companyId, accountNumber, bankCode || "", token)
+          setAccountName(res.accountName)
+          setLoading(false)
+        }catch(error) {
+          console.error(`Error fetching account name, ${error}`)
+        }
+      };   
 
   // Function to add a new row
   const addEmployee = () => {
     setEmployees([...employees,
             { 
-            id: employees.length + 1, 
-            firstName: '',
-            lastName: '',
-            deductions: '',
+            firstname: '',
+            lastname: '',
             email: '',
+            phone: '',
             role: '',
             startDate: '',
-            monthlyGross: '',
+            grossSalary: 0,
+            netSalary: 0,
             department: '',
-            phoneNumber: ''  
-    }]);
-  };
+            bankDetails: {
+              bankName: '',
+              bankCode: '',
+              isDefault: true,
+              accountNumber: '',
+            }
+        }]);
+      };
+
+  useEffect(() => {
+    // Fetch bank list from API
+    async function fetchBanks() {
+      try {
+        const response = await fetch(`${BANKS_API_URL}`); // Replace with actual endpoint
+        const data = await response.json();
+        setBanks(data);
+      } catch (error) {
+        console.error("Error fetching banks:", error);
+      }
+    }
+    fetchBanks();
+  }, []);
+
+  
+
 
   // Function to save data (send to backend)
-  /* const saveRecords = async () => {
-    try {
-      const response = await fetch("/api/payroll", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(employees),
-      });
-      if (response.ok) {
-        alert("Records saved successfully!");
-      } else {
-        alert("Failed to save records.");
-      }
+  const saveRecords = async () => {
+    console.log(employees)
+    const token = sessionStorage.getItem("accessToken") || "";
+      try {
+        const res = await createEmployee(employees, userData?.companyId || "", token)
+        alert(res.message)
     } catch (error) {
       console.error("Error saving records:", error);
     }
-  }; */
+  };
+
 
 
     return (
@@ -113,77 +217,104 @@ export default function AddEmployee() {
                     <Table className=''>
                     <TableHeader className='bg-Inactive text-white'>
                         <TableRow>
-                        <TableHead>Id</TableHead>
                         <TableHead>First Name</TableHead>
                         <TableHead>Last Name</TableHead>
-                        <TableHead>Deductions</TableHead>
                         <TableHead>Email</TableHead>
                         <TableHead>Role</TableHead>
                         <TableHead>Start Date</TableHead>
                         <TableHead>Monthly Gross</TableHead>
+                        <TableHead>Monthly Net</TableHead>
+                        <TableHead>Bank</TableHead>
+                        <TableHead>Account Number</TableHead>
+                        <TableHead>Account Name</TableHead>
                         <TableHead>Department</TableHead>
                         <TableHead>Phone Number</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody className='text-[12px]'>
-                        {employees.map((emp) => (
-                            <TableRow key={emp.id}>
-                            <TableCell>
-                                <Input
-                                type="text"
-                                value={emp.id}
-                                onChange={(e) => handleInputChange(emp.id, "id", e.target.value)}
-                                className='w-16'
-                                />
-                            </TableCell>
+                        {employees.map((emp, index) => (
+                            <TableRow key={index}>
                             <TableCell>
                             <Input
                                 type="text"
-                                value={emp.firstName}
-                                onChange={(e) => handleInputChange(emp.id, "firstName", e.target.value)}
+                                value={emp.firstname}
+                                onChange={(e) => handleInputChange(index, 'firstname', e.target.value)}
                                 />
                             </TableCell>
                             <TableCell>
                                 <Input
                                     type="text"
-                                    value={emp.lastName}
-                                    onChange={(e) => handleInputChange(emp.id, "lastName", e.target.value)}
+                                    value={emp.lastname}
+                                    onChange={(e) => handleInputChange(index, 'lastname', e.target.value)}
                                     />
-                            </TableCell>
-                            
-                            <TableCell>
-                                <Input
-                                    type="text"
-                                    value={emp.deductions}
-                                    onChange={(e) => handleInputChange(emp.id, "deductions", e.target.value)}
-                                />
                             </TableCell>
                             <TableCell>
                                 <Input
                                     type="text"
                                     value={emp.email}
-                                    onChange={(e) => handleInputChange(emp.id, "email", e.target.value)}
+                                    onChange={(e) => handleInputChange(index, 'email', e.target.value)}
                                 />
                             </TableCell>
                             <TableCell>
                                 <Input
                                     type="text"
                                     value={emp.role}
-                                    onChange={(e) => handleInputChange(emp.id, "role", e.target.value)}
+                                    onChange={(e) => handleInputChange(index, 'role', e.target.value)}
                                 />
                             </TableCell>
                             <TableCell>
                                 <Input
                                     type="text"
                                     value={emp.startDate}
-                                    onChange={(e) => handleInputChange(emp.id, "startDate", e.target.value)}
+                                    onChange={(e) => handleInputChange(index, 'startDate', e.target.value)}
                                 />
                             </TableCell>
                             <TableCell>
                                 <Input
                                     type="text"
-                                    value={emp.monthlyGross}
-                                    onChange={(e) => handleInputChange(emp.id, "monthlyGross", e.target.value)}
+                                    value={emp.grossSalary || 0}
+                                    onChange={(e) => handleInputChange(index, 'grossSalary', e.target.value)}
+                                />
+                            </TableCell>
+
+                            <TableCell>
+                                <Input
+                                    type="text"
+                                    value={emp.netSalary || 0}
+                                    onChange={(e) => handleInputChange(index, 'netSalary', e.target.value)}
+                                />
+                            </TableCell>
+
+
+                            <TableCell>
+                            <Select value={emp.bankDetails.bankName}  onValueChange={(value) => handleInputChange(index, "bankDetails.bankName", value)}>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select a bank" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {banks.map((bank, index) => (
+                                  <SelectItem key={index} value={bank.name}>
+                                    {bank.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            </TableCell>
+
+                            <TableCell>
+                                <Input
+                                    type="text"
+                                    value={emp.bankDetails.accountNumber}
+                                    onChange={(e) => handleInputChange(index, 'bankDetails.accountNumber', e.target.value)}
+                                />
+                            </TableCell>
+
+                            <TableCell>
+                                <Input
+                                    type="text"
+                                    value={accountName}
+                                    onChange={(e) => handleInputChange(index, 'accountName', e.target.value)}
+                                    readOnly
                                 />
                             </TableCell>
 
@@ -191,14 +322,14 @@ export default function AddEmployee() {
                                 <Input
                                     type="text"
                                     value={emp.department}
-                                    onChange={(e) => handleInputChange(emp.id, "department", e.target.value)}
+                                    onChange={(e) => handleInputChange(index, 'department', e.target.value)}
                                 />
                             </TableCell>
                             <TableCell>
                                 <Input
                                     type="text"
-                                    value={emp.phoneNumber}
-                                    onChange={(e) => handleInputChange(emp.id, "phoneNumber", e.target.value)}
+                                    value={emp.phone}
+                                    onChange={(e) => handleInputChange(index, 'phone', e.target.value)}
                                 />
                             </TableCell>
                         </TableRow>
@@ -214,7 +345,7 @@ export default function AddEmployee() {
                     </Table>
       </div>
       <div className='flex justify-end p-2 mr-2'>
-        <button className='bg-primary text-white px-4 py-2 text-[15px]'>Save Record</button>  
+        <button onClick={saveRecords} className='bg-primary text-white px-4 py-2 text-[15px]'>Save Record</button>  
       </div>
          
     </div>

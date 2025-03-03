@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/Cards'
-
 import { useParams } from "next/navigation";
 import EmployeeSalaryForm from '@/components/userHome/employeeSalaryForm';
 import EmployeeIdCard from '@/components/userHome/employeeIdCard';

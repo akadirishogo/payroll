@@ -1,25 +1,34 @@
 'use client'
 
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import users from '@/Employees';
 import Image from "next/image";
+import { SignInAdminUser, checkUserRole, SignInUser } from "@/apiService"
+import ConfirmModal from '@/components/ConfirmAdminModal'
+
+
+
 
 
 const SignInForm = () => {
     const [loading, setLoading] = useState(false);
+    const [userSignIn, setUserSignIn] = useState("Sign in as User")
+    const [adminSignIn, setAdminSignIn] = useState("Sign in as Admin")
    const [error, setError] = useState("");
+   const [isAdmin, setIsAdmin] = useState(false)
    const [formData, setFormData] = useState({
      email: "",
      password: "",
-     userType: ""
    });
 
    const router = useRouter();
 
-   const goToDashboard = () => {
-    setLoading(true)
+   
+  
+  
+
+   const goToDashboard = async () => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(formData.email)) {
       setError("Please enter a valid email address.");
@@ -33,21 +42,33 @@ const SignInForm = () => {
       return;
     }
 
-    const user = users.find((user) => user.email === formData.email);
+    try {
 
-  if (user) {
-    router.push(`${user.id}/home`);
-  } else {
-    setError("User does not exist");
-  }
+      const role = await checkUserRole(formData.email)
+    
+      if (role === 'admin') {
+        console.log(role)
+        setIsAdmin(true); 
+        console.log(isAdmin)
+        return;
+      }
 
-  setLoading(false);
+      const userData = await SignInUser(formData)
+      if (userData) {
+        router.push(`/user/${userData?.user?.id}`)
+      }
+      setLoading(false);
+
+    }catch(error){
+      setError(`${error}`)
+    }
   }
 
    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true)
     setError('')
+    await goToDashboard();
     setLoading(false)
     }
 
@@ -58,6 +79,45 @@ const SignInForm = () => {
     const getResetPage = () => {
       router.push('/reset')
     }
+
+    const handleRoleSelect = async (role: "user" | "admin" | "both") => {
+        if (role === "admin" || role === "both") {
+          setAdminSignIn("Signing in...")
+           const adminUserData = await SignInAdminUser(formData)
+          if (adminUserData) {
+            const bioData = adminUserData?.user;
+            const {access_token} = adminUserData;
+            if (bioData) {
+              const newData = JSON.stringify(bioData)
+              sessionStorage.setItem("accessToken", access_token);
+              localStorage.setItem("userInfo", newData);
+              router.push(`/admin/${bioData.id}`)
+            }
+          }
+
+        } else if (role === "user") {
+          setUserSignIn('Signing in...')
+            const userData = await SignInUser(formData)
+            if (userData) {
+              const employeeData = userData?.user;
+              const {access_token} = userData;
+              if (employeeData) {
+                const employeeInfo = JSON.stringify(employeeData)
+                sessionStorage.setItem("accessToken", access_token);
+                localStorage.setItem("userInfo", employeeInfo);
+                router.push(`/user/${employeeData.id}`)
+              }
+            }
+            setLoading(false)
+        } else {
+          return;
+        }
+        
+    };
+
+    
+
+
     
 
 return (
@@ -85,12 +145,11 @@ return (
               required
           />
           <button
-            onClick={()=>goToDashboard()}
             type="submit"
             className="w-full bg-primary text-white p-3 rounded-[7px] font-semibold"
             disabled={loading}
             >
-            {loading ? "Please wait..." : "Sign In"}
+            {loading ? "Signing in..." : "Sign In"}
           </button>           
         </form>
         <div className="flex justify-center font-regular mb-12">
@@ -104,6 +163,23 @@ return (
           <Image height={40} width={100} src={'/logo_blue.png'} alt="logo"/>
         </div>
       </div>
+      {isAdmin && (
+        <ConfirmModal title="Confirm user">
+            <div className="mt-4">
+              <button onClick={() => handleRoleSelect("user")} className="bg-primary text-white px-4 py-2 rounded-md mx-2">
+                {userSignIn}
+              </button>
+              <button onClick={() => handleRoleSelect("admin")} className="text-primary px-4 py-2 rounded-md mx-2 border-2">
+                {adminSignIn}
+              </button>
+            </div>
+        </ConfirmModal>
+      )}
+
+      {/* Loading Spinner Modal */}
+      {/* {loading && (
+          <Loading />
+        )} */}
     </div>
   )
 }   

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from 'next/navigation'
-import { v4 as uuidv4 } from 'uuid';
+import createBusinessAdmin from "@/apiService";
+
 
 
 const SignUpForm = () => {
@@ -33,18 +34,19 @@ const SignUpForm = () => {
           setError("Passwords do not match!");
           return;
         }
-
-         // Generate a unique ID for the new user
-         const newUserId = uuidv4();
-
-         // Simulate storing user (for now, just logging it)
-         const newUser = { ...formData, id: newUserId };
-         console.log("New User:", newUser);
-  
-      setLoading(false);
-
-      router.push(`/profile?id=${newUserId}`)
-  
+    
+        try {
+            const userData = await createBusinessAdmin(formData.email, formData.password, formData.confirmPassword)
+            if (userData) {
+                setFormData({ email: "", password: "", confirmPassword: "", id: "" });
+                setLoading(false);
+                router.push(`/businessProfile?email=${encodeURIComponent(userData?.email)}`);
+            }
+        }catch(error: any) {
+            setError(error.message || "Something went wrong, please try again.")
+        } finally {
+            setLoading(false)
+        }
       }
 
 
