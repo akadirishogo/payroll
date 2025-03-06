@@ -4,6 +4,8 @@ import Image from "next/image";
 import BasicProfile from "@/components/businessProfile/PersonalProfile";
 import BusinessProfile from "@/components/businessProfile/BusinessProfile";
 import Greet from '@/components/businessProfile/Greet'
+import { Suspense } from "react";
+
 
 
 
@@ -30,7 +32,9 @@ export default function ProfileCompletion() {
         <div className="min-h-screen bg-white pt-20 pl-28 pr-28">
             <Greet />
             <BasicProfile />
-            <BusinessProfile />
+            <Suspense fallback={<p>Loading...</p>}>
+              <BusinessProfile />
+            </Suspense>
         </div>
     </div>
   );
