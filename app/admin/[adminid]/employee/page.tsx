@@ -8,8 +8,8 @@ import FilterEmployees from '@/components/employee/FilterEmployees';
 export default function EmployeeRecords() {
     return (
         <>
-            <AddEmployee />
             <FilterEmployees />
+            <AddEmployee />
         </>
         
     )

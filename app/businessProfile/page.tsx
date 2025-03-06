@@ -1,19 +1,34 @@
 "use client";
 
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import useStore from "@/store/employeeStore";
 import BasicProfile from "@/components/businessProfile/PersonalProfile";
 import BusinessProfile from "@/components/businessProfile/BusinessProfile";
 import Greet from '@/components/businessProfile/Greet'
+import { useSearchParams } from "next/navigation";
+
+
+interface User {
+  id: number;
+  email: string;
+  firstname: string | null;
+  lastname: string | null;
+  phone: string | null;
+  isActive: boolean;
+  isVerified: boolean;
+  setupToken: string | null;
+  tokenExpiration: string | null;
+  userType: "Admin" | "User" | "Other"; // Add other user types if needed
+  createdAt: string; // ISO date string (e.g., "2025-03-05T09:59:25.614Z")
+  updatedAt: string;
+}
 
 
 
 export default function ProfileCompletion() {
 
-  const searchParams = useSearchParams();
-  const email = searchParams.get("email") || ""; // Extract email from query params
-
-  console.log(email)
+  
 
   return (
     <div className="relative">
@@ -33,8 +48,8 @@ export default function ProfileCompletion() {
         </div>
         <div className="min-h-screen bg-white pt-20 pl-28 pr-28">
             <Greet />
-            <BasicProfile email={email} />
-            <BusinessProfile email={email} />
+            <BasicProfile />
+            <BusinessProfile />
         </div>
     </div>
   );

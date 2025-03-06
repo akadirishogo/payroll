@@ -1,10 +1,11 @@
 'use client'
 
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { SignInAdminUser, checkUserRole, SignInUser } from "@/apiService"
+import useStore from "@/store/employeeStore";
 import ConfirmModal from '@/components/ConfirmAdminModal'
 
 
@@ -15,12 +16,14 @@ const SignInForm = () => {
     const [loading, setLoading] = useState(false);
     const [userSignIn, setUserSignIn] = useState("Sign in as User")
     const [adminSignIn, setAdminSignIn] = useState("Sign in as Admin")
-   const [error, setError] = useState("");
-   const [isAdmin, setIsAdmin] = useState(false)
-   const [formData, setFormData] = useState({
+    const [error, setError] = useState("");
+    const [isAdmin, setIsAdmin] = useState(false)
+    const [formData, setFormData] = useState({
      email: "",
      password: "",
    });
+
+   const setUser = useStore((state) => state.setUser);
 
    const router = useRouter();
 
@@ -83,20 +86,33 @@ const SignInForm = () => {
     const handleRoleSelect = async (role: "user" | "admin" | "both") => {
         if (role === "admin" || role === "both") {
           setAdminSignIn("Signing in...")
-           const adminUserData = await SignInAdminUser(formData)
-          if (adminUserData) {
-            const bioData = adminUserData?.user;
-            const {access_token} = adminUserData;
-            if (bioData) {
-              const newData = JSON.stringify(bioData)
-              sessionStorage.setItem("accessToken", access_token);
+          try {
+            const adminUserData = await SignInAdminUser(formData)
+            console.log(adminUserData.user)
+            if (!adminUserData?.user?.firstname || !adminUserData?.user?.company) {
+              const newData = JSON.stringify(adminUserData.user)
               localStorage.setItem("userInfo", newData);
-              router.push(`/admin/${bioData.id}`)
+              router.push(`/businessProfile?id=${adminUserData?.user?.id}`)
+            } else {
+              const bioData = adminUserData?.user;
+              const {access_token} = adminUserData;
+              if (bioData) {
+                setUser(bioData)
+                const newData = JSON.stringify(bioData)
+                sessionStorage.setItem("accessToken", access_token);
+                localStorage.setItem("userInfo", newData);
+                router.push(`/admin/${bioData.id}`)
+              }
             }
+          } catch(error) {
+            setError(`Error: ${error}`)
+            setLoading(false)
+            setIsAdmin(false)
           }
+      } else if (role === "user") {
+          setUserSignIn('Signing in...') 
+          try {
 
-        } else if (role === "user") {
-          setUserSignIn('Signing in...')
             const userData = await SignInUser(formData)
             if (userData) {
               const employeeData = userData?.user;
@@ -109,6 +125,13 @@ const SignInForm = () => {
               }
             }
             setLoading(false)
+
+          } catch(error) {
+            setError(`Error: ${error}`)
+            setLoading(false)
+            setIsAdmin(false)
+          }
+           
         } else {
           return;
         }

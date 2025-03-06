@@ -2,52 +2,92 @@
 
 import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/Cards'
-import { IoChevronBackSharp } from "react-icons/io5";
-
-import { useParams } from "next/navigation";
+import { IoChevronBackSharp } from "react-icons/io5"
+import { useParams, useRouter } from "next/navigation";
 import EmployeeSalaryForm from '@/components/employee/employeeSalaryForm';
 import EmployeeIdCard from '@/components/employee/employeeIdCard';
 import EmployeePersonal from '@/components/employee/employeePersonal';
-import users from '@/Employees';
+import { useEmployeeStore } from '@/store/employeesStore';
 
-interface Employee {
+
+type BankDetail = {
     id: number;
-    firstName: string;
-    lastName: string;
-    deductions: string;
-    email: string;
-    role: string;
-    startDate: string;
-    monthlyGross: string;
-    netSalary: string;
-    department: string;
-    phoneNumber: string;
+    bankName: string;
+    bankCode: string;
     accountNumber: string;
-    bank: string;
-  }
+    recipientCode: string | null;
+    isDefault: boolean;
+  };
+
+
+type Employee = {
+    id: number;
+    firstname: string;
+    lastname: string;
+    gender: string | null;
+    email: string;
+    grossSalary: number;
+    netSalary: number;
+    deduction: number;
+    department: string;
+    phone: string;
+    isActive: boolean;
+    createdAt: string;
+    updatedAt: string;
+    bankDetails: BankDetail[];
+  };
+
 
 
 export default function EmployeeDetails() {
-   
-    const [employee, setEmployee] = useState<Employee | null>();
+    const { employees } = useEmployeeStore();
     const { id } = useParams();
+    const router = useRouter();
+    const [employee, setEmployee] = useState<Employee>()
+    const [details, setDetails] = useState<Employee | null>(null);
+    
+
+    
 
     useEffect(() => {
-        const clickedEmployee = users.find((user) => user.id === Number(id));
-        if(clickedEmployee) {
-          setEmployee(clickedEmployee)
+        if (employees.length > 0) {
+            const clickedEmployee = employees.find(emp => emp.id === Number(id));
+            if (clickedEmployee) {
+                setEmployee(clickedEmployee);
+            }
         }
-    }, [])
+    }, [id, employees]);
 
+    useEffect(() => {
+        if (employee) {
+            setDetails(employee);
+            localStorage.setItem("employeeDetails", JSON.stringify(employee));
+            console.log("Employee details saved")
+        }
+    }, [employee]);
+
+
+    useEffect(() => {
+        try {
+            const storedData = localStorage.getItem("employeeDetails");
+            if (storedData) {
+                setDetails(JSON.parse(storedData));
+            }
+        } catch (error) {
+            console.error("Error parsing localStorage data", error);
+        }
+    }, []);
    
-     
-    console.log(employee)
+
+    const backToRecords = () => {
+        router.back();
+    }
   
 
       
   return (
     <div className='px-14 py-6'>
-        <div className='flex gap-x-2 items-center mb-6'>
+        <div onClick={backToRecords} className='flex gap-x-2 items-center mb-6 cursor-pointer'>
             <IoChevronBackSharp size={25} />
             <span className='bg-clip-text 
             text-transparent bg-gradient-to-r from-fromGreetGradient 
@@ -56,8 +96,8 @@ export default function EmployeeDetails() {
             </span>
         </div>
         <div className='flex gap-x-14'>
-            <EmployeeIdCard employeeDetails={employee} />
-            <EmployeePersonal employeeDetails={employee} />
+            <EmployeeIdCard details={details} />
+            <EmployeePersonal details={details} />
         </div>
         <div className='mt-6'>
             <Card className='flex-1 bg-white'>
@@ -72,17 +112,17 @@ export default function EmployeeDetails() {
                                     <div className='w-max'>
                                         <label className="font-medium">Designation/Role</label>
                                     </div>
-                                    <div className='bg-lightGrey w-2/3 p-2'>{employee?.role}</div>
+                                    <div className='bg-lightGrey w-2/3 p-2'>{details?.department}</div>
                                 </div>
                                 <div className="mb-2 flex gap-x-24 items-center">
                                     <div className='w-max'>
                                         <label className="font-medium">Department</label>
                                     </div>
-                                    <div className='bg-lightGrey w-2/3 p-2'>{employee?.department}</div>
+                                    <div className='bg-lightGrey w-2/3 p-2'>{details?.department}</div>
                                 </div>
                                 <div className="mb-2 flex gap-x-20 items-center">
                                     <label className="font-medium">Date Joined</label>
-                                    <div className='bg-lightGrey w-2/3 p-2'>{employee?.startDate}</div>
+                                    <div className='bg-lightGrey w-2/3 p-2'>{details?.createdAt}</div>
                                 </div>
                             </div>
                         </form>
@@ -94,7 +134,7 @@ export default function EmployeeDetails() {
                                     <p className='font-regular'>Net Salary</p>
                                 </div>
                                 <div className='flex justify-end'>
-                                    <p className='text-3xl font-bold text-primary'>{employee?.netSalary}</p>
+                                    <p className='text-3xl font-bold text-primary'>{details?.netSalary}</p>
                                 </div>
                             </div>
 
@@ -103,7 +143,7 @@ export default function EmployeeDetails() {
                                     <p className='font-regular'>Gross Salary</p>
                                 </div>
                                 <div className='flex justify-end'>
-                                    <p className='text-3xl font-bold text-primary'>{employee?.monthlyGross}</p>
+                                    <p className='text-3xl font-bold text-primary'>{details?.grossSalary}</p>
                                 </div>
                             </div>
 
@@ -112,11 +152,11 @@ export default function EmployeeDetails() {
                                     <p className='font-regular'>Deductions</p>
                                 </div>
                                 <div className='flex justify-end'>
-                                    <p className='text-3xl font-bold text-primary'>{employee?.deductions ? employee.deductions : '0.00'}</p>
+                                    <p className='text-3xl font-bold text-primary'>{details?.deduction}</p>
                                 </div>
                             </div>
                         </div>
-                    <EmployeeSalaryForm employeeDetails={employee} />
+                    <EmployeeSalaryForm details={details} />
 
                 </div>
                     

@@ -6,7 +6,7 @@ import GraphComponent from '@/components/Charts'
 
 type User = {
   id: string;
-  firstName: string;
+  firstname: string;
   lastName: string;
   email: string;
   accessToken: string;
@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <div className='px-6'>
       <div className='font-semibold text-[25px] mb-4'>
-        <span className='bg-clip-text text-transparent bg-gradient-to-r from-fromGreetGradient via-throughGreet to-primary'>{`Welcome, ${userData?.firstName}`}</span>
+        <span className='bg-clip-text text-transparent bg-gradient-to-r from-fromGreetGradient via-throughGreet to-primary'>{`Welcome, ${userData?.firstname}`}</span>
       </div>
       <div className='flex gap-6'>
           <div className='bg-gradient-to-t from-fromGreenCard to-toGreenCard w-64 p-2 text-white rounded-xl'>

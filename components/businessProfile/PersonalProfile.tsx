@@ -1,39 +1,52 @@
-import React, { useState } from 'react'
-import { useRouter } from "next/navigation";
-import Loading from '../Loading';
+import React, { useEffect, useState } from 'react'
 import { updateAdminRecords } from '@/apiService';
+import useStore from "@/store/employeeStore";
 
-type BasicProfileProps = {
+
+interface UserInfo {
   email: string;
-};
+  firstname?: string;
+  lastname?: string;
+  phoneNumber?: string;
+}
 
 
-export default function PersonalProfile({ email }: BasicProfileProps) { 
+export default function PersonalProfile() { 
     const [loading, setLoading] = useState(false);
+    const [userInfo, setUserInfo] = useState<UserInfo>()
     const [isSaved, setIsSaved] = useState(false); 
     const [formData, setFormData] = useState({
-        firstName: "",
-        lastName: "",
-        email: email,
+        firstname: "",
+        lastname: "",
+        email: "",
         phoneNumber: ""
       });
 
-      const router = useRouter();
+      const setUser = useStore((state) => state.setUser);
+      const user = useStore((state) => state.user);
+
+    
 
     // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const editButton = () => {
+    setIsSaved(false)
+  }
+
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    console.log(formData.email)
 
     try {
+      console.log(formData)
       const result = await updateAdminRecords(formData); 
+      console.log(result)
+      setUser(formData)
       setIsSaved(true);
       console.log(result?.message)// Save details to DB // Redirect to dashboard after saving
     } catch (error) {
@@ -42,11 +55,6 @@ export default function PersonalProfile({ email }: BasicProfileProps) {
       setLoading(false);
     }
   };
-
-
-  if (loading) {
-    return <Loading />
-  }
 
 
   return (
@@ -60,9 +68,9 @@ export default function PersonalProfile({ email }: BasicProfileProps) {
                     <label>First Name</label>
                     <input
                         type="text"
-                        name="firstName"
+                        name="firstname"
                         placeholder="First Name"
-                        value={formData.firstName}
+                        value={formData.firstname}
                         onChange={handleChange}
                         disabled={isSaved}
                         required
@@ -74,9 +82,9 @@ export default function PersonalProfile({ email }: BasicProfileProps) {
                     <label>Last Name</label>
                     <input
                         type="text"
-                        name="lastName"
+                        name="lastname"
                         placeholder="Last Name"
-                        value={formData.lastName}
+                        value={formData.lastname}
                         onChange={handleChange}
                         disabled={isSaved}
                         required
@@ -107,18 +115,26 @@ export default function PersonalProfile({ email }: BasicProfileProps) {
                         type="text"
                         name="email"
                         placeholder="Email Address"
-                        value={email}
+                        value={formData.email}
                         onChange={handleChange}
-                        readOnly
+                        disabled={isSaved}
                         required
                         className="flex-1 px-4 py-2 border rounded"
                     />
                 </div>
             </div>
            
-            
-            <button onClick={handleSubmit} className="mt-6 bg-primary text-white px-10 py-[2px] font-regular rounded-[5px]">Save</button>
-            
+            <div className='flex justify-end'>
+            <button onClick={handleSubmit} className="mt-6 bg-primary text-white px-10 py-[2px] font-regular rounded-[5px]">
+              {loading ? "Saving profile..." : "Save"}
+            </button>
+
+            {isSaved && (
+               <button onClick={editButton} className="mt-6 bg-primary text-white px-10 py-[2px] font-regular rounded-[5px] ml-4">
+                  Modify
+             </button>
+            )}
+            </div>
             </form>
         </div>
 

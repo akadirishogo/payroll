@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/Cards'
 
-export default function EmployeePersonal({employeeDetails}) {
+export default function EmployeePersonal({details}) {
 
   return (
     <Card className='flex-1 bg-white'>
@@ -15,13 +15,13 @@ export default function EmployeePersonal({employeeDetails}) {
                 <div className='w-max'>
                     <label className="font-medium">Full Name</label>
                 </div>
-                <div className='bg-lightGrey w-2/3 p-2'>{employeeDetails?.firstName} {employeeDetails?.lastName}</div>
+                <div className='bg-lightGrey w-2/3 p-2'>{details?.firstname} {details?.lastname}</div>
             </div>
             <div className="mb-2 flex gap-x-24 items-center">
                 <div className='w-max'>
                     <label className="font-medium">Gender</label>
                 </div>
-                <div className='bg-lightGrey w-2/3 p-2'>{employeeDetails?.gender}</div>
+                <div className='bg-lightGrey w-2/3 p-2'>{details?.gender ? details.gender : "Unknown"}</div>
             </div>
             <div className="mb-2 flex gap-x-12 items-center">
                 <label className="font-medium">Marital Status</label>
@@ -33,11 +33,11 @@ export default function EmployeePersonal({employeeDetails}) {
             </div>
             <div className="mb-2 flex gap-x-28 items-center">
                 <label className="font-medium">Email</label>
-                <div className='bg-lightGrey w-2/3 p-2'>{employeeDetails?.email}</div>
+                <div className='bg-lightGrey w-2/3 p-2'>{details?.email}</div>
             </div>
             <div className="mb-2 flex gap-x-10 items-center">
                 <label className="font-medium">Phone Number</label>
-                <div className='bg-lightGrey w-2/3 p-2'>{employeeDetails?.phoneNumber}</div>
+                <div className='bg-lightGrey w-2/3 p-2'>{details?.phone}</div>
             </div>
             <div className="mb-2 flex gap-x-10 items-center">
                 <label className="font-medium">Residential Address</label>

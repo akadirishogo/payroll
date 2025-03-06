@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from 'next/navigation'
 import createBusinessAdmin from "@/apiService";
+import useStore from "@/store/employeeStore";
+import ConfirmModal from '@/components/ConfirmAdminModal'
 
 
 
@@ -10,12 +12,13 @@ const SignUpForm = () => {
       email: "",
       password: "",
       confirmPassword: "",
-      id: ""
     });
   
     const [loading, setLoading] = useState(false);
+    const [itExist, setItExist] = useState(false);
     const [error, setError] = useState("");
     const router = useRouter();
+    const setUser = useStore((state) => state.setUser);
   
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,12 +41,19 @@ const SignUpForm = () => {
         try {
             const userData = await createBusinessAdmin(formData.email, formData.password, formData.confirmPassword)
             if (userData) {
-                setFormData({ email: "", password: "", confirmPassword: "", id: "" });
+                console.log(userData)
+                setUser(userData)
+                setFormData({ email: "", password: "", confirmPassword: ""});
                 setLoading(false);
-                router.push(`/businessProfile?email=${encodeURIComponent(userData?.email)}`);
+                router.push(`/businessProfile`);
+            } 
+                
+        }catch(error) {
+            if (error instanceof Error) {
+                setItExist(true) 
+            } else {
+                setError("Something went wrong, please try again.");
             }
-        }catch(error: any) {
-            setError(error.message || "Something went wrong, please try again.")
         } finally {
             setLoading(false)
         }
@@ -100,6 +110,18 @@ return (
                 <Image height={50} width={100} src={'/logo_blue.png'} alt="logo"/>
             </div>
         </div>
+        {itExist && (
+        <ConfirmModal title="User Exists!">
+            <div className="font-regular mb-4">
+                <h4>Click the button below to sign in to your account</h4>
+            </div>
+            <div className="mt-4">
+              <button onClick={getSignIn} className="text-primary px-4 py-2 rounded-md mx-2 border-2">
+                Sign in
+              </button>
+            </div>
+        </ConfirmModal>
+      )}
     </div>
     )
 }

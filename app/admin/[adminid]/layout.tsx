@@ -10,12 +10,11 @@ import { LuNotebookPen } from "react-icons/lu";
 import { MdOutlineLibraryBooks } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Loading from "@/components/Loading";
 
 type User = {
     id: string;
-    firstName: string;
-    lastName: string;
+    firstname: string;
+    lastname: string;
     email: string;
     accessToken: string;
     company: string;
@@ -54,6 +53,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
 
    
+    console.log(userData)
   
     return (
       <div className="font-regular">
@@ -107,7 +107,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         </div>
                         
                         <div>
-                            <p className="text-[14px]">{userData?.firstName} {userData?.lastName}</p>
+                            <p className="text-[14px]">{userData?.firstname} {userData?.lastname}</p>
                             <p className="text-[12px] font-light">Admin</p>
                         </div>
                         

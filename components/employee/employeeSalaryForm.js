@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/Cards'
 import { Input } from '@/components/Inputs';
 import { FiEdit, FiCheck } from "react-icons/fi";
@@ -9,30 +9,26 @@ import { GoPlus } from "react-icons/go";
 
 
 
-/* 
-interface Employee {
-    id: number;
-    firstName: string;
-    lastName: string;
-    deductions: any;
-    email: string;
-    role: string;
-    startDate: any;
-    monthlyGross: any;
-    netSalary: string;
-    department: string;
-    phoneNumber: string
-  } */
 
 
 
-function EmployeeSalaryForm({employeeDetails}) {
+
+function EmployeeSalaryForm({details}) {
     const [isEditing, setIsEditing] = useState(false);
     const [selectedDeduction, setSelectedDeduction] = useState("");
     const [deductions, setDeductions] = useState()
     const [selectedAllowance, setSelectedAllowance] = useState(""); 
     const [allowances, setAllowances] = useState();
-    const [tempSalary, setTempSalary] = useState(employeeDetails?.monthlyGross || "");
+    const [tempSalary, setTempSalary] = useState(details?.grossSalary || "");
+
+   
+
+     // Clear sessionStorage when the component unmounts
+     useEffect(() => {
+        return () => {
+            localStorage.removeItem("employeeDetails");
+        };
+    }, []);
 
 
     const handleEditClick = () => {
@@ -42,8 +38,8 @@ function EmployeeSalaryForm({employeeDetails}) {
 
       const handleSaveClick = () => {
         // Ensure the employeeDetails object gets updated properly
-        if (employeeDetails) {
-            employeeDetails.monthlyGross = tempSalary; // Temporary, should ideally be part of a state update
+        if (details) {
+            details.grossSalary = tempSalary; // Temporary, should ideally be part of a state update
         }
         setIsEditing(false);
       };
@@ -109,6 +105,7 @@ const handleRemoveDeduction = (index) => {
     setDeductions((prev) => prev.filter((_, i) => i !== index));
 };
 
+
     return (
         <div className='ml-4 mt-10 flex gap-x-24'>
         <Card className='w-[30%]'>
@@ -123,7 +120,7 @@ const handleRemoveDeduction = (index) => {
                         <div className="flex items-center gap-x-4">
                             <Input  
                             type="text"
-                            value={isEditing ? tempSalary : employeeDetails?.monthlyGross || ""}
+                            value={isEditing ? tempSalary : details?.grossSalary || ""}
                             onChange={(e) => handleInputChange(e.target.value)}
                             className='w-40'
                             disabled={!isEditing}

@@ -1,21 +1,40 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { registerBusiness } from '@/apiService';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import useStore from "@/store/employeeStore";
 
-type BasicProfileProps = {
+
+interface User {
+  id: number;
   email: string;
-};
-  
+  firstname: string | null;
+  lastname: string | null;
+  phone: string | null;
+  isActive: boolean;
+  isVerified: boolean;
+  setupToken: string | null;
+  tokenExpiration: string | null;
+  userType: "Admin" | "User" | "Other"; // Add other user types if needed
+  createdAt: string; // ISO date string (e.g., "2025-03-05T09:59:25.614Z")
+  updatedAt: string;
+}
+
   
 
-export default function BankProfile({ email }: BasicProfileProps) {
+
+
+export default function BankProfile() {
+    const [loading, setLoading] = useState(false)
+    const user = useStore((state) => state.user);
     const [businessData, setBusinessData] = useState({
-        email: email,
         businessName: "",
         businessAddress: "",
     })
 
     const router = useRouter()
+    const searchParams = useSearchParams();
+    const id = Number(searchParams.get("id")); // Convert to number
+  
 
 
 
@@ -27,15 +46,20 @@ export default function BankProfile({ email }: BasicProfileProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const result = await registerBusiness(email, businessData.businessName, businessData.businessAddress)
+        setLoading(true)
+        console.log(businessData)
+        const result = await registerBusiness(id, businessData.businessName, businessData.businessAddress)
        setBusinessData({
-          email: businessData.email,
           businessName: businessData.businessName,
           businessAddress: businessData.businessAddress
        })
-       console.log(result.message)
+       alert(result?.message)
+       setLoading(false)
        router.push("/signin")
       };
+
+
+      console.log(id)
     
 
   return (
@@ -44,7 +68,7 @@ export default function BankProfile({ email }: BasicProfileProps) {
       <div className="border-2 rounded-xl px-10 py-5 mt-2 space-y-4 mb-10">
         <div>
             <form onSubmit={handleSubmit} className="gap-x-2">
-              <div className="flex gap-x-4">
+              <div className="flex gap-x-4 font-regular">
                 <div className="flex flex-col w-[40%]">
                     <label>Business Name</label>
                     <input
@@ -57,7 +81,7 @@ export default function BankProfile({ email }: BasicProfileProps) {
                        
                 </div>
               
-                <div className="flex flex-col w-[40%]">
+                <div className="flex flex-col w-[40%] font-regular">
                     <label>Business Address</label>
                     <input
                         type="text"
@@ -70,7 +94,9 @@ export default function BankProfile({ email }: BasicProfileProps) {
                     />
                 </div>
               </div>      
-            <button className="mt-6 bg-primary text-white px-10 py-[2px] font-regular rounded-[5px]">Save</button>
+            <button className="mt-6 bg-primary text-white px-10 py-[2px] font-regular rounded-[5px]">
+              {loading ? "Saving..." : "Save"}
+            </button>
           </form>
         </div>
       </div>

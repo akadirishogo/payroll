@@ -9,7 +9,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/Radio"
 import { Label } from "@/components/Label"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/Dialog";
 import { AddAdminUser, getAllAdmins, removeAdmin } from "@/apiService";
-import Loading from "@/components/Loading";
 
 
 
@@ -38,13 +37,6 @@ export default function AdminSettings() {
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [admins, setAdmins] = useState<Admins[]>([]);
   const [selectedAdminId, setSelectedAdminId] = useState<number | null>(null);
-  const [newAdmin, setNewAdmin] = useState({ 
-    id: null,
-    firstname: "", 
-    lastname: "",
-    email: "", 
-    userType: ""
-  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [token, setToken] = useState<string | null>("")
   const {register, handleSubmit, reset, setValue, watch, formState: { errors },} = useForm<Admins>();
@@ -78,7 +70,7 @@ export default function AdminSettings() {
   }, [])
  
 
-  const fetchAllAdmins = async (token: any, companyId: any): Promise<Admins[]> => {
+  const fetchAllAdmins = async (token: string, companyId: string): Promise<Admins[]> => {
     try {
       const result = await getAllAdmins(token, companyId);
       if (Array.isArray(result)) {

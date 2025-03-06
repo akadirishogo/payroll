@@ -23,6 +23,7 @@ export default async function createBusinessAdmin(email: string, password: strin
             throw new Error(result?.message || 'Something went wrong');
         }
         
+       
         return result;
 
     } catch(error: unknown) {
@@ -44,8 +45,8 @@ export async function updateAdminRecords(data: any) {
               },
             body: JSON.stringify(
             {
-                "firstname": data.firstName,
-                "lastname": data.lastName,
+                "firstname": data.firstname,
+                "lastname": data.lastname,
                 "email": data.email,
                 "phone": data.phoneNumber
             }
@@ -70,7 +71,7 @@ export async function updateAdminRecords(data: any) {
 }
 
 
-export async function registerBusiness(email: string, name: string, address: string) {
+export async function registerBusiness(id: number, name: string, address: string) {
     try {
         const response = await fetch(`${BASE_URL}/companies`, {
             method: 'POST',
@@ -79,7 +80,7 @@ export async function registerBusiness(email: string, name: string, address: str
               },
             body: JSON.stringify(
             {
-                "email": email,
+                "id": id,
                 "name": name,
                 "contactAddress": address,
             }
@@ -334,3 +335,31 @@ export async function createEmployee(employees: any, companyId: string, token: s
       console.error("Error creating employee:", error);
     }
 }
+
+
+export async function fetchEmployees(token: string, companyId: string) {
+  try {
+    const response = await fetch(`${BASE_URL}/companies/${companyId}/employees`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}` // Send token in Authorization header
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json(); // Parse JSON response
+    if (data) {
+      const saveData = JSON.stringify(data)
+      localStorage.setItem("Employees", saveData)
+      return data
+    }
+  } catch (error) {
+    console.error("Error fetching employees:", error);
+    throw error
+  }
+ }
+

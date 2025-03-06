@@ -37,9 +37,6 @@ interface Employee {
   bankDetails: BankDetails;
 }
 
-// If you have an array of employees
-type Employees = Employee[];
-
 
   
 type User = {
@@ -59,7 +56,6 @@ let token: string;
 export default function AddEmployee() {
     const [userData, setUserData] = useState<User | null>(null);
     const [loading, setLoading] = useState(false)
-    const [selectedBank, setSelectedBank] = useState("")
     const [accountName, setAccountName] = useState("")
     const [banks, setBanks] = useState<{ name: string, code: string }[]>([]);
     const [employees, setEmployees] = useState<Employee[]>([
@@ -87,6 +83,21 @@ export default function AddEmployee() {
         token = sessionStorage.getItem("accessToken") || "";
         setUserData(userInfo)
       }, [employees])
+
+
+      useEffect(() => {
+        // Fetch bank list from API
+        async function fetchBanks() {
+          try {
+            const response = await fetch(`${BANKS_API_URL}`); // Replace with actual endpoint
+            const data = await response.json();
+            setBanks(data);
+          } catch (error) {
+            console.error("Error fetching banks:", error);
+          }
+        }
+        fetchBanks();
+      }, []);
 
 
       const handleInputChange = (index: number, field: string, value: string) => {
@@ -135,8 +146,26 @@ if (loading) {
       const fetchAccountName = async (index: number, bankName: string, accountNumber: string, companyId: string, token: string) => {
         try {
           const bankCode = banks.find((bank) => bankName === bank.name)?.code
+          console.log(bankCode)
+          
           const res = await getAccountName(companyId, accountNumber, bankCode || "", token)
           setAccountName(res.accountName)
+
+           // Update the employee at the given index
+         // Update the bankCode for the specific employee at index
+          setEmployees((prevEmployees) =>
+            prevEmployees.map((emp, i) =>
+              i === index
+                ? {
+                    ...emp,
+                    bankDetails: {
+                      ...emp.bankDetails,
+                      bankCode: bankCode || "",
+                    },
+                  }
+                : emp
+            )
+          );
           setLoading(false)
         }catch(error) {
           console.error(`Error fetching account name, ${error}`)
@@ -165,19 +194,7 @@ if (loading) {
         }]);
       };
 
-  useEffect(() => {
-    // Fetch bank list from API
-    async function fetchBanks() {
-      try {
-        const response = await fetch(`${BANKS_API_URL}`); // Replace with actual endpoint
-        const data = await response.json();
-        setBanks(data);
-      } catch (error) {
-        console.error("Error fetching banks:", error);
-      }
-    }
-    fetchBanks();
-  }, []);
+  
 
   
 
@@ -189,6 +206,7 @@ if (loading) {
       try {
         const res = await createEmployee(employees, userData?.companyId || "", token)
         alert(res.message)
+        
     } catch (error) {
       console.error("Error saving records:", error);
     }
@@ -198,13 +216,6 @@ if (loading) {
 
     return (
     <div>
-        <div className='font-semibold text-[25px] mb-4 px-4'>
-            <span className='bg-clip-text 
-            text-transparent bg-gradient-to-r from-fromGreetGradient 
-            via-throughGreet to-primary'>
-            Employee Records
-            </span>
-        </div>
         <div className='bg-white mx-6 rounded-t-2xl my-10'>
       
             <div className='rounded-t-2xl flex text-white bg-gradient-to-r from-fromGreetGradient via-throughGreet to-primary justify-between items-center text-[15px] p-2'>
@@ -345,7 +356,9 @@ if (loading) {
                     </Table>
       </div>
       <div className='flex justify-end p-2 mr-2'>
-        <button onClick={saveRecords} className='bg-primary text-white px-4 py-2 text-[15px]'>Save Record</button>  
+        <button onClick={saveRecords} className='bg-primary text-white px-4 py-2 text-[15px]'>
+          {loading ? "Please wait..." : "Save Record"}
+        </button>  
       </div>
          
     </div>
