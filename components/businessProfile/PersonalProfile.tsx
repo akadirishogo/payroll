@@ -1,19 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { updateAdminRecords } from '@/apiService';
 import useStore from "@/store/employeeStore";
 
 
-interface UserInfo {
-  email: string;
-  firstname?: string;
-  lastname?: string;
-  phoneNumber?: string;
-}
 
 
 export default function PersonalProfile() { 
     const [loading, setLoading] = useState(false);
-    const [userInfo, setUserInfo] = useState<UserInfo>()
     const [isSaved, setIsSaved] = useState(false); 
     const [formData, setFormData] = useState({
         firstname: "",
@@ -23,7 +16,6 @@ export default function PersonalProfile() {
       });
 
       const setUser = useStore((state) => state.setUser);
-      const user = useStore((state) => state.user);
 
     
 

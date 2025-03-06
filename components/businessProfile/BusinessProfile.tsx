@@ -1,23 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { registerBusiness } from '@/apiService';
 import { useRouter, useSearchParams } from 'next/navigation';
 import useStore from "@/store/employeeStore";
 
-
-interface User {
-  id: number;
-  email: string;
-  firstname: string | null;
-  lastname: string | null;
-  phone: string | null;
-  isActive: boolean;
-  isVerified: boolean;
-  setupToken: string | null;
-  tokenExpiration: string | null;
-  userType: "Admin" | "User" | "Other"; // Add other user types if needed
-  createdAt: string; // ISO date string (e.g., "2025-03-05T09:59:25.614Z")
-  updatedAt: string;
-}
 
   
 
@@ -25,7 +10,6 @@ interface User {
 
 export default function BankProfile() {
     const [loading, setLoading] = useState(false)
-    const user = useStore((state) => state.user);
     const [businessData, setBusinessData] = useState({
         businessName: "",
         businessAddress: "",
