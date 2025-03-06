@@ -18,12 +18,12 @@ export default function LandingLayout({ children }: LandingLayoutProps) {
       };
 
   return (
-    <div className="relative bg-backImage bg-cover min-h-[100vh]">
-      <div className="p-8 absolute inset-0 bg-primary bg-opacity-70">
+    <div className="relative bg-backImage min-h-[100vh]">
+      <div className="pt-8 pl-8 absolute inset-0 bg-primary bg-opacity-70">
         <div>
             <Image height={50} width={100} src={"/logo_white.png"} alt="logo" />
         </div>
-        <div className="mt-6 flex items-center justify-around -ml-[15px]">
+        <div className="flex items-center justify-around -ml-[15px] h-[95%]">
             <div>
                 <div>
                     <p className="font-boldItalic text-6xl inline-block mr-3 text-splash">Smart</p><p className="inline-block font-extraBold text-6xl text-white"> Payroll for</p>

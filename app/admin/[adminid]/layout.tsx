@@ -48,6 +48,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const logOut = () => {
         sessionStorage.removeItem("accessToken");
         localStorage.removeItem("userInfo");
+        localStorage.removeItem("Employees");
         localStorage.removeItem("allAdmins");  // Optional
         router.push("/signin");
     }
