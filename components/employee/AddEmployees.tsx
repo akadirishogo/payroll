@@ -33,7 +33,6 @@ interface Employee {
   role: string;
   startDate: string; // Keep as string if stored as ISO date format
   grossSalary: number | null;
-  netSalary: number | null;
   bankDetails: BankDetails;
 }
 
@@ -67,7 +66,6 @@ export default function AddEmployee() {
             role: '',
             startDate: '',
             grossSalary: 0,
-            netSalary: 0,
             department: '',
             bankDetails: {
               bankName: '',
@@ -183,7 +181,6 @@ if (loading) {
             role: '',
             startDate: '',
             grossSalary: 0,
-            netSalary: 0,
             department: '',
             bankDetails: {
               bankName: '',
@@ -234,7 +231,6 @@ if (loading) {
                         <TableHead>Role</TableHead>
                         <TableHead>Start Date</TableHead>
                         <TableHead>Monthly Gross</TableHead>
-                        <TableHead>Monthly Net</TableHead>
                         <TableHead>Bank</TableHead>
                         <TableHead>Account Number</TableHead>
                         <TableHead>Account Name</TableHead>
@@ -287,16 +283,6 @@ if (loading) {
                                     onChange={(e) => handleInputChange(index, 'grossSalary', e.target.value)}
                                 />
                             </TableCell>
-
-                            <TableCell>
-                                <Input
-                                    type="text"
-                                    value={emp.netSalary || 0}
-                                    onChange={(e) => handleInputChange(index, 'netSalary', e.target.value)}
-                                />
-                            </TableCell>
-
-
                             <TableCell>
                             <Select value={emp.bankDetails.bankName}  onValueChange={(value) => handleInputChange(index, "bankDetails.bankName", value)}>
                               <SelectTrigger>

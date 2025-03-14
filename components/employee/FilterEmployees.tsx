@@ -1,9 +1,51 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/Inputs"; // shadcn input component
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/Table";
 import Link from "next/link";
-import { useEmployeeStore } from '@/store/employeesStore';
 
+
+
+type Allowance = {
+    type: string;
+    amount: number;
+  };
+  
+  type Deduction = {
+    type: string;
+    amount: number;
+  };
+  
+  
+  
+  // Define types
+  type BankDetail = {
+    id: number;
+    bankName: string;
+    bankCode: string;
+    accountNumber: string;
+    recipientCode: string | null;
+    isDefault: boolean;
+  };
+  
+  type Employee = {
+    id: number;
+    firstname: string;
+    lastname: string;
+    gender: string | null;
+    email: string;
+    grossSalary: number;
+    netSalary: number;
+    allowances: Allowance[];
+    deductions: Deduction[];
+    totalDeductions: number | null;
+    totalAllowances: number | null;
+    department: string;
+    phone: string;
+    isActive: boolean;
+    createdAt: string;
+    updatedAt: string;
+    bankDetails: BankDetail[];
+  };
 
 
 
@@ -12,7 +54,7 @@ import { useEmployeeStore } from '@/store/employeesStore';
 
 
   export default function FilterEmployees() {
-    const { employees, fetchEmployees, loading } = useEmployeeStore();
+    const employees = JSON.parse(localStorage.getItem("Employees") || "[]")
     const [userData, setUserData] = useState({
         company: "",
         companyId: "",
@@ -24,19 +66,17 @@ import { useEmployeeStore } from '@/store/employeesStore';
     const [search, setSearch] = useState("");
   
     
-    useEffect(() => {
-        const token = sessionStorage.getItem("accessToken");
+   useEffect(() => {
         const userData = JSON.parse(localStorage.getItem("userInfo") || "{}");
         setUserData(userData)
-        fetchEmployees(token || "", userData.companyId ); // Fetch employees on mount
       }, []);
 
-      if (loading) return <p>Loading employees...</p>;
 
+      
 
        // Filtering function
     const filteredEmployees = employees.filter(
-        (employee) =>
+        (employee: Employee) =>
           employee.firstname.toLowerCase().includes(search.toLowerCase()) ||
         employee.lastname.toLowerCase().includes(search.toLowerCase()) ||
           employee.phone.includes(search)
@@ -84,7 +124,7 @@ import { useEmployeeStore } from '@/store/employeesStore';
                     </TableHeader>
                     <TableBody className="text-[12px]">
                         {filteredEmployees.length > 0 ? (
-                            filteredEmployees.map((employee) => (
+                            filteredEmployees.map((employee: Employee) => (
                            <TableRow key={employee.id}>
                            <TableCell>{employee?.id}</TableCell>
                            <TableCell>{employee?.firstname} {employee.lastname}</TableCell>
@@ -96,7 +136,7 @@ import { useEmployeeStore } from '@/store/employeesStore';
                            <TableCell>{employee?.department}</TableCell>
                            <TableCell>{employee?.phone}</TableCell>
                            <TableCell>
-                           <Link href={`/admin/${userData?.id}/employee/${employee.id}/employeeDetails`}><button className='text-white bg-black text-[10px] px-[7px] py-[1px]'>View</button></Link>
+                           <Link href={`/admin/${userData?.id}/employee/${employee?.id}/employeeDetails`}><button className='text-white bg-black text-[10px] px-[7px] py-[1px]'>View</button></Link>
                            </TableCell>
                        </TableRow> 
                         )))

@@ -25,7 +25,7 @@ export default function LandingLayout({ children }: LandingLayoutProps) {
         </div>
         <div className="flex items-center justify-around -ml-[15px] h-[95%]">
             <div>
-                <div>
+                <div className="">
                     <p className="font-boldItalic text-6xl inline-block mr-3 text-splash">Smart</p><p className="inline-block font-extraBold text-6xl text-white"> Payroll for</p>
                     <p className="font-extraBold text-6xl text-white">Businesses</p>
                 </div>

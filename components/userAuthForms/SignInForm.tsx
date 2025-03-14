@@ -7,6 +7,7 @@ import Image from "next/image";
 import { SignInAdminUser, checkUserRole, SignInUser } from "@/apiService"
 import useStore from "@/store/employeeStore";
 import ConfirmModal from '@/components/ConfirmAdminModal'
+// import { useEmployeeStore } from "@/store/employeesStore";
 
 
 
@@ -16,6 +17,7 @@ const SignInForm = () => {
     const [loading, setLoading] = useState(false);
     const [userSignIn, setUserSignIn] = useState("Sign in as User")
     const [adminSignIn, setAdminSignIn] = useState("Sign in as Admin")
+    // const { employees, fetchEmployees } = useEmployeeStore();
     const [error, setError] = useState("");
     const [isAdmin, setIsAdmin] = useState(false)
     const [formData, setFormData] = useState({

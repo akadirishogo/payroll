@@ -29,11 +29,10 @@ export default function GraphComponent() {
         console.log("Selected Year:", value);
         setSelectedYear(value);
         console.log(selectedYear)
-        // Use this function elsewhere in ParentComponent
     };
 
     return (
-      <div className="bg-white p-6 rounded-lg shadow-md max-w-[80%]">
+      <div className="bg-white p-6 rounded-lg shadow-md max-w-[100%]">
         <div className="flex justify-between mb-10">
             <h2 className="text-lg font-semibold mb-4">Payroll History</h2>
             <SelectFilter onFilterChange={handleFilterChange} />

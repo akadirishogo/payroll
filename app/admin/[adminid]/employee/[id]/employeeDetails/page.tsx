@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/Cards'
 import { IoChevronBackSharp } from "react-icons/io5"
 import { useParams, useRouter } from "next/navigation";
-import EmployeeSalaryForm from '@/components/employee/employeeSalaryForm';
 import EmployeeIdCard from '@/components/employee/employeeIdCard';
 import EmployeePersonal from '@/components/employee/employeePersonal';
 import { useEmployeeStore } from '@/store/employeesStore';
@@ -43,8 +42,8 @@ export default function EmployeeDetails() {
     const { employees } = useEmployeeStore();
     const { id } = useParams();
     const router = useRouter();
-    const [employee, setEmployee] = useState<Employee>()
-    const [details, setDetails] = useState<Employee | null>(null);
+    const [employee, setEmployee] = useState<Employee | undefined>(undefined);
+    const [details, setDetails] = useState<Employee>();
     
 
     
@@ -126,44 +125,9 @@ export default function EmployeeDetails() {
                                 </div>
                             </div>
                         </form>
-                        <div className='text-primary font-semi mt-14'>Salary information</div>
-                    
-                        <div className='flex p-4 gap-x-4'>
-                            <div className='p-4 border-lightGrey border-2 w-1/3 rounded-xl'>
-                                <div className='flex'>
-                                    <p className='font-regular'>Net Salary</p>
-                                </div>
-                                <div className='flex justify-end'>
-                                    <p className='text-3xl font-bold text-primary'>{details?.netSalary}</p>
-                                </div>
-                            </div>
-
-                            <div className='p-4 border-lightGrey border-2 w-1/3 rounded-xl'>
-                                <div className='flex'>
-                                    <p className='font-regular'>Gross Salary</p>
-                                </div>
-                                <div className='flex justify-end'>
-                                    <p className='text-3xl font-bold text-primary'>{details?.grossSalary}</p>
-                                </div>
-                            </div>
-
-                            <div className='p-4 border-lightGrey border-2 w-1/3 rounded-xl'>
-                                <div className='flex'>
-                                    <p className='font-regular'>Deductions</p>
-                                </div>
-                                <div className='flex justify-end'>
-                                    <p className='text-3xl font-bold text-primary'>{details?.deduction}</p>
-                                </div>
-                            </div>
-                        </div>
-                    <EmployeeSalaryForm details={details} />
-
-                </div>
-                    
-                    
+                    </div>
                 </CardContent>
                 </Card>
-            </div>
+           </div>
     </div>
-  )
-}
+)}

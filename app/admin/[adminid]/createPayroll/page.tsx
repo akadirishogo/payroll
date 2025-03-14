@@ -5,60 +5,52 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/Cards";
 import { Input } from "@/components/Inputs";
 import { Checkbox } from "@/components/Checkbox";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/Table";
+import Link from "next/link";
 
-interface Employee {
+
+
+
+type BankDetail = {
   id: number;
-  fullName: string;
-  email: string;
-  designation: string;
   bankName: string;
+  bankCode: string;
   accountNumber: string;
-  accountName: string;
-  salary: number 
-}
+  recipientCode: string | null;
+  isDefault: boolean;
+};
 
-const employees: Employee[] = [
-  { id: 1, 
-    fullName: "John Doe", 
-    email: "johndoe@gmail.com",
-    designation: 'Manager',
-    bankName: 'Access',
-    accountNumber: '0234523231',
-    accountName: 'John Doe',
-    salary: 150000 
-},
-  { id: 2, 
-    fullName: "Jane Smith",
-    email: "janesmith@gmail.com",
-    designation: 'HR Assistant',
-    bankName: 'UBA',
-    accountNumber: '0234523231',
-    accountName: 'Jane Smith',
-    salary: 350000 
-},
-  { id: 3, 
-    fullName: "Michael Johnson",
-    email: "michealjohn@gmail.com",
-    designation: 'Customer Service Rep',
-    bankName: 'Wema',
-    accountNumber: '0234523231',
-    accountName: 'John Micheal',
-    salary: 250000 
-},
-];
+
+type Employee = {
+  id: number;
+  firstname: string;
+  lastname: string;
+  gender: string | null;
+  email: string;
+  grossSalary: number;
+  netSalary: number;
+  deduction: number;
+  department: string;
+  phone: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  bankDetails: BankDetail[];
+};
+
+
+const userData = JSON.parse(localStorage.getItem("userInfo") || "{}")
 
 
 export default function PayrollForm() {
   const [totalSalary, setTotalSalary] = useState(0);
+  // const { employees, fetchEmployees } = useEmployeeStore()
+  const employees = JSON.parse(localStorage.getItem("Employees") || "[]")
   const [name, setName] = useState('')
   const [monthYear, setMonthYear] = useState("");
-  const [checkedEmployees, setCheckedEmployees] = useState<Record<number, boolean>>(
-    employees.reduce((acc, employee) => ({ ...acc, [employee.id]: true }), {})
-  );
+  const [checkedEmployees, setCheckedEmployees] = useState<Record<number, boolean>>({});
+  const [salaries, setSalaries] = useState<Record<number, number>>({});
 
-  const [salaries, setSalaries] = useState<Record<number, number>>(
-    employees.reduce((acc, employee) => ({ ...acc, [employee.id]: employee.salary }), {})
-  );
+  
 
   const handleCheckboxChange = (id: number) => {
     setCheckedEmployees((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -71,25 +63,45 @@ export default function PayrollForm() {
     }));
   };
 
+ /* useEffect(() => {
+    const token = sessionStorage.getItem("accessToken");
+    fetchEmployees(token || "", userData.companyId ); // Fetch employees on mount
+  }, [userData]);
+ */
   useEffect(() => {
-    const sum = employees.reduce((acc, employee) => {
-        // Only add salary if the employee is checked
-        return checkedEmployees[employee.id] ? acc + salaries[employee.id] : acc;
+    if (employees.length > 0) {
+      setCheckedEmployees(
+        employees.reduce((acc: number | object, employee: Employee) => ({ ...acc as object, [employee.id]: true }), {})
+      );
+  
+      setSalaries(
+        employees.reduce((acc: number | object, employee: Employee) => ({ ...acc as object, [employee.id]: employee.netSalary }), {})
+      );
+    }
+  }, []); // Runs when employees are fetched
+  
+
+  useEffect(() => {
+    if (Object.keys(checkedEmployees).length > 0) { // Ensure it's initialized
+      const sum = employees.reduce((acc: number, employee: Employee) => {
+        return checkedEmployees[employee.id] ? acc + (salaries[employee.id] || 0) : acc;
       }, 0);
-    
+  
       setTotalSalary(sum);
-    setTotalSalary(sum);
+    }
   }, [salaries, checkedEmployees]); // Runs whenever salaries change
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const selectedEmployees = employees.filter(emp => checkedEmployees[emp.id])
-    .map(emp => ({
+    const selectedEmployees = employees.filter((emp: Employee) => checkedEmployees[emp.id])
+    .map((emp: Employee) => ({
         ...emp,
         salary: salaries[emp.id] // Use updated salary values from state
       }));;
     console.log({ name, monthYear, dateCreated: new Date().toISOString(), selectedEmployees });
   };
+
+  console.log(employees)
 
   return (
     <div className="my-4 px-4">
@@ -131,27 +143,30 @@ export default function PayrollForm() {
                 <TableHead>Designation</TableHead>
                 <TableHead>Bank Name</TableHead>
                 <TableHead>Account No.</TableHead>
-                <TableHead>Acct. Name</TableHead>
                 <TableHead>Net Salary</TableHead>
                 <TableHead>Include</TableHead>
+                <TableHead>Details</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {employees.map((employee) => (
+              {employees?.map((employee: Employee) => (
                 <TableRow key={employee.id}>
                   <TableCell>{employee.id}</TableCell>
-                  <TableCell>{employee.fullName}</TableCell>
+                  <TableCell>{employee.firstname} {employee.lastname}</TableCell>
                   <TableCell>{employee.email}</TableCell>
-                  <TableCell>{employee.designation}</TableCell>
-                  <TableCell>{employee.bankName}</TableCell>
-                  <TableCell>{employee.accountNumber}</TableCell>
-                  <TableCell>{employee.accountName}</TableCell>
+                  <TableCell>{employee.department}</TableCell>
+                  <TableCell>{employee.bankDetails[0]?.bankName}</TableCell>
+                  <TableCell>{employee.bankDetails[0]?.accountNumber}</TableCell>
                   <TableCell>
-                    <Input type="text" value={salaries[employee.id]} onChange={(e) => handleSalaryChange(employee.id, e.target.value)} required />
+                    <Input type="text"   value={salaries[employee.id] !== undefined ? salaries[employee.id].toString() : ""} 
+ disabled onChange={(e) => handleSalaryChange(employee.id, e.target.value)} required />
                   </TableCell>
                   <TableCell>
                     <Checkbox checked={checkedEmployees[employee.id]} 
                       onCheckedChange={() => handleCheckboxChange(employee.id)} />
+                  </TableCell>
+                  <TableCell>
+                      <Link href={`/admin/${userData?.id}/createPayroll/${employee.id}/salaryDetails`}><button className='text-white bg-black text-[10px] px-[7px] py-[1px]'>Reset</button></Link>
                   </TableCell>
                 </TableRow>
               ))}
@@ -161,7 +176,7 @@ export default function PayrollForm() {
 
            <div className="flex justify-end gap-x-10">
                 <button className="flex mt-4 w-full max-w-fit px-[10px] py-[5px]">
-                    Payroll Size: ₦{totalSalary.toLocaleString()}
+                    Payroll Size: ₦{totalSalary ? totalSalary.toLocaleString() : 0}
                 </button>
                 <button className="flex mt-4 w-full bg-primary text-white max-w-fit px-[10px] py-[5px]">
                     Create
