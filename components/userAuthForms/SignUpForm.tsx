@@ -50,6 +50,7 @@ const SignUpForm = () => {
                 
         }catch(error) {
             if (error instanceof Error) {
+                console.log(error)
                 setItExist(true) 
             } else {
                 setError("Something went wrong, please try again.");

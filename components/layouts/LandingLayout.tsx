@@ -20,7 +20,7 @@ export default function LandingLayout({ children }: LandingLayoutProps) {
   return (
     <div className="relative bg-backImage min-h-[100vh]">
       <div className="pt-8 absolute inset-0 bg-primary bg-opacity-70">
-        <div className="pl-8 xl:h-[50px] flex">
+        <div className="pl-8 xl:h-[35px] flex">
             <Image height={50} width={150} src={"/logo_white.png"} alt="logo" />
         </div>
         <div className="flex xl:pr-[20px] items-center justify-around h-[95%]">
