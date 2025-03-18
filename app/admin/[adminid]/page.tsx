@@ -51,18 +51,18 @@ export default function Home() {
 
 
   return (
-    <div className='px-6 flex gap-x-4 h-[100%]'>
-      <div className='flex flex-col'>
+    <div className='px-6 flex gap-x-4 h-[100vh]'>
+      <div className='flex flex-col w-[80%]'>
         <div className='font-semibold text-[25px]'>
           <span className='bg-clip-text text-transparent bg-gradient-to-r from-fromGreetGradient via-throughGreet to-primary'>{`Welcome, ${userData?.firstname}`}</span>
         </div>
         <div className='flex gap-6'>
-            <div className='bg-gradient-to-t from-fromGreenCard to-toGreenCard w-55 p-2 text-white rounded-xl'>
+            <div className='bg-gradient-to-t from-fromGreenCard to-toGreenCard w-[30%] p-2 text-white rounded-xl'>
               <p className='font-light'>Wallet Balance</p>
               <h5 className='text-3xl'>₦500,972.00</h5>
               <button className='mt-6 bg-black text-[12px] py-1 px-2'>Add fund</button>
             </div>
-            <div className='bg-gradient-to-t from-fromOrangeCard to-toOrangeCard w-50 p-2 text-white rounded-xl'>
+            <div className='bg-gradient-to-t from-fromOrangeCard to-toOrangeCard w-[30%] p-2 text-white rounded-xl'>
               <p className='font-light'>Payroll Size</p>
               <h5 className='text-3xl'>₦450,072.00</h5>
               <div className='mt-6 bg-white text-black text-[12px] py-1 px-2 flex gap-16'>
@@ -70,7 +70,7 @@ export default function Home() {
                 <p>8days Left</p>
               </div>
             </div>
-            <div className='bg-black w-50 p-2 text-white rounded-xl'>
+            <div className='bg-black w-[30%] p-2 text-white rounded-xl'>
               <p className='font-light'>Total Employee</p>
               <h5 className='text-3xl'>150 Employees</h5>
               <div className='mt-6 bg-black text-[12px] py-1 px-2 flex gap-6'>
@@ -79,11 +79,11 @@ export default function Home() {
               </div>
             </div>
         </div>
-        <div className='my-10 bg-green-500'>
+        <div className='my-10'>
             <GraphComponent />
         </div>
       </div>
-      <div className='mb-10 mt-14 flex flex-col gap-y-8 flex-1'>
+      <div className='mb-10 mt-10 flex flex-col gap-y-8'>
         <div className='bg-gradient-to-t from-fromGradient via-throughGradient to-primary flex justify-center max-w-fit rounded-xl'>
           <Calendar
             mode="single"
@@ -92,7 +92,7 @@ export default function Home() {
             className="rounded-md h-full scale-[0.7]"
           />
         </div>
-        <div className='mt-10 bg-white max-w-fit pb-8 rounded-xl'>
+        <div className='mt-2 bg-white pb-8 rounded-xl'>
           <div className='bg-primary font-medium rounded-t-xl text-white text-[18px] flex items-center px-[6px] py-[10px]'>
             January Birthdays
           </div>
