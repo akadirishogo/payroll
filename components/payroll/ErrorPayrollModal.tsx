@@ -10,11 +10,16 @@ type ModalProps = {
   children?: React.ReactNode; // ✅ Add children prop
 };
 
-export default function Modal({ isOpen, title, message, icon, children }: ModalProps) {
+export default function Modal({ isOpen, title, message, icon, onClose, children }: ModalProps) {
   if (!isOpen) return null;
 
+  // Handler for clicks on the overlay (outer container)
+  const handleOverlayClick = () => {
+    if (onClose) onClose();
+  };
+
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70">
+    <div onClick={handleOverlayClick} className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70">
       <div className="bg-white p-6 rounded-xl shadow-lg w-1/2 text-center font-light">
         {icon && <div className="mb-3 flex justify-center">{icon}</div>}
 

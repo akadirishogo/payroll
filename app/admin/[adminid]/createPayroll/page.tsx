@@ -6,6 +6,13 @@ import { Input } from "@/components/Inputs";
 import { Checkbox } from "@/components/Checkbox";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/Table";
 import Link from "next/link";
+import { Employees, createPayroll } from "@/apiService";
+import Modal from "@/components/payroll/SuccessPayrollModal";
+import { GoCheckCircleFill } from "react-icons/go";
+import { Colors } from "@/Colors";
+import { FcCancel } from "react-icons/fc";
+
+
 
 
 
@@ -39,16 +46,20 @@ type Employee = {
 
 
 const userData = JSON.parse(localStorage.getItem("userInfo") || "{}")
-
+const token = sessionStorage.getItem("accessToken")
 
 export default function PayrollForm() {
+  const [loading, setLoading] = useState(false)
+  const [errorModal, setErrorModal] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
+  const [modalDisplay, setModalDisplay] = useState(false)
   const [totalSalary, setTotalSalary] = useState(0);
-  // const { employees, fetchEmployees } = useEmployeeStore()
   const employees = JSON.parse(localStorage.getItem("Employees") || "[]")
   const [name, setName] = useState('')
   const [monthYear, setMonthYear] = useState("");
   const [checkedEmployees, setCheckedEmployees] = useState<Record<number, boolean>>({});
   const [salaries, setSalaries] = useState<Record<number, number>>({});
+  
 
   
 
@@ -75,7 +86,7 @@ export default function PayrollForm() {
       );
   
       setSalaries(
-        employees.reduce((acc: number | object, employee: Employee) => ({ ...acc as object, [employee.id]: employee.netSalary }), {})
+        employees.reduce((acc: number | object, employee: Employee) => ({ ...acc as object, [employee.id]: employee?.netSalary || employee?.grossSalary }), {})
       );
     }
   }, []); // Runs when employees are fetched
@@ -91,17 +102,55 @@ export default function PayrollForm() {
     }
   }, [salaries, checkedEmployees]); // Runs whenever salaries change
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true)
     const selectedEmployees = employees.filter((emp: Employee) => checkedEmployees[emp.id])
     .map((emp: Employee) => ({
         ...emp,
-        salary: salaries[emp.id] // Use updated salary values from state
+        netSalary: salaries[emp.id] // Use updated salary values from state
       }));;
-    console.log({ name, monthYear, dateCreated: new Date().toISOString(), selectedEmployees });
+
+      console.log(selectedEmployees)
+
+    const employeesSalaryData = selectedEmployees.map(({ id, netSalary, allowances, deductions } : Employees) => 
+      ({ 
+        id, 
+        netSalary, 
+        allowances: allowances ?? [], 
+        deductions: deductions ?? []
+      }))
+
+      console.log(employeesSalaryData)
+
+    try {
+      const res = await createPayroll(
+        userData.id,
+        name,
+        new Date().toLocaleString("en-US", { month: "long" }),
+        new Date().getFullYear(),
+        totalSalary,
+        token || "",
+        employeesSalaryData    
+      )
+
+    console.log(res)
+      setErrorMessage(res?.message)
+  
+
+
+      setLoading(false)
+      
+    }catch(error){
+        console.log(`${error}`)
+    }finally {
+      setLoading(false)
+    }
+   
+   
   };
 
-  console.log(employees)
+
 
   return (
     <div className="my-4 px-4">
@@ -173,13 +222,34 @@ export default function PayrollForm() {
             </TableBody>
           </Table>
           
+          {modalDisplay && (
+            <Modal
+            onClose={() => setModalDisplay(false)}
+            isOpen={modalDisplay} 
+            title="Payroll Created" 
+            message={"Payment processed successfully, awaiting approval"} 
+            icon= {<GoCheckCircleFill size={50} color={Colors.primary} />
+            }
+            />
+          )}
+
+          {errorModal && (
+            <Modal
+            onClose={() => setErrorModal(false)}
+            isOpen={errorModal} 
+            title="Payroll creation failed" 
+            message={errorMessage}
+            icon= {<FcCancel size={50} color={Colors.primary} />
+            }
+            />
+          )}
 
            <div className="flex justify-end gap-x-10">
                 <button className="flex mt-4 w-full max-w-fit px-[10px] py-[5px]">
                     Payroll Size: ₦{totalSalary ? totalSalary.toLocaleString() : 0}
                 </button>
                 <button className="flex mt-4 w-full bg-primary text-white max-w-fit px-[10px] py-[5px]">
-                    Create
+                    {loading ? "Creating..." : "Create"}
                 </button>
            </div>  
         </form>

@@ -8,7 +8,7 @@ type Allowance = {
 };
 
 type Deduction = {
-  type: string;
+  reason: string;
   amount: number;
 };
 
@@ -100,7 +100,7 @@ export const useEmployeeStore = create<EmployeeStore>((set) => ({
   
              // Append new deduction if provided; otherwise, leave existing array unchanged.
       const updatedDeductions =
-      deduction && deduction.type.trim() !== "" && Number(deduction.amount) !== 0
+      deduction && deduction.reason.trim() !== "" && Number(deduction.amount) !== 0
         ? [...existingDeductions, deduction]
         : existingDeductions;
 

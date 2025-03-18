@@ -1,6 +1,27 @@
 const BASE_URL = "https://credpay-936l.onrender.com"
 
 
+export interface Allowance {
+  type: string;
+  amount: number
+}
+
+
+export interface Deduction {
+  reason: string;
+  amount: number
+}
+
+
+
+export interface Employees {
+  id: number; 
+  netSalary: number; 
+  allowances: Allowance[] | []
+  deductions: Deduction[] | []
+}
+
+
 export default async function createBusinessAdmin(email: string, password: string, confirmPassword: string) {
     try {
         const response = await fetch(`${BASE_URL}/auth/signup`,{
@@ -363,3 +384,46 @@ export async function fetchEmployees(token: string, companyId: string) {
   }
  }
 
+
+
+ export async function createPayroll (
+  id: number,
+  name: string, 
+  month: string, 
+  year: number, 
+  totalAmount: number, 
+  token: string, 
+  employees: Employees
+) {
+  try {
+    const response = await fetch(`${BASE_URL}/payroll`, {
+      method: 'POST',
+      headers: {
+          "Authorization": `Bearer ${token}`,
+          'Content-Type': 'application/json', 
+        },
+      body: JSON.stringify(
+      {
+          "userId": id,
+          "name": name,
+          "month": month,
+          "year": year,
+          "totalAmount": totalAmount,
+          "employees": employees
+      }
+      ),
+  })
+
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    return result;
+  }
+
+  return result
+
+  }catch(error){
+    console.error("Error creating payroll:", error);
+  }
+}

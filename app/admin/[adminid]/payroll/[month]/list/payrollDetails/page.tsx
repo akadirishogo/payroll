@@ -1,8 +1,8 @@
 "use client";
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import React from 'react'
-import { FaRegPenToSquare } from "react-icons/fa6";
+import { FaChevronLeft, FaRegPenToSquare } from "react-icons/fa6";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { Colors } from '@/Colors'
 import { IoIosPeople } from "react-icons/io";
@@ -16,14 +16,24 @@ import { IoIosPeople } from "react-icons/io";
 export default function PayrollDetailPage() {
     const params = useParams();
 
+    const router = useRouter();
+
+
+    const getBack = () => {
+      router.back()
+    }
+  
     
     
     return (
       <div className='px-6 mb-14'>
+         <div onClick={getBack} className='cursor-pointer mb-4'>
+            <FaChevronLeft size={20} color={Colors.primary} />
+        </div>
         <div>
           <span className='bg-clip-text 
               text-transparent bg-gradient-to-r from-fromGreetGradient 
-              via-throughGreet to-primary'>
+              via-throughGreet to-primary font-semibold text-[25px]'>
               {typeof params.month === 'string' ? params.month.charAt(0).toUpperCase() + params.month.slice(1) : 'Unknown'}
           </span>
         </div>

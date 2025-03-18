@@ -162,6 +162,9 @@ const months = [
 ]
 
 
+const userData = JSON.parse(localStorage.getItem("userInfo") || "{}")
+
+
 export default function PayrollListPage() {
   const [selectedYear, setSelectedYear] = useState<string>(`Year ${new Date().getFullYear()}`);
 
@@ -217,7 +220,7 @@ export default function PayrollListPage() {
                 <TableCell className='text-center'>{month.dateOfRequest}</TableCell>
                 <TableCell>{month.approvedBy}</TableCell>
                 <TableCell className='text-center'>{month.dateOfApproval}</TableCell>
-                <TableCell className='flex justify-center'><Link href={`/admin/payroll/${month.month.toLowerCase()}/list`}><button className='text-white bg-black text-[10px] px-[7px] py-[1px]'>View</button></Link></TableCell>
+                <TableCell className='flex justify-center'><Link href={`/admin/${userData.id}/payroll/${month.month.toLowerCase()}/list`}><button className='text-white bg-black text-[10px] px-[7px] py-[1px]'>View</button></Link></TableCell>
               </TableRow>
             ))}
           </TableBody>

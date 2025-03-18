@@ -84,7 +84,7 @@ export default function Home() {
         </div>
       </div>
       <div className='mb-10 mt-14 flex flex-col gap-y-8 flex-1'>
-        <div className='bg-gradient-to-t from-fromGradient via-throughGradient to-primary flex justify-center rounded-xl'>
+        <div className='bg-gradient-to-t from-fromGradient via-throughGradient to-primary flex justify-center max-w-fit rounded-xl'>
           <Calendar
             mode="single"
             selected={date}
@@ -92,7 +92,7 @@ export default function Home() {
             className="rounded-md h-full scale-[0.7]"
           />
         </div>
-        <div className='mt-10 bg-white w-full pb-8 rounded-xl'>
+        <div className='mt-10 bg-white max-w-fit pb-8 rounded-xl'>
           <div className='bg-primary font-medium rounded-t-xl text-white text-[18px] flex items-center px-[6px] py-[10px]'>
             January Birthdays
           </div>

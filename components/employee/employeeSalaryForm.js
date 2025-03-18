@@ -16,12 +16,16 @@ import { useParams, useRouter } from 'next/navigation';
 
 
 // const userData = JSON.parse(localStorage.getItem("userInfo") || "{}")
-const localEmployeesStore = JSON.parse(localStorage.getItem("Employees"))
+// const localEmployeesStore = JSON.parse(localStorage.getItem("Employees"))
 
 function EmployeeSalaryForm() {
     const { updateEmployee } = useEmployeeStore();
     const params = useParams();
     const [isEditing, setIsEditing] = useState(false);
+    const [employees, setEmployees] = useState(() => {
+        return JSON.parse(localStorage.getItem("Employees"))
+    })
+    const [employee, setEmployee] = useState()
     const [selectedDeduction, setSelectedDeduction] = useState({
         name: "",
         amount: 0
@@ -30,15 +34,15 @@ function EmployeeSalaryForm() {
     const [deductions, setDeductions] = useState([])
     const [deductionValue, setDeductionValue] = useState(0)
     // const [allowanceValue, setAllowanceValue] = useState(0)
-    const [grossSalaryValue, setGrossSalaryValue] = useState(0)
-    const [netSalaryValue, setNetSalaryValue] = useState(0)
+    // const [grossSalaryValue, setGrossSalaryValue] = useState(0)
+    // const [netSalaryValue, setNetSalaryValue] = useState(0)
     const [selectedAllowance, setSelectedAllowance] = useState({
         name: "",
         amount: 0
     }); 
     const [allowances, setAllowances] = useState([]);
-    const [savedAllowances, setSavedAllowances] = useState([])
-    const [savedDeductions, setSavedDeductions] = useState([])
+    /* const [savedAllowances, setSavedAllowances] = useState([])
+    const [savedDeductions, setSavedDeductions] = useState([]) */
 /* 
     useEffect(() => {
         const token = sessionStorage.getItem("accessToken")
@@ -48,20 +52,14 @@ function EmployeeSalaryForm() {
    
     useEffect(() => {
         console.log(params.id)
-        const employee = localEmployeesStore?.find((emp) => {
+        const employee = employees?.find((emp) => {
             return (emp.id == params.id)
         })
-        setGrossSalaryValue(employee?.grossSalary)
-        
-        const allowancesData = employee?.allowances?.filter(item => item.type.trim() !== "" && item.amount !== 0);
-        const deductionsData = employee?.deductions?.filter(item => item.type.trim() !== "" && item.amount !== 0);
-
-        setSavedAllowances(allowancesData)  
-        setSavedDeductions(deductionsData) 
-        setNetSalaryValue(employee?.netSalary) 
-        setDeductionValue(employee?.totalDeductions)
+        setEmployee(employee)
            
-        }, [params.id, allowances, deductions])
+        }, [employees])
+
+
 
 
         
@@ -74,50 +72,38 @@ function EmployeeSalaryForm() {
     }
 
 
-    /* const removeAllDeductions = (employeeId, field) => {
-        const storedEmployees = localStorage.getItem("Employees");
-      
-        if (!storedEmployees) return;
-    
-        let employees = JSON.parse(storedEmployees);
-      
-        // Ensure it's an array before proceeding
-        if (!Array.isArray(employees)) return;
-      
-        // Modify only the employee with the given id
-        employees = employees.map((employee) => {
-          if (employee.id === employeeId) {
-            delete employee[field]; // Remove field from objec
-          }
-          return employee; // Keep all employees in the array
-        });
-      
-        // Save the updated array back to localStorage
-        localStorage.setItem("Employees", JSON.stringify(employees));
+    const removeAllDeductions = (employeeId) => {
+        setEmployees((prevEmployees) => {
+            const updatedEmployees = prevEmployees.map((employee) => {
+              if (employee.id === employeeId) {
+                // Remove the deductions and totalDeductions fields
+                const { deductions, totalDeductions, netSalary, ...rest } = employee;
+                console.log(deductions, totalDeductions, netSalary)
+                return rest;
+              }
+              return employee;
+            });
+            localStorage.setItem("Employees", JSON.stringify(updatedEmployees));
+            return updatedEmployees;
+          });
       };
- */
+ 
 
-     /*  const removeAllAllowances = (employeeId, field) => {
-        const storedEmployees = localStorage.getItem("Employees");
-      
-        if (!storedEmployees) return;
-    
-        let employees = JSON.parse(storedEmployees);
-      
-        // Ensure it's an array before proceeding
-        if (!Array.isArray(employees)) return;
-      
-        // Modify only the employee with the given id
-        employees = employees.map((employee) => {
-          if (employee.id === employeeId) {
-            delete employee[field]; // Remove field from objec
-          }
-          return employee; // Keep all employees in the array
-        });
-      
-        // Save the updated array back to localStorage
-        localStorage.setItem("Employees", JSON.stringify(employees));
-      }; */
+      const removeAllAllowances = (employeeId) => {
+        setEmployees((prevEmployees) => {
+            const updatedEmployees = prevEmployees.map((employee) => {
+              if (employee.id === employeeId) {
+                // Remove the deductions and totalDeductions fields
+                const { allowances, totalAllowances, netSalary, ...rest } = employee;
+                console.log(allowances, totalAllowances, netSalary)
+                return rest;
+              }
+              return employee;
+            });
+            localStorage.setItem("Employees", JSON.stringify(updatedEmployees));
+            return updatedEmployees;
+          });
+      };
 
 
     const handleEditClick = () => {
@@ -128,7 +114,6 @@ function EmployeeSalaryForm() {
     
 
       const handleSaveAllowance = (id, allowance) => {
-        setLoading(true);
     
         console.log("Saving Allowance for Employee ID:", id);
         console.log("Allowance Data:", allowance);
@@ -151,7 +136,6 @@ function EmployeeSalaryForm() {
 
 
       const handleSaveDeductions = (id, deductions) => {
-        setLoading(true);
     
         console.log("Saving Deductions for Employee ID:", id);
         console.log("Deductions Data:", deductions);
@@ -170,8 +154,7 @@ function EmployeeSalaryForm() {
             setDeductionValue(employee.totalDeductions);
             setNetSalaryValue(employee.netSalary);
         }
-    
-        setTimeout(() => setLoading(false), 100); // Small delay for smooth UI updates
+     // Small delay for smooth UI updates
       };
 
       const handleInputChange = (value) => {
@@ -272,7 +255,9 @@ const handleRemoveDeduction = (index, amount) => {
                                 <p className='font-regular'>Net Salary</p>
                             </div>
                             <div className='flex justify-end'>
-                                <p className='text-3xl font-bold text-primary'>₦{netSalaryValue?.toLocaleString() || 0}</p>
+                                <p className='text-3xl font-bold text-primary'>
+                                ₦{(employee?.grossSalary - (employee?.totalDeductions || 0) + (employee?.totalAllowances || 0)).toLocaleString()}
+                                </p>
                             </div>
                         </div>
 
@@ -281,7 +266,7 @@ const handleRemoveDeduction = (index, amount) => {
                                 <p className='font-regular'>Gross Salary</p>
                             </div>
                             <div className='flex justify-end'>
-                                <p className='text-3xl font-bold text-primary'>₦{grossSalaryValue?.toLocaleString() || 0}</p>
+                                <p className='text-3xl font-bold text-primary'>₦{employee?.grossSalary?.toLocaleString() || 0}</p>
                             </div>
                         </div>
 
@@ -290,7 +275,7 @@ const handleRemoveDeduction = (index, amount) => {
                                 <p className='font-regular'>Deductions</p>
                             </div>
                             <div className='flex justify-end'>
-                                <p className='text-3xl font-bold text-primary'>₦{deductionValue?.toLocaleString() || 0}</p>
+                                <p className='text-3xl font-bold text-primary'>₦{employee?.totalDeductions?.toLocaleString()}</p>
                             </div>
                         </div>
                     </div>
@@ -310,7 +295,7 @@ const handleRemoveDeduction = (index, amount) => {
                         <div className="flex items-center gap-x-2">
                             <Input  
                             type="text"
-                            value={isEditing ? tempSalary : `₦${grossSalaryValue?.toLocaleString() || 0}`}
+                            value={isEditing ? tempSalary : `₦${employee?.grossSalary?.toLocaleString() || 0}`}
                             onChange={(e) => handleInputChange(e.target.value)}
                             className=''
                             disabled={!isEditing}
@@ -333,8 +318,8 @@ const handleRemoveDeduction = (index, amount) => {
                         )}
                         </div>
                     </div>
-                    {savedAllowances && (
-                        savedAllowances?.map((savedAllowance, index) => (
+                    {employee?.allowances && (
+                        employee?.allowances?.map((savedAllowance, index) => (
                             <div key={index} className="bg-gray-100 text-gray-400 mt-4 flex justify-between p-2 rounded-[6px]">
                                 <div>{savedAllowance.type}</div>
                                 <div>{savedAllowance.amount}</div>
@@ -349,7 +334,7 @@ const handleRemoveDeduction = (index, amount) => {
                             <div className="flex items-center gap-x-2">
                                 <Input
                                     type="text"
-                                    value={allowance?.amount}
+                                    value={allowance?.amount.toLocaleString()}
                                     onChange={(e) => handleAllowanceChange(index, e.target.value)}
                                     className=''
                                 />
@@ -397,7 +382,7 @@ const handleRemoveDeduction = (index, amount) => {
                     </div>
 
                     <div className="mt-8">
-                        <button className="border px-4 py-1 rounded-[6px] bg-primary text-white">Reset Allowances</button>
+                        <button onClick={() => removeAllAllowances(Number(params?.id))} className="border px-4 py-1 rounded-[6px] bg-primary text-white">Reset Allowances</button>
                     </div>
             </CardContent>
         </Card>
@@ -407,8 +392,8 @@ const handleRemoveDeduction = (index, amount) => {
             </CardHeader>
             <CardContent className='mt-6 flex flex-col items-start pb-10'>
 
-            {savedDeductions && (
-                        savedDeductions?.map((savedDeduction, index) => (
+            {employee?.deductions && (
+                        employee?.deductions?.map((savedDeduction, index) => (
                             <div key={index} className="bg-gray-100 w-max gap-x-4 text-gray-400 mt-4 flex justify-between p-2 rounded-[6px]">
                                 <div>{savedDeduction.type}</div>
                                 <div>{savedDeduction.amount}</div>
@@ -422,7 +407,7 @@ const handleRemoveDeduction = (index, amount) => {
                             <div className="flex items-start gap-x-4">
                                 <Input
                                     type="text"
-                                    value={deduction?.amount}
+                                    value={deduction?.amount.toLocaleString()}
                                     onChange={(e) => handleDeductionChange(index, e.target.value)}
                                     className=''
                                 />
@@ -468,7 +453,7 @@ const handleRemoveDeduction = (index, amount) => {
                     </div>
 
                     <div className="mt-8">
-                        <button className="border px-4 py-1 rounded-[6px] bg-primary text-white">Reset Deductions</button>
+                        <button onClick={()=>removeAllDeductions(Number(params.id))} className="border px-4 py-1 rounded-[6px] bg-primary text-white">Reset Deductions</button>
                     </div>
             </CardContent>
         </Card>

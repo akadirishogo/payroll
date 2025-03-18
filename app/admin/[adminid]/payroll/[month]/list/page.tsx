@@ -1,8 +1,10 @@
 "use client";
 
 import React from 'react'
+import { FaChevronLeft } from "react-icons/fa6";
 import Link from "next/link";
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { Colors } from '@/Colors';
 import {
   Table,
   TableBody,
@@ -68,12 +70,21 @@ const payrolls = [
 export default function Payrolls() {
   const selectedYear = new Date().getFullYear();
   const params = useParams();
+  const router = useRouter();
+
+  console.log(params)
 
 
+  const getBack = () => {
+    router.back()
+  }
 
   return (
     <div>
-      <div className='font-semibold text-[25px] mb-4 px-4'>
+      <div onClick={getBack} className='px-4 cursor-pointer'>
+          <FaChevronLeft size={20} color={Colors.primary} />
+      </div>
+      <div className='font-semibold text-[25px] mb-4 mt-4 px-4'>
         <span className='bg-clip-text 
         text-transparent bg-gradient-to-r from-fromGreetGradient 
         via-throughGreet to-primary'>
@@ -89,7 +100,7 @@ export default function Payrolls() {
           <p>{selectedYear}</p>  
       </div>
       <div className='px-4'>
-          <Table className=''>
+          <Table className='w-full'>
           <TableHeader className='bg-Inactive text-white'>
             <TableRow>
               <TableHead>Name</TableHead>
@@ -115,7 +126,7 @@ export default function Payrolls() {
                 <TableCell>{month.dateOfRequest}</TableCell>
                 <TableCell>{month.approvedBy}</TableCell>
                 <TableCell>{month.dateOfApproval}</TableCell>
-                <TableCell><Link href={`/admin/payroll/${month.Name.toLowerCase()}/list/payrollDetails`}><button className='text-white bg-black text-[10px] px-[7px] py-[1px]'>View</button></Link></TableCell>
+                <TableCell><Link href={`/admin/${params.adminid}/payroll/${month.Name.toLowerCase()}/list/payrollDetails`}><button className='text-white bg-black text-[10px] px-[7px] py-[1px]'>View</button></Link></TableCell>
               </TableRow>
             ))}
           </TableBody>
