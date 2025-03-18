@@ -25,9 +25,7 @@ function EmployeeSalaryForm() {
     const { updateEmployee } = useEmployeeStore();
     const params = useParams();
     const [isEditing, setIsEditing] = useState(false);
-    const [employees, setEmployees] = useState(() => {
-        return JSON.parse(localStorage.getItem("Employees"))
-    })
+    const [employees, setEmployees] = useState([])
     const [employee, setEmployee] = useState()
     const [selectedDeduction, setSelectedDeduction] = useState({
         name: "",
@@ -51,6 +49,12 @@ function EmployeeSalaryForm() {
         const token = sessionStorage.getItem("accessToken")
         fetchEmployees(token, userData.companyId)
     }, []) */
+
+
+    useEffect(() => {
+        const storedEmployees = JSON.parse(localStorage.getItem("Employees")) || [];
+        setEmployees(storedEmployees);
+      }, []);
   
    
     useEffect(() => {
