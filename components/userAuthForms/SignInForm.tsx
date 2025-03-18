@@ -65,6 +65,7 @@ const SignInForm = () => {
       setLoading(false);
 
     }catch(error){
+      console.error(error)
       setError(`${error}`)
     }
   }
