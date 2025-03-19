@@ -49,7 +49,7 @@ export default function EmployeeDetails() {
     
 
     useEffect(() => {
-        if (employees.length > 0) {
+        if (typeof window !== "undefined" && employees.length > 0) {
             const clickedEmployee = employees.find(emp => emp.id === Number(id));
             if (clickedEmployee) {
                 setEmployee(clickedEmployee);
@@ -58,7 +58,7 @@ export default function EmployeeDetails() {
     }, [id, employees]);
 
     useEffect(() => {
-        if (employee) {
+        if (typeof window !== "undefined" && employee) {
             setDetails(employee);
             localStorage.setItem("employeeDetails", JSON.stringify(employee));
             console.log("Employee details saved")
@@ -67,6 +67,7 @@ export default function EmployeeDetails() {
 
 
     useEffect(() => {
+        if (typeof window !== "undefined") {
         try {
             const storedData = localStorage.getItem("employeeDetails");
             if (storedData) {
@@ -75,6 +76,7 @@ export default function EmployeeDetails() {
         } catch (error) {
             console.error("Error parsing localStorage data", error);
         }
+    }
     }, []);
    
 
