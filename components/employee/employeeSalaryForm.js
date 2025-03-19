@@ -52,8 +52,10 @@ function EmployeeSalaryForm() {
 
 
     useEffect(() => {
+         if (typeof window !== "undefined") {
         const storedEmployees = JSON.parse(localStorage.getItem("Employees")) || [];
         setEmployees(storedEmployees);
+         }
       }, []);
   
    
@@ -90,7 +92,9 @@ function EmployeeSalaryForm() {
               }
               return employee;
             });
-            localStorage.setItem("Employees", JSON.stringify(updatedEmployees));
+             if (typeof window !== "undefined") {
+                localStorage.setItem("Employees", JSON.stringify(updatedEmployees));
+             }
             return updatedEmployees;
           });
       };
@@ -107,7 +111,10 @@ function EmployeeSalaryForm() {
               }
               return employee;
             });
+
+            if (typeof window !== "undefined") {
             localStorage.setItem("Employees", JSON.stringify(updatedEmployees));
+            }
             return updatedEmployees;
           });
       };

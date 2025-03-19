@@ -26,6 +26,8 @@ export default function Home() {
   useEffect(() => {
     const getInitData = async () => {
 
+       if (typeof window !== "undefined") {
+
       try {
 
         const storedUser = localStorage.getItem("userInfo");
@@ -45,7 +47,7 @@ export default function Home() {
         console.error(err)
       }
     }
-
+  }
     getInitData();
   }, []);
 
