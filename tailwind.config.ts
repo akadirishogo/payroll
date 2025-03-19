@@ -32,11 +32,12 @@ export default {
       },
 
       screens: {
+        "1xs": "310px",
         xs: "480px", // Custom extra small breakpoint
         sm: "640px",
         md: "768px",
         lg: "1024px",
-        xl: "1230px",
+        xl: "1280px",
         "2xl": "1536px",
         "3xl": "1920px", // Custom extra large breakpoint
       },

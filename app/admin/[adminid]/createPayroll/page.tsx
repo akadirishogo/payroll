@@ -135,11 +135,13 @@ export default function PayrollForm() {
       )
 
     console.log(res)
+    if (res?.message) {
       setErrorMessage(res?.message)
-  
-
-
-      setLoading(false)
+      setErrorModal(true)
+    } else {
+      setModalDisplay(true)
+    }
+    setLoading(false)
       
     }catch(error){
         console.log(`${error}`)
