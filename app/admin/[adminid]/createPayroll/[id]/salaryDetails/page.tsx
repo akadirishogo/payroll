@@ -1,8 +1,13 @@
 "use client";
 
 import React from 'react'
-import EmployeeSalaryForm from '@/components/employee/employeeSalaryForm';
+import dynamic from "next/dynamic";
 
+
+
+const EmployeeSalaryForm = dynamic(() => import("@/components/employee/employeeSalaryForm"), {
+  ssr: false, // Disable SSR for this component
+});
 
 export default function SalaryPage() {
 

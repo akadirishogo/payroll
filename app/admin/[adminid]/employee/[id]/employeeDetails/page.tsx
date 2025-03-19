@@ -4,9 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/Cards'
 import { IoChevronBackSharp } from "react-icons/io5"
 import { useParams, useRouter } from "next/navigation";
-import EmployeeIdCard from '@/components/employee/employeeIdCard';
-import EmployeePersonal from '@/components/employee/employeePersonal';
 import { useEmployeeStore } from '@/store/employeesStore';
+import dynamic from "next/dynamic";
 
 
 type BankDetail = {
@@ -36,6 +35,13 @@ type Employee = {
     bankDetails: BankDetail[];
   };
 
+  const EmployeeIdCard =  dynamic(() => import("@/components/employee/employeeIdCard"), {
+    ssr: false, // Disable SSR for this component
+  });
+
+  const EmployeePersonal = dynamic(() => import("@/components/employee/employeePersonal"), {
+        ssr: false,
+  }) ;
 
 
 export default function EmployeeDetails() {
