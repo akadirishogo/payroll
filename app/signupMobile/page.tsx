@@ -8,7 +8,7 @@ import ConfirmModal from '@/components/ConfirmAdminModal'
 
 
 
-const SignUpForm = () => {
+const SignUpMobileForm = () => {
     const [formData, setFormData] = useState({
       email: "",
       password: "",
@@ -26,7 +26,7 @@ const SignUpForm = () => {
     };
 
     const getSignIn = () => {
-        router.push('/signin')
+        router.push('/signinMobile')
     }
   
     const handleSubmit = async (e: React.FormEvent) => {
@@ -63,8 +63,8 @@ const SignUpForm = () => {
 
 
 return (
-    <div className="flex items-center justify-center">
-        <div className="relative bg-white p-8 rounded-lg shadow-lg xl:w-xl w-[500px] 1xl:w-[600px] 1xl:h-[500px]">
+    <div className="flex h-[100vh] items-center justify-center">
+        <div className="relative h-[70%] w-[90%] bg-white p-8 rounded-lg shadow-lg">
         {/* <div className="relative bg-white p-8 rounded-lg shadow-lg 1xl:w-[600px] 1xl:h-[500px]"> */}
         <h2 className="text-xl font-semi text-center mb-4">Sign Up</h2>
         {error && <p className="text-red-500 text-sm text-center">{error}</p>}
@@ -129,4 +129,4 @@ return (
 }
 
 
-    export default SignUpForm;
+    export default SignUpMobileForm;

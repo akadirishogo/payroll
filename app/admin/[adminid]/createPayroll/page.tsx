@@ -56,7 +56,7 @@ export default function PayrollForm() {
   const [totalSalary, setTotalSalary] = useState(0);
   const employees = JSON.parse(localStorage.getItem("Employees") || "[]")
   const [name, setName] = useState('')
-  const [monthYear, setMonthYear] = useState("");
+
   const [checkedEmployees, setCheckedEmployees] = useState<Record<number, boolean>>({});
   const [salaries, setSalaries] = useState<Record<number, number>>({});
   
@@ -173,10 +173,6 @@ export default function PayrollForm() {
                 <div className="mb-3">
                     <label className="block font-medium">Name</label>
                     <Input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
-                </div>
-                <div className="mb-3">
-                    <label className="block font-medium">Month & Year</label>
-                    <Input type="month" value={monthYear} onChange={(e) => setMonthYear(e.target.value)} required />
                 </div>
                 <div className="mb-3">
                     <label className="block font-medium">Date Created</label>

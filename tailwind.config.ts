@@ -35,9 +35,12 @@ export default {
         "1xs": "310px",
         xs: "480px", // Custom extra small breakpoint
         sm: "640px",
+        "1sm": "670px",
         md: "768px",
+        "1md" : "770px",
         lg: "1024px",
         xl: "1280px",
+        "1xl": "1400px",
         "2xl": "1536px",
         "3xl": "1920px", // Custom extra large breakpoint
       },
