@@ -1,3 +1,5 @@
+"use client";
+
 import { fetchEmployees } from '@/apiService';
 import { create } from 'zustand';
 
@@ -69,14 +71,14 @@ export const useEmployeeStore = create<EmployeeStore>((set) => ({
       }
 
       // Fetch fresh data from API
-      const res = await fetchEmployees(token, companyId);
+ /*      const res = await fetchEmployees(token, companyId);
       const data: Employee[] = res
 
       console.log(data)
 
       // Save to store and local storage
       set({ employees: data, loading: false });
-      return res
+      return res */
     } catch (error) {
       console.error('Error fetching employees:', error);
       set({ loading: false });

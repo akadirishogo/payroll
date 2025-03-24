@@ -56,7 +56,6 @@ export default function PayrollForm() {
   const [totalSalary, setTotalSalary] = useState(0);
   const employees = JSON.parse(localStorage.getItem("Employees") || "[]")
   const [name, setName] = useState('')
-
   const [checkedEmployees, setCheckedEmployees] = useState<Record<number, boolean>>({});
   const [salaries, setSalaries] = useState<Record<number, number>>({});
   
@@ -156,31 +155,31 @@ export default function PayrollForm() {
 
   return (
     <div className="my-4 px-4">
-        <div className='font-semibold text-[25px] mb-4 px-4'>
+        <div className='font-semibold text-[20px] mb-4 px-4'>
             <span className='bg-clip-text 
             text-transparent bg-gradient-to-r from-fromGreetGradient 
             via-throughGreet to-primary'>
-            Create Payroll
+              Create Payroll
             </span>
         </div>
-    <Card className="bg-white mx-auto p-4">
+    <Card className="bg-white w-[100%]">
       <CardHeader>
         <CardTitle className="text-primary">Add New Payroll</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
-            <div className="flex gap-x-12">
+            <div className="sm:flex sm:gap-x-4">
                 <div className="mb-3">
                     <label className="block font-medium">Name</label>
                     <Input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
                 </div>
-                <div className="mb-3">
+               <div className="mb-3">
                     <label className="block font-medium">Date Created</label>
                     <Input type="text" value={new Date().toLocaleDateString()} disabled />
                 </div>
             </div>
          
-          <h3 className="font-medium mb-2">Select Employees</h3>
+          <h3 className="font-medium mb-2 mt-2">Select Employees</h3>
           <Table>
             <TableHeader>
               <TableRow>
@@ -205,8 +204,17 @@ export default function PayrollForm() {
                   <TableCell>{employee.bankDetails[0]?.bankName}</TableCell>
                   <TableCell>{employee.bankDetails[0]?.accountNumber}</TableCell>
                   <TableCell>
-                    <Input type="text"   value={salaries[employee.id] !== undefined ? salaries[employee.id].toString() : ""} 
- disabled onChange={(e) => handleSalaryChange(employee.id, e.target.value)} required />
+                    <Input
+                        type="text"
+                        value={
+                          salaries[employee.id] !== undefined 
+                            ? `₦${salaries[employee.id].toLocaleString()}`
+                            : ""
+                        }
+                        disabled
+                        onChange={(e) => handleSalaryChange(employee.id, e.target.value)}
+                        required
+                      />
                   </TableCell>
                   <TableCell>
                     <Checkbox checked={checkedEmployees[employee.id]} 
@@ -246,7 +254,7 @@ export default function PayrollForm() {
                 <button className="flex mt-4 w-full max-w-fit px-[10px] py-[5px]">
                     Payroll Size: ₦{totalSalary ? totalSalary.toLocaleString() : 0}
                 </button>
-                <button className="flex mt-4 w-full bg-primary text-white max-w-fit px-[10px] py-[5px]">
+                <button className="flex items-center justify-center bg-primary text-[15px] text-white px-4">
                     {loading ? "Creating..." : "Create"}
                 </button>
            </div>  

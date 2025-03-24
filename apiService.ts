@@ -1,10 +1,18 @@
 const BASE_URL = "https://credpay-936l.onrender.com"
+import { Payroll } from "./app/admin/[adminid]/payroll/[month]/list/page";
 
 
 export interface Allowance {
   type: string;
   amount: number
 }
+
+type PayrollData = {
+  month: string;
+  year: number;
+  totalAmount: number;
+  employeeCount: number;
+};
 
 
 export interface Deduction {
@@ -210,8 +218,8 @@ export async function checkUserRole(email: any) {
         const role = await response.text();
         return role
     } catch (error: any) {
-      const errorMessage = `Check your internet connection: ${error.message}`;
-      throw errorMessage;
+      console.log(`Check your internet connection: ${error.message}`);
+      throw error
     }
   }
 
@@ -379,7 +387,7 @@ export async function fetchEmployees(token: string, companyId: string) {
       return data
     }
   } catch (error) {
-    console.error("Error fetching employees:", error);
+    console.log("Error fetching employees:", error);
     throw error
   }
  }
@@ -427,3 +435,155 @@ export async function fetchEmployees(token: string, companyId: string) {
     console.error("Error creating payroll:", error);
   }
 }
+
+
+export const fetchYearPayroll = async(token: string, year: string) => {
+
+  try {
+    const response = await fetch(`${BASE_URL}/payroll/year-summary?year=${Number(year)}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${token}` 
+        },
+    });
+
+    if (!response.ok) {
+      console.error("Failed to fetch payroll:", response.statusText);
+      return []; // Ensure an empty array is returned on failure
+    }
+    
+    
+    const data: PayrollData[] = await response.json();
+    return Array.isArray(data) ? data : []; // Ensure response is an 
+    
+  } catch (error: any) {
+    console.log(`Check your internet connection: ${error.message}`);
+  }
+}
+
+
+export const fetchMonthPayroll = async(token: string, month: string, year: string | null) => {
+
+  try {
+    const response = await fetch(`${BASE_URL}/payroll?month=${month}&year=${Number(year)}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${token}` 
+        },
+    });
+
+
+    const result = await response.json()
+
+    if (!response.ok) {
+      throw new Error(result.message || "Failed to fetch payroll data");// Ensure an empty array is returned on failure
+    }
+    
+    
+  
+    return Array.isArray(result) ? result : []; // Ensure response is an 
+    
+  } catch (error: any) {
+    console.log(`Check your internet connection: ${error.message}`);
+    throw new Error(error.message || "Something went wrong while fetching payroll data");
+  }
+}
+
+
+
+export const approvePayroll = async(userId: any, id: number, token: string) => {
+
+  try {
+    const response = await fetch(`${BASE_URL}/payroll/${id}/approve`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${token}` 
+        },
+        body: JSON.stringify(
+          {
+              "userId": userId,
+          }
+          ),
+    });
+
+
+    const result = await response.json()
+
+    if (!response.ok) {
+      throw new Error(result.message || "Failed to fetch payroll data");// Ensure an empty array is returned on failure
+    }
+    
+    
+  
+    return result
+    
+  } catch (error: any) {
+    console.log(`Check your internet connection: ${error.message}`);
+    throw new Error(error.message || "Something went wrong while fetching payroll data");
+  }
+}
+
+
+export const viewPayroll = async(id: number, token: string) => {
+
+  try {
+    const response = await fetch(`${BASE_URL}/payroll/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${token}` 
+        },
+    });
+
+
+    const result = await response.json()
+
+    if (!response.ok) {
+      throw new Error(result.message || "Failed to fetch payroll data");// Ensure an empty array is returned on failure
+    }
+    
+    
+  
+    return result // Ensure response is an 
+    
+  } catch (error: any) {
+    console.log(`Check your internet connection: ${error.message}`);
+    throw new Error(error.message || "Something went wrong while fetching payroll data");
+  }
+}
+
+
+export const processPayroll = async(id: number, token: string) => {
+
+  try {
+    const response = await fetch(`${BASE_URL}/payroll/${id}/process`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${token}` 
+        },
+    });
+
+
+    const result = await response.json()
+
+    if (!response.ok) {
+      throw new Error(result.message || "Failed to fetch payroll data");// Ensure an empty array is returned on failure
+    }
+    
+    
+  
+    return result // Ensure response is an 
+    
+  } catch (error: any) {
+    console.log(`Check your internet connection: ${error.message}`);
+    throw new Error(error.message || "Something went wrong while fetching payroll data");
+  }
+}
+
+
+
+

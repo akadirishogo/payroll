@@ -40,6 +40,7 @@ export default function AdminSettings() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [token, setToken] = useState<string | null>("")
   const {register, handleSubmit, reset, setValue, watch, formState: { errors },} = useForm<Admins>();
+  const [storedUser, setStoredUser] = useState<UserInfo>({} as UserInfo);
 
 
   // Watch the selected value for debugging
@@ -55,13 +56,14 @@ export default function AdminSettings() {
       }
 
       // Now, fetch fresh data in the background
-      const storedUser = JSON.parse(localStorage.getItem("userInfo") || "{}");
+      const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
       const token = sessionStorage.getItem("accessToken");
-      setUserInfo(storedUser)
+      setUserInfo(userInfo)
       setToken(token)
+      setStoredUser(userInfo)
 
-      if (token && storedUser?.companyId) {
-        const fetchedAdmins = await fetchAllAdmins(token, storedUser.companyId);
+      if (token && userInfo?.companyId) {
+        const fetchedAdmins = await fetchAllAdmins(token, userInfo.companyId);
         setAdmins(fetchedAdmins)
       }
     }
@@ -99,7 +101,6 @@ export default function AdminSettings() {
   
     const res = await removeAdmin(companyId, userId, token);
     console.log(res);
-    const storedUser = JSON.parse(localStorage.getItem("userInfo") || "{}");
     const updatedAdmins = await fetchAllAdmins(token, storedUser.companyId);
     setAdmins(updatedAdmins); // Update state with new admin list
 
@@ -142,7 +143,7 @@ export default function AdminSettings() {
 
   return (
     <div className="my-4 px-4">
-      <div className="font-semibold text-[25px] mb-4 px-4">
+      <div className="font-semibold text-[15px] sm:text-[18px] mb-4 px-4">
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-fromGreetGradient via-throughGreet to-primary">
           Administration Settings
         </span>
@@ -157,7 +158,7 @@ export default function AdminSettings() {
             {/* Remove Button */}
             <button
               onClick={()=>handleRemove(userInfo?.companyId || "", selectedAdminId || null)}
-              className="bg-unPaid text-white px-4 py-2 rounded-md disabled:opacity-50"
+              className="bg-unPaid text-white text-[9px] sm:text-[14px] px-4 py-2 rounded-md disabled:opacity-50"
               disabled={!selectedAdminId}
             >
               Remove
@@ -166,7 +167,7 @@ export default function AdminSettings() {
             {/* Add Admin Button (Opens Modal) */}
             <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
               <DialogTrigger asChild>
-                <button className="bg-primary text-white px-4 py-2 rounded-md">
+                <button className="bg-primary text-white text-[9px] sm:text-[14px] px-4 py-2 rounded-md">
                   Add Admin
                 </button>
               </DialogTrigger>
@@ -235,14 +236,14 @@ export default function AdminSettings() {
                 {/* Admin Details */}
                 <div className="flex-1">
                   <div className="flex gap-x-[4px]">
-                    <p className="font-medium">{admin?.firstname}</p>
-                    <p className="font-medium">{admin?.lastname}</p>
+                    <p className="font-medium text-[10px] sm:text-[14px]">{admin?.firstname}</p>
+                    <p className="font-medium text-[10px] sm:text-[14px]">{admin?.lastname}</p>
                   </div>
-                  <p className="text-sm text-gray-500">{admin.email}</p>
+                  <p className="text-[8px] sm:text-[10px] text-gray-500">{admin.email}</p>
                 </div>
 
                 {/* Role Display */}
-                <span className="px-3 py-1 text-sm font-medium bg-gray-200 rounded-md">
+                <span className="px-3 py-1 text-[8px] sm:text-[10px] font-medium bg-gray-200 rounded-md">
                   {admin.userType}
                 </span>
               </div>

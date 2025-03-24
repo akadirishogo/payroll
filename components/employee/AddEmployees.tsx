@@ -98,11 +98,11 @@ export default function AddEmployee() {
       }, []);
 
 
-      const handleInputChange = (index: number, field: string, value: string) => {
+      const handleInputChange = (index: number, field: string, value: string | number) => {
   const newEmployees = [...employees];
 
   if (field.startsWith("bankDetails.")) {
-    const key = field.split(".")[1]; // Extract the actual key inside bankDetails
+    const key = field.split(".")[1];
     newEmployees[index].bankDetails = {
       ...newEmployees[index].bankDetails,
       [key]: value,
@@ -117,7 +117,7 @@ export default function AddEmployee() {
   setEmployees(newEmployees);
 
   // Auto-fetch account name when bank and account number are selected
-  if (field === "bankDetails.accountNumber" && value.length > 9 && newEmployees[index].bankDetails.bankName) {
+  if (field === "bankDetails.accountNumber" && typeof value === 'string' && value.length > 9 && newEmployees[index].bankDetails.bankName) {
     fetchAccountName(index, newEmployees[index].bankDetails.bankName, value, userData?.companyId || "", token);
   }
 };
@@ -220,7 +220,7 @@ if (loading) {
             </div>
                 <div className='px-4 pb-4'>
                     <div className='flex p-2 justify-end gap-x-4'>
-                        <button onClick={()=>addEmployee()} className='bg-primary text-white px-4 py-2 text-[15px]'>Add Record</button> 
+                        <button onClick={()=>addEmployee()} className='bg-primary text-white px-4 py-2 text-[12px] md:text-[14px]'>Add Record</button> 
                     </div>
                     <Table className=''>
                     <TableHeader className='bg-Inactive text-white'>
@@ -278,9 +278,9 @@ if (loading) {
                             </TableCell>
                             <TableCell>
                                 <Input
-                                    type="text"
-                                    value={emp.grossSalary || 0}
-                                    onChange={(e) => handleInputChange(index, 'grossSalary', e.target.value)}
+                                    type="number"
+                                    value={emp.grossSalary || ''}
+                                    onChange={(e) => handleInputChange(index, 'grossSalary', parseFloat(e.target.value) || 0)}
                                 />
                             </TableCell>
                             <TableCell>
@@ -342,7 +342,7 @@ if (loading) {
                     </Table>
       </div>
       <div className='flex justify-end p-2 mr-2'>
-        <button onClick={saveRecords} className='bg-primary text-white px-4 py-2 text-[15px]'>
+        <button onClick={saveRecords} className='bg-primary text-white px-4 py-2 text-[12px] md:text-[14px]'>
           {loading ? "Please wait..." : "Save Record"}
         </button>  
       </div>
