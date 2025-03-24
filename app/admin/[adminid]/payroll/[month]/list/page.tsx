@@ -65,8 +65,9 @@ export default function Payrolls() {
         setMonthPayroll(monthPayroll ?? [])
         setError(null);
         setLoading(false)
-      }catch(error: any) {
-        setError(error.message); // Set the error to display in UI  
+      }catch(error) {
+        const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+        setError(errorMessage);
       }
       setLoading(false)
     }

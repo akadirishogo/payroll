@@ -6,7 +6,7 @@ import { FaChevronLeft, FaRegPenToSquare } from "react-icons/fa6";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { Colors } from '@/Colors'
 import { IoIosPeople } from "react-icons/io";
-import { approvePayroll, fetchMonthPayroll, viewPayroll } from '@/apiService';
+import { approvePayroll, viewPayroll } from '@/apiService';
 import { useSearchParams } from "next/navigation";
 
 
@@ -60,7 +60,6 @@ interface UserData {
 export default function PayrollDetailPage() {
   const [loading, setLoading] = useState(false)
   const [approvalLoading, setApprovalLoading] = useState(false)
-  const [paymentStatus, setPaymentStatus] = useState("InProgress")
   const [payrollDetails, setPayrollDetails] = useState<PayrollResponse | null>(null);
  
   const [userData, setUserData] = useState<UserData>()
@@ -98,7 +97,9 @@ export default function PayrollDetailPage() {
     payrollView();
   }, [])
 
-
+if (loading) {
+  console.log("loading...")
+}
 
   
 const approvePayment = async(id: number) => {
