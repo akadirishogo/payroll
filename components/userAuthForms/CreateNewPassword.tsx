@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { createNewUser } from "@/apiService";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 
 
@@ -14,6 +14,7 @@ import { useSearchParams } from "next/navigation";
 
 const CreateNewPassword = () => {
     const searchParams = useSearchParams();
+    const router = useRouter();
      const token = searchParams.get("token");
     const [loading, setLoading] = useState(false);
    const [error, setError] = useState("");
@@ -26,8 +27,10 @@ const CreateNewPassword = () => {
    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-        const result = await createNewUser(token || "")
-        console.log(result)
+        const result = await createNewUser(token || "", formData.newPassword, formData.confirmNewPassword)
+        if (result) {
+            router.push(`/`)
+        }
     }catch(error){
         console.log(error)
     }

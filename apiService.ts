@@ -585,7 +585,7 @@ export const processPayroll = async(id: number, token: string) => {
 }
 
 
-export const createNewUser = async(token: string) => {
+export const createNewUser = async(token: string, password: string, confirmPassword: string) => {
 
   try {
     const response = await fetch(`${BASE_URL}/auth/setup-account?token=${token}`, {
@@ -593,6 +593,12 @@ export const createNewUser = async(token: string) => {
       headers: {
         'Content-Type': 'application/json',
         },
+        body: JSON.stringify(
+          {
+              "password": password,
+              "confirmPassword": confirmPassword
+          }
+          ),
     });
 
 
