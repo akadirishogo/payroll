@@ -4,25 +4,6 @@ import { Input } from '@/components/Inputs';
 
 
 
-
-
-/* 
-interface Employee {
-    id: number;
-    firstName: string;
-    lastName: string;
-    deductions: any;
-    email: string;
-    role: string;
-    startDate: any;
-    monthlyGross: any;
-    netSalary: string;
-    department: string;
-    phoneNumber: string
-  } */
-
-
-
 function EmployeeSalaryForm({employeeDetails}) {
    
     const handleInputChange = (value) => {
@@ -52,7 +33,7 @@ function EmployeeSalaryForm({employeeDetails}) {
                         <div className="flex items-center gap-x-4">
                             <Input  
                             type="text"
-                            value={employeeDetails?.monthlyGross || ""}
+                            value={`₦${(employeeDetails?.grossSalary || 0).toLocaleString()}`}
                             onChange={(e) => handleInputChange(e.target.value)}
                             className='w-40'
                             disabled
@@ -72,7 +53,7 @@ function EmployeeSalaryForm({employeeDetails}) {
                     <label className="font-regular">Deductions</label>
                         <div className="flex items-center gap-x-4">
                             <div className="border p-2 rounded min-w-40">
-                                <p>{employeeDetails?.deductions ? employeeDetails.deductions : '0.00'}</p>
+                                <p>{employeeDetails?.deduction ? employeeDetails.deduction : '0.00'}</p>
                             </div>
                         </div>
                     </div>

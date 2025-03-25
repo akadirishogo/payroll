@@ -377,7 +377,7 @@ export async function fetchEmployees(token: string, companyId: string) {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      console.log(`HTTP error! Status: ${response.status}`);
     }
 
     const data = await response.json(); // Parse JSON response
@@ -605,7 +605,7 @@ export const createNewUser = async(token: string, password: string, confirmPassw
     const result = await response.json()
 
     if (!response.ok) {
-      throw new Error(result.message || "Failed to fetch payroll data");// Ensure an empty array is returned on failure
+      console.log(result.message || "Failed to create user");// Ensure an empty array is returned on failure
     }
     
     

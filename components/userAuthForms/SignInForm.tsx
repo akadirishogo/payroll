@@ -59,9 +59,19 @@ const SignInForm = () => {
       }
 
       const userData = await SignInUser(formData)
-      if (userData?.user?.id) {
-        router.push(`/user/${userData.user.id}`);
+      console.log(userData?.employee)
+      if (userData) {
+        const companyInfo = {
+          companyId: userData?.employee?.companyId,
+          company: userData?.employee?.company
+      };
+
+    
+        localStorage.setItem("companyInfo", JSON.stringify(companyInfo));
+        localStorage.setItem("employeeInfo", JSON.stringify(userData?.employee));
+        sessionStorage.setItem("userToken", userData?.access_token)
       }
+      router.push(`/user/${userData?.employee.id}`);
       setLoading(false);
 
     }catch(error){
@@ -150,7 +160,7 @@ return (
     <div className="flex items-center justify-center">
         <div className="relative bg-white p-8 rounded-lg shadow-lg xl:w-xl">
         <h2 className="text-xl font-semi text-center mb-4">Sign In</h2>
-        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+        {error && <p className="text-red-500 text-sm text-center"></p>}
         <form onSubmit={handleSubmit} className="space-y-4 font-regular">
           <input
               type="email"

@@ -5,11 +5,9 @@ import { useParams, usePathname } from "next/navigation";
 import { BiHomeAlt2 } from "react-icons/bi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { PiBuildingOfficeBold } from "react-icons/pi";
-import { IoIosNotificationsOutline } from "react-icons/io";
 import { MdOutlineLibraryBooks } from "react-icons/md";
-import { useEffect } from "react";
-import { useState } from "react";
-import users from "@/Employees";
+
+
 
 interface Employee {
     id: number;
@@ -29,20 +27,15 @@ interface Employee {
 
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+    const userInfo = JSON.parse(localStorage.getItem("employeeInfo") || "{}") 
     const pathname = usePathname();
 
     const params = useParams();
 
-    const [employee, setEmployee] = useState<Employee | null>();
-    const id = params.userId
+    const id = params.userid
 
+    console.log(id)
 
-    useEffect(() => {
-        const employee = users.find((user) => user.id === Number(id));
-        if(employee) {
-          setEmployee(employee)
-        }
-    }, [])
 
 
   
@@ -78,7 +71,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <div className="min-w-[80%]">
                 <div className="text-primary bg-backGroundGrey p-2 flex justify-end items-center gap-x-4 pr-4 sticky top-0 z-50">
                     <div className="flex gap-x-2">
-                        <p className="text-[12px]">CredLock Africa</p>
+                        <p className="text-[12px]">{userInfo?.company?.name}</p>
                         <PiBuildingOfficeBold className="w-5 h-5"/>
                     </div>
 
@@ -88,15 +81,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         </div>
                         
                         <div>
-                            <p className="text-[14px]">{employee?.firstName} {employee?.lastName}</p>
-                            <p className="text-[12px] font-light">{employee?.role}</p>
+                            <p className="text-[14px]">{userInfo?.firstname} {userInfo?.lastname}</p>
+                            <p className="text-[12px] font-light">{userInfo?.role}</p>
                         </div>
                         
                     </div>
                     <div>
                         <p className="text-[12px]">Sign Out</p>
                     </div>
-                    <IoIosNotificationsOutline className="w-7 h-7" />
                 </div>
                  {/* Page Content */}
                 <div>{children}</div>
