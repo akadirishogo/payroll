@@ -10,13 +10,13 @@ interface LandingLayoutProps {
 }
 
 export default function LandingLayout({ children }: LandingLayoutProps) {
-    const [isMobile, setIsMobile] = useState(false);
+    const [isMobile, setIsMobile] = useState(true);
     const router = useRouter();
 
 
     // Detect screen size on mount and on resize
   useEffect(() => {
-    if (!window) return;
+    if (typeof window !== 'undefined') {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 780); // 'sm' breakpoint in Tailwind is 640px
     };
@@ -27,9 +27,9 @@ export default function LandingLayout({ children }: LandingLayoutProps) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
+  }
   }, []);
 
-  console.log(isMobile)
 
     const getStarted = () => {
       if (isMobile) {
