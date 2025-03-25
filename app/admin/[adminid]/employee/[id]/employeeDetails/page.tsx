@@ -55,8 +55,6 @@ export default function EmployeeDetails() {
     
 
     useEffect(() => {
-        if (!window) return;
-
         if (employees.length > 0) {
             const clickedEmployee = employees.find(emp => emp.id === Number(id));
             if (clickedEmployee) {
@@ -66,8 +64,6 @@ export default function EmployeeDetails() {
     }, [id, employees]);
 
     useEffect(() => {
-        if (!window) return;
-
         if (employee) {
             setDetails(employee);
             localStorage.setItem("employeeDetails", JSON.stringify(employee));
@@ -77,7 +73,6 @@ export default function EmployeeDetails() {
 
 
     useEffect(() => {
-        if (!window) return;
         try {
             const storedData = localStorage.getItem("employeeDetails");
             if (storedData) {
