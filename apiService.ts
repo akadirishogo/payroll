@@ -585,5 +585,35 @@ export const processPayroll = async(id: number, token: string) => {
 }
 
 
+export const createNewUser = async(token: string) => {
+
+  try {
+    const response = await fetch(`${BASE_URL}//auth/setup-account?token=${token}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        },
+    });
+
+
+    const result = await response.json()
+
+    if (!response.ok) {
+      throw new Error(result.message || "Failed to fetch payroll data");// Ensure an empty array is returned on failure
+    }
+    
+    
+  
+    return result // Ensure response is an 
+    
+  } catch (error: any) {
+    console.log(`Check your internet connection: ${error.message}`);
+    throw new Error(error.message || "Something went wrong while fetching payroll data");
+  }
+}
+
+
+
+
 
 

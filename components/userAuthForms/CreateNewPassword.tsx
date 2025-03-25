@@ -3,6 +3,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { createNewUser } from "@/apiService";
+import { useSearchParams } from "next/navigation";
 
 
 
@@ -11,6 +13,8 @@ import Image from "next/image";
 
 
 const CreateNewPassword = () => {
+    const searchParams = useSearchParams();
+     const token = searchParams.get("token");
     const [loading, setLoading] = useState(false);
    const [error, setError] = useState("");
    const [formData, setFormData] = useState({
@@ -21,8 +25,15 @@ const CreateNewPassword = () => {
 
    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+        const result = await createNewUser(token || "")
+        console.log(result)
+    }catch(error){
+        console.log(error)
+    }
     setLoading(true)
     setError('')
+
     setLoading(false)
     }
 
