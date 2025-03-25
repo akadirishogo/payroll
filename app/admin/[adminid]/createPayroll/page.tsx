@@ -171,7 +171,7 @@ export default function PayrollForm() {
             <div className="sm:flex sm:gap-x-4">
                 <div className="mb-3">
                     <label className="block font-medium">Name</label>
-                    <Input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+                    <Input type="text" value={name} onChange={(e) => setName(e.target.value)} required className="max-w-[20px]"/>
                 </div>
                <div className="mb-3">
                     <label className="block font-medium">Date Created</label>

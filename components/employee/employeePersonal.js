@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/Cards'
 export default function EmployeePersonal({details}) {
 
   return (
-    <Card className='flex-1 bg-white'>
+    <Card className='bg-white'>
     <CardHeader className='border-primary border-b-2'>
         <CardTitle className='text-primary'>Personal information</CardTitle>
     </CardHeader>

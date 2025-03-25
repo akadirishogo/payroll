@@ -135,7 +135,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     </Link>
                 </div>
             </div>
-            <div className="w-full">
+            <div className="w-screen 1sm:w-screen">
                 <div className="lg:hidden bg-primary py-4 px-4 flex items-center justify-between">
                     <div onClick={() => setIsMenuOpen(!isMenuOpen)} className="cursor-pointer">
                         <GiHamburgerMenu color={Colors.onPrimary} size={25}/>

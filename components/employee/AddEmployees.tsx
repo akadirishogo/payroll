@@ -212,142 +212,142 @@ if (loading) {
 
 
     return (
-    <div>
-        <div className='bg-white mx-6 rounded-t-2xl my-10'>
-      
-            <div className='rounded-t-2xl flex text-white bg-gradient-to-r from-fromGreetGradient via-throughGreet to-primary justify-between items-center text-[15px] p-2'>
-            <p>Add Employee</p>  
-            </div>
-                <div className='px-4 pb-4'>
+        <div className="max-w-[1000px]">
+            <div className='bg-white mx-2 sm:mx-6 rounded-t-2xl my-10'>
+                <div className='rounded-t-2xl flex text-white bg-gradient-to-r from-fromGreetGradient via-throughGreet to-primary justify-between items-center text-[15px] p-2'>
+                    <p>Add Employee</p>  
+                </div>
+                <div className='px-2 sm:px-4 pb-4'>
                     <div className='flex p-2 justify-end gap-x-4'>
                         <button onClick={()=>addEmployee()} className='bg-primary text-white px-4 py-2 text-[12px] md:text-[14px]'>Add Record</button> 
                     </div>
-                    <Table className=''>
-                    <TableHeader className='bg-Inactive text-white'>
-                        <TableRow>
-                        <TableHead>First Name</TableHead>
-                        <TableHead>Last Name</TableHead>
-                        <TableHead>Email</TableHead>
-                        <TableHead>Role</TableHead>
-                        <TableHead>Start Date</TableHead>
-                        <TableHead>Monthly Gross</TableHead>
-                        <TableHead>Bank</TableHead>
-                        <TableHead>Account Number</TableHead>
-                        <TableHead>Account Name</TableHead>
-                        <TableHead>Department</TableHead>
-                        <TableHead>Phone Number</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody className='text-[12px]'>
-                        {employees.map((emp, index) => (
-                            <TableRow key={index}>
-                            <TableCell>
-                            <Input
-                                type="text"
-                                value={emp.firstname}
-                                onChange={(e) => handleInputChange(index, 'firstname', e.target.value)}
-                                />
-                            </TableCell>
-                            <TableCell>
-                                <Input
-                                    type="text"
-                                    value={emp.lastname}
-                                    onChange={(e) => handleInputChange(index, 'lastname', e.target.value)}
-                                    />
-                            </TableCell>
-                            <TableCell>
-                                <Input
-                                    type="text"
-                                    value={emp.email}
-                                    onChange={(e) => handleInputChange(index, 'email', e.target.value)}
-                                />
-                            </TableCell>
-                            <TableCell>
-                                <Input
-                                    type="text"
-                                    value={emp.role}
-                                    onChange={(e) => handleInputChange(index, 'role', e.target.value)}
-                                />
-                            </TableCell>
-                            <TableCell>
-                                <Input
-                                    type="text"
-                                    value={emp.startDate}
-                                    onChange={(e) => handleInputChange(index, 'startDate', e.target.value)}
-                                />
-                            </TableCell>
-                            <TableCell>
-                                <Input
-                                    type="number"
-                                    value={emp.grossSalary || ''}
-                                    onChange={(e) => handleInputChange(index, 'grossSalary', parseFloat(e.target.value) || 0)}
-                                />
-                            </TableCell>
-                            <TableCell>
-                            <Select value={emp.bankDetails.bankName}  onValueChange={(value) => handleInputChange(index, "bankDetails.bankName", value)}>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select a bank" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {banks.map((bank, index) => (
-                                  <SelectItem key={index} value={bank.name}>
-                                    {bank.name}
-                                  </SelectItem>
+                    <div className="overflow-x-auto -mx-2 sm:-mx-4">
+                        <Table className="w-full">
+                            <TableHeader className='bg-Inactive text-white'>
+                                <TableRow>
+                                <TableHead>First Name</TableHead>
+                                <TableHead>Last Name</TableHead>
+                                <TableHead>Email</TableHead>
+                                <TableHead>Role</TableHead>
+                                <TableHead>Start Date</TableHead>
+                                <TableHead>Monthly Gross</TableHead>
+                                <TableHead>Bank</TableHead>
+                                <TableHead>Account Number</TableHead>
+                                <TableHead>Account Name</TableHead>
+                                <TableHead>Department</TableHead>
+                                <TableHead>Phone Number</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody className='text-[12px]'>
+                                {employees.map((emp, index) => (
+                                    <TableRow key={index}>
+                                    <TableCell>
+                                    <Input
+                                        type="text"
+                                        value={emp.firstname}
+                                        onChange={(e) => handleInputChange(index, 'firstname', e.target.value)}
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        <Input
+                                            type="text"
+                                            value={emp.lastname}
+                                            onChange={(e) => handleInputChange(index, 'lastname', e.target.value)}
+                                            />
+                                        </TableCell>
+                                    <TableCell>
+                                        <Input
+                                            type="text"
+                                            value={emp.email}
+                                            onChange={(e) => handleInputChange(index, 'email', e.target.value)}
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        <Input
+                                            type="text"
+                                            value={emp.role}
+                                            onChange={(e) => handleInputChange(index, 'role', e.target.value)}
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        <Input
+                                            type="text"
+                                            value={emp.startDate}
+                                            onChange={(e) => handleInputChange(index, 'startDate', e.target.value)}
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        <Input
+                                            type="number"
+                                            value={emp.grossSalary || ''}
+                                            onChange={(e) => handleInputChange(index, 'grossSalary', parseFloat(e.target.value) || 0)}
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                    <Select value={emp.bankDetails.bankName}  onValueChange={(value) => handleInputChange(index, "bankDetails.bankName", value)}>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select a bank" />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        {banks.map((bank, index) => (
+                                          <SelectItem key={index} value={bank.name}>
+                                            {bank.name}
+                                          </SelectItem>
+                                        ))}
+                                      </SelectContent>
+                                    </Select>
+                                    </TableCell>
+
+                                    <TableCell>
+                                        <Input
+                                            type="text"
+                                            value={emp.bankDetails.accountNumber}
+                                            onChange={(e) => handleInputChange(index, 'bankDetails.accountNumber', e.target.value)}
+                                        />
+                                    </TableCell>
+
+                                    <TableCell>
+                                        <Input
+                                            type="text"
+                                            value={accountName}
+                                            onChange={(e) => handleInputChange(index, 'accountName', e.target.value)}
+                                            readOnly
+                                        />
+                                    </TableCell>
+
+                                    <TableCell>
+                                        <Input
+                                            type="text"
+                                            value={emp.department}
+                                            onChange={(e) => handleInputChange(index, 'department', e.target.value)}
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        <Input
+                                            type="text"
+                                            value={emp.phone}
+                                            onChange={(e) => handleInputChange(index, 'phone', e.target.value)}
+                                        />
+                                    </TableCell>
+                                </TableRow>
+                            
                                 ))}
-                              </SelectContent>
-                            </Select>
-                            </TableCell>
-
-                            <TableCell>
-                                <Input
-                                    type="text"
-                                    value={emp.bankDetails.accountNumber}
-                                    onChange={(e) => handleInputChange(index, 'bankDetails.accountNumber', e.target.value)}
-                                />
-                            </TableCell>
-
-                            <TableCell>
-                                <Input
-                                    type="text"
-                                    value={accountName}
-                                    onChange={(e) => handleInputChange(index, 'accountName', e.target.value)}
-                                    readOnly
-                                />
-                            </TableCell>
-
-                            <TableCell>
-                                <Input
-                                    type="text"
-                                    value={emp.department}
-                                    onChange={(e) => handleInputChange(index, 'department', e.target.value)}
-                                />
-                            </TableCell>
-                            <TableCell>
-                                <Input
-                                    type="text"
-                                    value={emp.phone}
-                                    onChange={(e) => handleInputChange(index, 'phone', e.target.value)}
-                                />
-                            </TableCell>
-                        </TableRow>
-                    
-                        ))}
-                    </TableBody>
-                    {/* <TableFooter>
-                        <TableRow>
-                        <TableCell colSpan={8}>Total</TableCell>
-                        <TableCell className="text-right">$2,500.00</TableCell>
-                        </TableRow>
-                    </TableFooter> */}
-                    </Table>
-      </div>
-      <div className='flex justify-end p-2 mr-2'>
-        <button onClick={saveRecords} className='bg-primary text-white px-4 py-2 text-[12px] md:text-[14px]'>
-          {loading ? "Please wait..." : "Save Record"}
-        </button>  
-      </div>
-         
-    </div>
-</div>
-  )
+                            </TableBody>
+                            {/* <TableFooter>
+                                <TableRow>
+                                <TableCell colSpan={8}>Total</TableCell>
+                                <TableCell className="text-right">$2,500.00</TableCell>
+                                </TableRow>
+                            </TableFooter> */}
+                        </Table>
+                    </div>
+                </div>
+                <div className='flex justify-end p-2 mr-2'>
+                    <button onClick={saveRecords} className='bg-primary text-white px-4 py-2 text-[12px] md:text-[14px]'>
+                        {loading ? "Please wait..." : "Save Record"}
+                    </button>  
+                </div>
+            </div>
+        </div>
+    )
 }
