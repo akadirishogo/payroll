@@ -60,7 +60,7 @@ const SignInForm = () => {
 
       const userData = await SignInUser(formData)
       if (userData?.user?.id) {
-        router.push(`/${userData.user.id}/home`);
+        router.push(`/user/${userData.user.id}`);
       }
       setLoading(false);
 

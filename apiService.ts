@@ -610,7 +610,7 @@ export const createNewUser = async(token: string, password: string, confirmPassw
     
     
   
-    return result // Ensure response is an 
+    return response// Ensure response is an 
     
   } catch (error: any) {
     console.log(`Check your internet connection: ${error.message}`);

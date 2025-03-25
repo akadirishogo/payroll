@@ -26,15 +26,19 @@ const CreateNewPassword = () => {
 
    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true)
     try {
         const result = await createNewUser(token || "", formData.newPassword, formData.confirmNewPassword)
-        if (result) {
-            router.push(`/`)
-        }
+        setFormData({
+            newPassword: "",
+            confirmNewPassword: ""
+        })
+        console.log(result)
+        router.push(`/`)
     }catch(error){
-        console.log(error)
+        setError(`${error}`)
     }
-    setLoading(true)
+   
     setError('')
 
     setLoading(false)
