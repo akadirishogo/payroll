@@ -9,7 +9,7 @@ import { Colors } from '@/Colors';
 
 export default function EmployeeIdCard({employeeDetails}) {
   return (
-        <Card className='w-[25%] bg-gradient-to-t from-fromGradient via-throughGradient to-primary'>
+        <Card className='hidden lg:inline-block w-[25%] bg-gradient-to-t from-fromGradient via-throughGradient to-primary'>
             <CardHeader className='border-white border-b-2'>
                 <CardTitle className='text-white'>Employee</CardTitle>
             </CardHeader>

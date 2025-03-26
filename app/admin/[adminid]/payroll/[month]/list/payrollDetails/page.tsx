@@ -118,93 +118,93 @@ const approvePayment = async(id: number) => {
 
    
     return (
-      <div className='px-6 mb-14'>
+      <div className='px-6 mt-6 mb-14'>
          <div onClick={getBack} className='cursor-pointer mb-4'>
             <FaChevronLeft size={20} color={Colors.primary} />
         </div>
         <div>
           <span className='bg-clip-text 
               text-transparent bg-gradient-to-r from-fromGreetGradient 
-              via-throughGreet to-primary font-semibold text-[25px]'>
+              via-throughGreet to-primary font-semibold text-[15px] md:text-[25px]'>
               {typeof params.month === 'string' ? params.month.charAt(0).toUpperCase() + params.month.slice(1) : 'Unknown'}
           </span>
         </div>
-        <div className='bg-white px-8 py-4 my-6 flex'>
+        <div className='px-8 py-4 my-6 flex bg-white'>
           <div className='flex flex-col gap-y-1 flex-1'>
             <div className='bg-primary w-10 h-10 rounded-[20px] flex items-center justify-center'>
                 <FaRegPenToSquare className='text-white' />
             </div>
-            <p className='text-[13px] text-Inactive font-semi'>STEP 1</p>
-            <p className='font-semi text-primary'>Processed</p>
-            <p className='bg-approved text-[12px] max-w-min px-[2px] py-[4px] text-white rounded-[4px]'>Complete</p>
+            <p className='text-[9px] md:text-[12px] lg:text-[13px] text-Inactive font-semi'>STEP 1</p>
+            <p className='font-semi text-[9px] md:text-[12px] text-primary'>Processed</p>
+            <p className='bg-approved text-[9px] md:text-[12px] lg:text-[13px] max-w-min px-[2px] py-[4px] text-white rounded-[4px]'>Complete</p>
           </div>
           
           <div className='flex flex-col gap-y-1 flex-1 items-center'>
-            <div className='flex w-36'>
+            <div className='flex'>
               <div className='bg-primary w-10 h-10 rounded-[20px] flex items-center justify-center'>
                   <FaRegPenToSquare className='text-white' />
               </div>
             </div>
-            <div className='flex w-36'>
-                <p className='text-[13px] text-Inactive font-semi'>STEP 2</p>
+            <div className=''>
+                <p className='text-[9px] md:text-[12px] lg:text-[13px] text-Inactive font-semi'>STEP 2</p>
             </div>
-            <div className='flex w-36'>
-                <p className='font-semi text-primary'>Approval</p>
+            <div className=''>
+                <p className='font-semi text-[9px] md:text-[12px] text-primary'>Approval</p>
             </div>
-            <div className='flex w-36'>
-              <p className={`text-[12px] min-w-min px-[2px] py-[4px] text-white rounded-[4px]
+            <div className=''>
+              <p className={`text-[9px] md:text-[12px] min-w-min px-[2px] py-[4px] text-white rounded-[4px]
                 ${payrollDetails?.payroll?.status === "approved" ? "bg-approved" : "bg-progress"}
                 `}>{payrollDetails?.payroll?.status === "approved" ? "Approved" : "InProgress"}</p>
             </div>
           </div>
           
           <div className='flex flex-col gap-y-1 flex-1 justify-center items-end'>
-            <div className='flex w-36'>
+            <div className=''>
               <div className='bg-Inactive w-10 h-10 rounded-[20px] flex items-center justify-center'>
                   <FaRegPenToSquare className='text-white' />
               </div>
             </div>
             
-            <div className='flex w-36'>
-                <p className='text-[13px] text-Inactive font-semi'>STEP 3</p>
+            <div className=''>
+                <p className='text-[9px] md:text-[12px] lg:text-[13px] text-Inactive font-semi'>STEP 3</p>
             </div>
-            <div className='flex w-36'>
-                <p className='font-semi text-Inactive'>Payment & Close</p>
+            <div className=''>
+                <p className='font-semi text-[9px] md:text-[12px] text-Inactive'>Payment</p>
             </div>
            
-            <div className='flex w-36'>
-              <p className='bg-Inactive text-[12px] min-w-min px-[2px] py-[4px] text-white rounded-[4px]'>Pending</p>
+            <div className=''>
+              <p className='bg-Inactive text-[9px] md:text-[12px] min-w-min px-[2px] py-[4px] text-white rounded-[4px]'>Pending</p>
             </div>
           </div>
         </div>
 
-        <div>
+        <div className=''>
           <div className='bg-gradient-to-r from-fromGreetGradient 
         via-throughGreet to-primary px-4 py-2 rounded-t-[15px]'>
             <p className='text-white'>Summary</p>
           </div>
         </div>
 
-        <div className='flex gap-x-40 mt-10'>
-            <div className='bg-white rounded-xl p-4 pr-32'>
+        <div className='flex flex-col md:flex-row gap-y-10 lg:flex-row lg:gap-x-40 mt-10'>
+            <div className='bg-white rounded-xl p-4 border pr-32'>
               <GiTakeMyMoney size={45} color={Colors.primary}/>
               <p className='text-[20px]'>Payroll Size</p>
               <p className='text-4xl font-semi'>₦{Number(payrollDetails?.payroll?.totalAmount).toLocaleString()}</p>
               <button className='bg-primary text-white text-[15px] px-[6px] py-[2px] mt-[4px]'>View</button>
             </div>
 
-            <div className='bg-white rounded-xl p-4 pr-48'>
+            <div className='bg-white rounded-xl border p-4 pr-48'>
               <IoIosPeople size={45} color={Colors.primary}/>
               <p className='text-[20px] mt-6'>Employee Size</p>
               <p className='text-4xl font-semi'>{payrollDetails?.employeeCount}</p>
             </div>
         </div>
-        <div className='flex justify-end text-white gap-x-4 mt-10 min-h-[50px]'>
-            <button className='bg-unPaid px-10 py-4 rounded-[7px] font-semi'>Reject Payroll</button>
-            <button onClick={() => approvePayment(Number(id))} className='bg-approved px-10 py-4 rounded-[7px] font-semi'>
+        <div className='flex justify-end text-white gap-x-4 mt-10'>
+            <button className='bg-unPaid px-4 py-2 rounded-[7px] font-semi text-[9px] md:text-[12px] lg:text-[15px]'>Reject Payroll</button>
+            <button onClick={() => approvePayment(Number(id))} className='text-[9px] md:text-[12px] lg:text-[15px] bg-approved px-4 py-2 rounded-[7px] font-semi'>
               {approvalLoading ? "Approving..." : "Approve Payroll"}
             </button>
-            <button className={`px-10 py-4 rounded-[7px] font-semi transition 
+            <button className={`text-[9px] md:text-[12px] lg:text-[15px] px-4 py-2 rounded-[7px] font-semi transition 
                 ${payrollDetails?.payroll?.status === "approved" ? "bg-primary text-white cursor-pointer" : "bg-gray-400 text-gray-300 cursor-not-allowed"}
                   `}
                   disabled={payrollDetails?.payroll?.status !== "approved"}

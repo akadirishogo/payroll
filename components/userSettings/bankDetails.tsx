@@ -11,6 +11,16 @@ interface Bank {
     code?: string; // Some banks might not have a code
 }
 
+
+interface BankDetails {
+    accountNumber: string;
+    bankCode: string;
+    bankName: string;
+    id: number;
+    isDefault: boolean;
+    recipientCode: string;
+  }
+
 interface BankAccount {
     id: number;
     bankName: string;
@@ -37,6 +47,8 @@ export default function BankDetails() {
         accountNumber: "",
         accountName: "",
       });
+
+    const [bankDetails, setBankDetails] = useState<BankDetails[] | null>(null);
     const [bankAccounts, setBankAccounts] = useState([
         { id: 1, bankName: "First Bank", accountNumber: "1234567890", isDefault: true, accountName: "Akadiri Oluwashogo Mark" },
         { id: 2, bankName: "Access Bank", accountNumber: "0817286365", isDefault: false, accountName: "Akadiri Oluwashogo Mark" },
@@ -51,11 +63,20 @@ export default function BankDetails() {
                 const data = await response.json();
                 setBankList(data)
             } catch(err) {
-                console.error('Error fetching bank list: ', err)
+                console.log('Error fetching bank list: ', err)
             }
         }
         getBankList()
     }, [])
+
+    useEffect(() => {
+        // Fetch from local storage when component mounts
+        const storedData = localStorage.getItem("employeeInfo");
+        if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        setBankDetails(parsedData?.bankDetails)
+        }
+      }, []);
 
    /*  useEffect(() => {
         if (bankCode && accountNumber.length === 10) {  
@@ -179,15 +200,15 @@ console.log(bankAccounts)
     </CardHeader>
     <CardContent className="">
         
-        <div className="relative flex items-start gap-x-10">
+        <div className="relative">
             <div className="mb-6 -mt-4">
                 <p>Set your bank details</p>
             </div>
             <div>
             
-            <div className='grid grid-cols-3 gap-6'>
-                {bankAccounts?.map((bankAccount) => (
-                <div className="border-2 w-60 h-60 rounded-xl -mt-[15px]" key={bankAccount?.id}>
+            <div className='flex flex-col gap-y-8 sm:grid sm:grid-cols-2 lg:grid lg:grid-cols-3 lg:gap-6'>   {/* grid grid-cols-3 gap-6 */}
+                {bankDetails?.map((bankAccount) => (
+                <div className="border-2 lg:w-60 lg:h-60  rounded-xl -mt-[15px]" key={bankAccount?.id}>
                     <div className={`${bankAccount.isDefault ? 'bg-primary' : 'bg-black'} border-b-2 rounded-t-xl h-12 flex items-center px-4`}>
                         <p className="text-white">{bankAccount.isDefault ? "Default" : ""}</p>
                     </div>
@@ -202,7 +223,7 @@ console.log(bankAccounts)
                         </div>
                         <div>
                             <p className='text-[15px] font-semi'>Account Name</p>
-                            <p className='text-[17px] font-light'>{bankAccount?.accountName}</p>
+                            <p className='text-[17px] font-light'>{bankAccount?.accountNumber}</p>
                         </div>
                     </div>
                 </div>
@@ -308,7 +329,7 @@ console.log(bankAccounts)
             </form>
       </Modal>       
     </div>
-    <div className='mt-10 flex justify-end gap-x-4'>
+    <div className='mt-10 flex justify-center lg:justify-end gap-x-4'>
         <Button
             onClick={() => setIsModalOpen(true)}
             className="bg-primary text-white" 

@@ -40,7 +40,9 @@ export default function Home() {
         console.log(parsedUser)
         // Fetch employees only if userData and token exist
         if (token && parsedUser?.companyId) {
-          await fetchEmployees(token, parsedUser.companyId);
+          const employees = await fetchEmployees(token, parsedUser.companyId);
+          console.log(employees)
+          await localStorage.setItem("Employees", JSON.stringify(employees))
         }
       }
       } catch(err) {

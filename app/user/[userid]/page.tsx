@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/Cards'
-import { useParams } from "next/navigation";
 import EmployeeSalaryForm from '@/components/userHome/employeeSalaryForm';
 import EmployeeIdCard from '@/components/userHome/employeeIdCard';
 import EmployeePersonal from '@/components/userHome/employeePersonal';
@@ -57,65 +56,65 @@ export default function HomePage() {
     }
 
     return (
-        <div className='px-14 py-6'>
-            <div className='flex gap-x-14'>
+        <div className='px-5 py-6'>
+            <div className='lg:flex lg:gap-x-4'>
                 <EmployeeIdCard employeeDetails={userInfo} />
                 <EmployeePersonal employeeDetails={userInfo} />
             </div>
             <div className='mt-6'>
                 <Card className='flex-1 bg-white'>
                     <CardHeader className='border-primary border-b-2'>
-                        <CardTitle className='text-primary'>Official information</CardTitle>
+                        <CardTitle className='text-primary lg:text-[15px] text-[12px]'>Official information</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div>
                             <form>
                                 <div className="mt-10">
-                                    <div className="mb-2 flex gap-x-14 items-center">
+                                    <div className="mb-2 flex gap-x-4 items-center">
                                         <div className='w-max'>
-                                            <label className="font-medium">Designation/Role</label>
+                                            <label className="font-medium lg:text-[15px] text-[10px]">Designation/Role</label>
                                         </div>
-                                        <div className='bg-lightGrey w-2/3 p-2'>{userInfo?.role || 'N/A'}</div>
+                                        <div className='bg-lightGrey lg:text-[15px] text-[10px] w-2/3 p-2'>{userInfo?.role || 'N/A'}</div>
                                     </div>
-                                    <div className="mb-2 flex gap-x-24 items-center">
+                                    <div className="mb-2 flex gap-x-4 items-center">
                                         <div className='w-max'>
-                                            <label className="font-medium">Department</label>
+                                            <label className="font-medium lg:text-[15px] text-[10px]">Department</label>
                                         </div>
-                                        <div className='bg-lightGrey w-2/3 p-2'>{userInfo?.department || 'N/A'}</div>
+                                        <div className='bg-lightGrey lg:text-[15px] text-[10px] w-2/3 p-2'>{userInfo?.department || 'N/A'}</div>
                                     </div>
-                                    <div className="mb-2 flex gap-x-20 items-center">
-                                        <label className="font-medium">Date Joined</label>
-                                        <div className='bg-lightGrey w-2/3 p-2'>{userInfo?.startDate.split("T")[0]}</div>
+                                    <div className="mb-2 flex gap-x-4 items-center">
+                                        <label className="font-medium lg:text-[15px] text-[10px]">Date Joined</label>
+                                        <div className='bg-lightGrey lg:text-[15px] text-[10px] w-2/3 p-2'>{userInfo?.startDate.split("T")[0]}</div>
                                     </div>
                                 </div>
                             </form>
                             <div className='text-primary font-semi mt-14'>Salary information</div>
                             
-                            <div className='flex p-4 gap-x-4'>
-                                <div className='p-4 border-lightGrey border-2 w-1/3 rounded-xl'>
+                            <div className='p-4 flex flex-col lg:flex-row lg:gap-x-6 lg:w-full gap-y-4'>
+                                <div className='p-4 border-lightGrey lg:w-1/3 border-2 rounded-xl'>
                                     <div className='flex'>
                                         <p className='font-regular'>Net Salary</p>
                                     </div>
                                     <div className='flex justify-end'>
-                                        <p className='text-3xl font-bold text-primary'>₦{(userInfo?.grossSalary - userInfo?.deduction).toLocaleString()}</p>
+                                        <p className='text-xl font-bold text-primary'>₦{(userInfo?.grossSalary - userInfo?.deduction).toLocaleString()}</p>
                                     </div>
                                 </div>
 
-                                <div className='p-4 border-lightGrey border-2 w-1/3 rounded-xl'>
+                                <div className='p-4 border-lightGrey border-2 lg:w-1/3 rounded-xl'>
                                     <div className='flex'>
                                         <p className='font-regular'>Gross Salary</p>
                                     </div>
                                     <div className='flex justify-end'>
-                                        <p className='text-3xl font-bold text-primary'>₦{userInfo?.grossSalary.toLocaleString()}</p>
+                                        <p className='text-xl font-bold text-primary'>₦{userInfo?.grossSalary.toLocaleString()}</p>
                                     </div>
                                 </div>
 
-                                <div className='p-4 border-lightGrey border-2 w-1/3 rounded-xl'>
+                                <div className='p-4 border-lightGrey border-2 lg:w-1/3 rounded-xl'>
                                     <div className='flex'>
                                         <p className='font-regular'>Deductions</p>
                                     </div>
                                     <div className='flex justify-end'>
-                                        <p className='text-3xl font-bold text-primary'>{userInfo?.deduction}</p>
+                                        <p className='text-xl font-bold text-primary'>{userInfo?.deduction}</p>
                                     </div>
                                 </div>
                             </div>

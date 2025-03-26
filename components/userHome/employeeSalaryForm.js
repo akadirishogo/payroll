@@ -19,8 +19,8 @@ function EmployeeSalaryForm({employeeDetails}) {
 
 
     return (
-        <div className='ml-4 mt-10 flex gap-x-24'>
-        <Card className='w-[30%]'>
+        <div className='mt-10 flex flex-col lg:flex-row lg:gap-x-6 gap-y-4'>
+        <Card className='lg:w-[30%]'>
             <CardHeader className='border-lightGrey border-b-2 bg-gradient-to-r from-fromGreetGradient 
             via-throughGreet to-primary rounded'>
                 <CardTitle className='text-white'>Basic Earnings</CardTitle>
@@ -43,16 +43,16 @@ function EmployeeSalaryForm({employeeDetails}) {
                 </form>
             </CardContent>
         </Card>
-        <Card className='w-[30%]'>
+        <Card className='lg:w-[30%]'>
         <CardHeader className='border-lightGrey border-b-2 bg-gradient-to-r from-fromGreetGradient 
             via-throughGreet to-primary rounded'>
                 <CardTitle className='text-white'>Deductions</CardTitle>
             </CardHeader>
             <CardContent className='mt-6 flex flex-col items-start pb-10'>
                 <div className="">
-                    <label className="font-regular">Deductions</label>
+                    <label className="font-regular text-[12px]">Deductions</label>
                         <div className="flex items-center gap-x-4">
-                            <div className="border p-2 rounded min-w-40">
+                            <div className="border p-2 rounded min-w-40 text-[10px]">
                                 <p>{employeeDetails?.deduction ? employeeDetails.deduction : '0.00'}</p>
                             </div>
                         </div>

@@ -175,7 +175,7 @@ export default function PayrollForm() {
                 </div>
                <div className="mb-3">
                     <label className="block font-medium">Date Created</label>
-                    <Input type="text" value={new Date().toLocaleDateString()} disabled />
+                    <Input type="text" value={new Date().toLocaleDateString()} disabled className="max-w-[150px]" />
                 </div>
             </div>
          

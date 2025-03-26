@@ -77,7 +77,7 @@ export default function EmployeeDetails() {
             <IoChevronBackSharp size={25} />
             <span className='bg-clip-text 
             text-transparent bg-gradient-to-r from-fromGreetGradient 
-            via-throughGreet to-primary text-[20px] font-semi'>
+            via-throughGreet to-primary text-[15px] md:text-[18px] lg:text-[20px] font-semi'>
             Back to records
             </span>
         </div>
@@ -94,21 +94,21 @@ export default function EmployeeDetails() {
                     <div>
                         <form>
                             <div className="mt-10">
-                                <div className="mb-2 flex gap-x-14 items-center">
-                                    <div className='w-max'>
-                                        <label className="font-medium">Designation/Role</label>
+                                <div className="mb-2 flex gap-x-6 lg:gap-x-14 items-center">
+                                    <div className='lg:w-max'>
+                                        <label className="font-medium text-[10px] md:text-[13px] lg:text-[15px]">Designation/Role</label>
                                     </div>
-                                    <div className='bg-lightGrey w-2/3 p-2'>{details?.department}</div>
+                                    <div className='bg-lightGrey text-[10px] md:text-[13px] lg:text-[15px] lg:w-2/3 p-2'>{details?.department}</div>
                                 </div>
-                                <div className="mb-2 flex gap-x-24 items-center">
-                                    <div className='w-max'>
-                                        <label className="font-medium">Department</label>
+                                <div className="mb-2 flex gap-x-6 lg:gap-x-24 items-center">
+                                    <div className='lg:w-max'>
+                                        <label className="font-medium text-[10px] md:text-[13px] lg:text-[15px]">Department</label>
                                     </div>
-                                    <div className='bg-lightGrey w-2/3 p-2'>{details?.department}</div>
+                                    <div className='bg-lightGrey text-[10px] md:text-[13px] lg:text-[15px] lg:w-2/3 p-2'>{details?.department}</div>
                                 </div>
-                                <div className="mb-2 flex gap-x-20 items-center">
-                                    <label className="font-medium">Date Joined</label>
-                                    <div className='bg-lightGrey w-2/3 p-2'>{details?.createdAt.split("T")[0]}</div>
+                                <div className="mb-2 flex gap-x-6 lg:gap-x-20 items-center">
+                                    <label className="font-medium text-[10px] md:text-[13px] lg:text-[15px]">Date Joined</label>
+                                    <div className='bg-lightGrey text-[10px] md:text-[13px] lg:text-[15px] lg:w-2/3 p-2'>{details?.createdAt.split("T")[0]}</div>
                                 </div>
                             </div>
                         </form>

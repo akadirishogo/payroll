@@ -22,6 +22,7 @@ interface BankDetails {
   bankCode: string;
   isDefault: boolean;
   accountNumber: string;
+  accountName: string;
 }
 
 interface Employee {
@@ -72,6 +73,7 @@ export default function AddEmployee() {
               bankCode: '',
               isDefault: true,
               accountNumber: '',
+              accountName: '',
             }
         }, // Initial empty row
       ]);
@@ -187,6 +189,7 @@ if (loading) {
               bankCode: '',
               isDefault: true,
               accountNumber: '',
+              accountName: "",
             }
         }]);
       };

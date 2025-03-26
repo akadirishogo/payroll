@@ -82,7 +82,7 @@ export default function Payrolls() {
   console.log(selectedYear)
   return (
     <div>
-      <div onClick={getBack} className='px-4 cursor-pointer'>
+      <div onClick={getBack} className='px-4 mt-4 cursor-pointer'>
           <FaChevronLeft size={20} color={Colors.primary} />
       </div>
       <div className='font-semibold text-[25px] mb-4 mt-4 px-4'>
