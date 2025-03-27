@@ -47,6 +47,7 @@ interface Employee {
 
 export default function ProfileDetails() {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [loading, setLoading] = useState(false);
     const [employee, setEmployee] = useState([])
     const [userInfo, setUserInfo] = useState<Employee | null>(null);
     const [isEditing, setIsEditing] = useState(false);
@@ -55,8 +56,7 @@ export default function ProfileDetails() {
 
    
     
-    // const id = params.userId
-
+ 
         
     useEffect(() => {
         const storedData = localStorage.getItem("employeeInfo");
@@ -69,14 +69,34 @@ export default function ProfileDetails() {
         }
     }, []);
 
+      // Listen for changes in localStorage to update UI when profile picture is updated
+
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        setLoading(true)
         if (e.target.files && e.target.files[0] && userInfo?.company?.id) {
-            const file = e.target.files[0]; 
-            const imageResult = await uploadImage(token || "", userInfo.company.id, userInfo.id || 0, file); 
-            console.log(imageResult);
+            try {
+                const file = e.target.files[0]; 
+                const imageResult = await uploadImage(token || "", userInfo.company.id, userInfo.id || 0, file); 
+                updateProfilePicture(imageResult?.profilePictureUrl)
+                setLoading(false)
+            }catch(error) {
+                console.log(error)
+            }finally {
+                setLoading(false)
+            }   
         }
     };
 
+
+    const updateProfilePicture = (newProfilePictureUrl: string) => {
+        
+        if (!userInfo) return;
+
+        const updatedInfo = { ...userInfo, profilePictureUrl: newProfilePictureUrl }; // Update field
+        localStorage.setItem("employeeInfo", JSON.stringify(updatedInfo)); // Save to localStorage
+        setUserInfo(updatedInfo);      
+    };
+    
 
   
 
@@ -126,8 +146,8 @@ export default function ProfileDetails() {
                             ref={fileInputRef} 
                             onChange={handleFileChange} 
                         />
-                    <Button onClick={() => fileInputRef.current?.click()} className="border-2 px-4 py-1 rounded-xl">
-                     {userInfo?.profilePictureUrl ? "Change Photo" : "Upload Photo"}
+                    <Button onClick={() => fileInputRef.current?.click()} className="text-white border-2 px-4 py-1 rounded-xl">
+                     {loading ? "Uploading..." : userInfo?.profilePictureUrl ? "Change Photo" : "Upload photo"}
                     </Button>
                     </div>
                 </div>

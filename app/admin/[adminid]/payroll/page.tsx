@@ -17,10 +17,27 @@ import { Colors } from '@/Colors';
 import { fetchYearPayroll } from '@/apiService';
 
 
+interface Employee {
+  id: number;
+  DOB: string;
+  maritalStatus: string;
+  firstname: string;
+  lastname: string;
+  deduction: number;
+  email: string;
+  role: string;
+  startDate: string;
+  grossSalary: number;
+  netSalary: number;
+  department: string;
+  phone: string;
+  accountNumber: string;
+  bank: string;
+  createdAt: string;
 
+}
 
-const userData = JSON.parse(localStorage.getItem("userInfo") || "{}")
-
+// Add this type definition before the component
 type PayrollData = {
   month: string;
   year: number;
@@ -28,36 +45,44 @@ type PayrollData = {
   employeeCount: number;
 };
 
-
 export default function PayrollListPage() {
   const [selectedYear, setSelectedYear] = useState<string>('2025');
-  const [payroll, setPayroll] = useState<PayrollData[]>(JSON.parse(localStorage.getItem("Payroll") || '[]'));
+  const [payroll, setPayroll] = useState<PayrollData[]>([]);
+  const [userData, setUserData] = useState<Employee>();
 
+  useEffect(() => {
+    // Initialize user data from localStorage
+    if (typeof window !== 'undefined') {
+      const storedUserInfo = localStorage.getItem("userInfo");
+      if (storedUserInfo) {
+        setUserData(JSON.parse(storedUserInfo));
+      }
+
+      // Initialize payroll data
+      const storedPayroll = localStorage.getItem("Payroll");
+      if (storedPayroll) {
+        setPayroll(JSON.parse(storedPayroll));
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const getPayroll = async () => {
-        const token = sessionStorage.getItem("accessToken") || ""
-        const payroll = await fetchYearPayroll(token, selectedYear || "")
-        setPayroll(payroll ?? [])
-        if (payroll) {
-          const savedPayroll =  JSON.stringify(payroll)
-          localStorage.setItem("Payroll", savedPayroll)
-        }
-        
+      const token = sessionStorage?.getItem("accessToken") || "";
+      const payroll = await fetchYearPayroll(token, selectedYear || "");
+      setPayroll(payroll ?? []);
+      if (payroll && typeof window !== 'undefined') {
+        localStorage.setItem("Payroll", JSON.stringify(payroll));
       }
-      getPayroll();    
-  }, [selectedYear])
-
-  
+    }
+    getPayroll();    
+  }, [selectedYear]);
 
   const handleFilterChange = (value: string) => {
-    console.log("Selected Year:", Number(value));
     setSelectedYear(value);
-    // Use this function elsewhere in ParentComponent
-};
+  };
 
-
-console.log(selectedYear)
+  console.log(selectedYear)
   return (
     <div>
       <div className='font-semibold text-[25px] mb-4 mt-4 px-4'>
@@ -89,7 +114,13 @@ console.log(selectedYear)
                 <TableCell className="font-medium">{roll?.month}</TableCell>
                 <TableCell className="">₦{Number(roll?.totalAmount).toLocaleString()}</TableCell>
                 <TableCell className=''>{roll?.employeeCount}</TableCell>
-                <TableCell className=''><Link href={`/admin/${userData.id}/payroll/${roll?.month.toLowerCase()}/list?year=${selectedYear}`}><button className='text-white bg-black text-[10px] px-[7px] py-[1px]'>View</button></Link></TableCell>
+                <TableCell className=''>
+                  {userData && (
+                    <Link href={`/admin/${userData.id}/payroll/${roll?.month.toLowerCase()}/list?year=${selectedYear}`}>
+                      <button className='text-white bg-black text-[10px] px-[7px] py-[1px]'>View</button>
+                    </Link>
+                  )}
+                </TableCell>
               </TableRow>
             ))
             :
