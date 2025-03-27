@@ -80,7 +80,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         <IoSettingsOutline className="h-5 w-5" />
                         Settings
                     </Link>
-                        <button onClick={logOut} className="mt-4 p-2 text-white rounded-lg">
+                        <button onClick={logOut} className="mt-4 p-2 text-white rounded-lg cursor-pointer hover:underline">
                             Sign Out
                         </button>
                     </div>
@@ -139,14 +139,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         <PiBuildingOfficeBold className="w-5 h-5"/>
                     </div>
 
-                    <div className="flex gap-x-2">
-                        <div className="max-h-[30px] max-w-[30px]">
+                    <div className="flex items-center gap-x-2">
+                        <div className="h-[30px] w-[30px] flex items-center justify-center rounded-full bg-white">
                             {userInfo?.profilePictureUrl ? (
                                 <img src={`${userInfo?.profilePictureUrl}`} width={40} height={40} className="rounded-full" alt="user image"/>
                             ) 
                             : 
                             (
-                                <FaUser color={Colors.greyBorder} size={10} />
+                                <FaUser color={Colors.greyBorder} size={20} />
                             )}
                             
                         </div>
@@ -157,7 +157,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         </div>
                         
                     </div>
-                    <div onClick={logOut}>
+                    <div onClick={logOut} className="cursor-pointer hover:underline">
                         <p className="text-[12px]">Sign Out</p>
                     </div>
                 </div>

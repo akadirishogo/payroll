@@ -1,20 +1,32 @@
 "use client;"
 
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '../Cards'
 import { Button } from '../Button'
 import { Input } from '../Inputs'
-import { RiDeleteBin6Line } from 'react-icons/ri'
+// import { RiDeleteBin6Line } from 'react-icons/ri'
 import { Loader2 } from 'lucide-react'
 
 import { FaUser } from "react-icons/fa6";
 import { Colors } from '@/Colors'
+import { uploadImage } from '@/apiService'
+
+
+interface Company {
+    id: string;
+    name: string;
+    contactAddress: string;
+    phone: string | null;
+    createdAt: string;
+    updatedAt: string;
+}
 
 interface Employee {
     id: number;
     DOB: string;
     maritalStatus: string;
+    company: Company;
     firstname: string;
     lastname: string;
     deduction: number;
@@ -34,9 +46,14 @@ interface Employee {
 
 
 export default function ProfileDetails() {
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [employee, setEmployee] = useState([])
     const [userInfo, setUserInfo] = useState<Employee | null>(null);
     const [isEditing, setIsEditing] = useState(false);
+
+    const token = sessionStorage.getItem("userToken")
+
    
     
     // const id = params.userId
@@ -52,6 +69,15 @@ export default function ProfileDetails() {
             }
         }
     }, []);
+
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0] && userInfo?.company?.id) {
+            const file = e.target.files[0];
+            setSelectedFile(file); 
+            const imageResult = await uploadImage(token || "", userInfo.company.id, userInfo.id || 0, file); 
+            console.log(imageResult);
+        }
+    };
 
 
   
@@ -96,12 +122,15 @@ export default function ProfileDetails() {
                         
                     </div>
                     <div className="mt-6 gap-x-4 flex">
-                        <button className="border-2 px-4 py-1 rounded-xl">
-                            <p className="text-[15px]">Change Photo</p>
-                        </button>
-                        <button className="border-2 w-10 h-10 flex items-center justify-center rounded-full">
-                            <RiDeleteBin6Line />
-                        </button>
+                    <input type="file" 
+                            accept="image/*" 
+                            className="hidden"
+                            ref={fileInputRef} 
+                            onChange={handleFileChange} 
+                        />
+                    <Button onClick={() => fileInputRef.current?.click()} className="border-2 px-4 py-1 rounded-xl">
+                     {userInfo?.profilePictureUrl ? "Change Photo" : "Upload Photo"}
+                    </Button>
                     </div>
                 </div>
 

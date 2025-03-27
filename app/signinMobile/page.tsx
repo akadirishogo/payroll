@@ -59,9 +59,19 @@ const SignInForm = () => {
       }
 
       const userData = await SignInUser(formData)
+      console.log(userData?.employee)
       if (userData) {
-        router.push(`/user/${userData?.user?.id}`)
+        const companyInfo = {
+          companyId: userData?.employee?.companyId,
+          company: userData?.employee?.company
+      };
+
+    
+        localStorage.setItem("companyInfo", JSON.stringify(companyInfo));
+        localStorage.setItem("employeeInfo", JSON.stringify(userData?.employee));
+        sessionStorage.setItem("userToken", userData?.access_token)
       }
+      router.push(`/user/${userData?.employee.id}`);
       setLoading(false);
 
     }catch(error){
@@ -69,6 +79,7 @@ const SignInForm = () => {
       setError(`${error}`)
     }
   }
+ 
 
    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

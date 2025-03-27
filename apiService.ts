@@ -619,6 +619,29 @@ export const createNewUser = async(token: string, password: string, confirmPassw
 }
 
 
+export const uploadImage = async(token: string, companyId: string, id: number, file: File) => {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch(`${BASE_URL}/companies/${companyId}/employees/${id}/upload`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      body: formData,
+    });
+
+    const result = await response.json();
+    if (!response.ok) {
+      throw new Error(result.message || "Failed to upload image");
+    }
+    return result;
+  } catch (error: any) {
+    console.log(`Error uploading image: ${error.message}`);
+    throw new Error(error.message || "Something went wrong while uploading image");
+  }
+}
 
 
 

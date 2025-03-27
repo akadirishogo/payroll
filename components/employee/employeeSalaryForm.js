@@ -263,45 +263,45 @@ const handleRemoveDeduction = (index, amount) => {
                     <CardTitle className='text-primary'>Salary information</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className='flex p-4 gap-x-4'>
-                        <div className='p-4 border-lightGrey border-2 w-1/3 rounded-xl'>
+                    <div className='flex flex-col gap-y-6 md:flex-row p-4 gap-x-4'>
+                        <div className='p-4 border-lightGrey border-2 md:w-1/3 rounded-xl'>
                             <div className='flex'>
                                 <p className='font-regular'>Net Salary</p>
                             </div>
                             <div className='flex justify-end'>
-                                <p className='text-3xl font-bold text-primary'>
+                                <p className='lg:text-3xl font-bold text-primary'>
                                 ₦{(employee?.grossSalary - (employee?.totalDeductions || 0) + (employee?.totalAllowances || 0)).toLocaleString()}
                                 </p>
                             </div>
                         </div>
 
-                        <div className='p-4 border-lightGrey border-2 w-1/3 rounded-xl'>
+                        <div className='p-4 border-lightGrey border-2 md:w-1/3 rounded-xl'>
                             <div className='flex'>
                                 <p className='font-regular'>Gross Salary</p>
                             </div>
                             <div className='flex justify-end'>
-                                <p className='text-3xl font-bold text-primary'>₦{employee?.grossSalary?.toLocaleString() || 0}</p>
+                                <p className='lg:text-3xl font-bold text-primary'>₦{employee?.grossSalary?.toLocaleString() || 0}</p>
                             </div>
                         </div>
 
-                        <div className='p-4 border-lightGrey border-2 w-1/3 rounded-xl'>
+                        <div className='p-4 border-lightGrey border-2 md:w-1/3 rounded-xl'>
                             <div className='flex'>
                                 <p className='font-regular'>Deductions</p>
                             </div>
                             <div className='flex justify-end'>
-                                <p className='text-3xl font-bold text-primary'>₦{employee?.totalDeductions?.toLocaleString()}</p>
+                                <p className='lg:text-3xl font-bold text-primary'>₦{employee?.totalDeductions?.toLocaleString()}</p>
                             </div>
                         </div>
                     </div>
                             
                 </CardContent>
                 </Card>
-        <div className='mx-8 mt-10 flex gap-x-24 bg-white p-8'>
-        <Card className='min-w-max'>
+        <div className='flex flex-col gap-y-6 mx-8 mt-10 md:flex-row gap-x-24 bg-white p-8'>
+        <Card className=''>
             <CardHeader className='border-lightGrey border-b-2'>
                 <CardTitle className='text-black'>Basic Earnings</CardTitle>
             </CardHeader>
-            <CardContent className='mt-6 flex flex-col pb-10 min-w-max'>
+            <CardContent className='mt-6 flex flex-col pb-10'>
                 <form className="" onSubmit={(e) => e.preventDefault()}>
                     
                     <div className="mb-2">
@@ -311,7 +311,7 @@ const handleRemoveDeduction = (index, amount) => {
                             type="text"
                             value={isEditing ? tempSalary : `₦${employee?.grossSalary?.toLocaleString() || 0}`}
                             onChange={(e) => handleInputChange(e.target.value)}
-                            className=''
+                            className='max-w-[70%]'
                             disabled={!isEditing}
                             />
                             {isEditing ? (
@@ -375,7 +375,7 @@ const handleRemoveDeduction = (index, amount) => {
                         <label className="font-regular">Add Allowance</label>
                         <div className="flex items-center gap-x-4">
                             <select
-                                className="border p-2 rounded"
+                                className="border p-2 rounded max-w-[70%]"
                                 value={selectedAllowance?.name}
                                 onChange={(e) => setSelectedAllowance({name: e.target.value, amount: 0})}
                             >
@@ -400,7 +400,7 @@ const handleRemoveDeduction = (index, amount) => {
                     </div>
             </CardContent>
         </Card>
-        <Card className='min-w-max'>
+        <Card className=''>
             <CardHeader className='border-lightGrey border-b-2'>
                 <CardTitle className='text-black'>Deductions</CardTitle>
             </CardHeader>
@@ -444,9 +444,9 @@ const handleRemoveDeduction = (index, amount) => {
 
                     <div className="mt-4">
                         <label className="font-regular">Add Deductions</label>
-                        <div className="flex items-center gap-x-4">
+                        <div className="flex items-center gap-x-4 w-full">
                             <select
-                                className="border p-2 rounded"
+                                className="border p-2 rounded w-full"
                                 value={selectedDeduction?.name}
                                 onChange={(e) => setSelectedDeduction({ name: e.target.value, amount: 0 })}
                             >

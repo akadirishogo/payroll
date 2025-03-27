@@ -14,12 +14,13 @@ interface Bank {
 
 interface BankDetails {
     accountNumber: string;
-    bankCode: string;
+    bankCode: string | undefined;
     bankName: string;
+    accountName: string;
     id: number;
     isDefault: boolean;
     recipientCode: string;
-  }
+}
 
 interface BankAccount {
     id: number;
@@ -28,7 +29,8 @@ interface BankAccount {
     accountName: string;
     bankCode: string | undefined;
     isDefault: boolean;
-  }
+    recipientCode: string;
+}
 
   const BANKS_API_URL = "https://nigerianbanks.xyz"
 
@@ -49,11 +51,7 @@ export default function BankDetails() {
       });
 
     const [bankDetails, setBankDetails] = useState<BankDetails[] | null>(null);
-    const [bankAccounts, setBankAccounts] = useState([
-        { id: 1, bankName: "First Bank", accountNumber: "1234567890", isDefault: true, accountName: "Akadiri Oluwashogo Mark" },
-        { id: 2, bankName: "Access Bank", accountNumber: "0817286365", isDefault: false, accountName: "Akadiri Oluwashogo Mark" },
-        { id: 3, bankName: "Alat by Wema", accountNumber: "0234766808", isDefault: false, accountName: "Akadiri Oluwashogo Mark" },
-      ]);
+
 
 
     useEffect(() => {
@@ -105,7 +103,7 @@ export default function BankDetails() {
 
 // Handle Bank Selection Change
 const handleSelectChangeTwo = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedBank = bankAccounts.find(bank => bank.bankName === e.target.value);
+    const selectedBank = bankDetails?.find(bank => bank.bankName === e.target.value);
 
     console.log(selectedBank)
 
@@ -121,7 +119,7 @@ const handleSelectChangeTwo = (e: React.ChangeEvent<HTMLSelectElement>) => {
 };
 
 const resetDefault = () => {
-    bankAccounts.map(account => ({
+    bankDetails?.map(account => ({
         ...account, isDefault: false
     }))
 }
@@ -132,16 +130,16 @@ const handleMakeDefaultAccount = (id: number | undefined) => {
 
     resetDefault();
 
-    setBankAccounts((prevAccounts) =>
-        prevAccounts.map((account) => ({
+    setBankDetails((prevAccounts) =>
+        prevAccounts?.map((account) => ({
           ...account,
           isDefault: account.id === id,
-        }))
-      );
+        })) || []
+    );
 
 }
 
-console.log(bankAccounts)
+console.log(bankDetails)
 
   // Handle Adding Bank Account
   const handleAddBankAccount = () => {
@@ -152,16 +150,17 @@ console.log(bankAccounts)
     } */
 
     const newAccount: BankAccount = {
-      id: bankAccounts.length + 1, // Assign unique ID
+      id: (bankDetails?.length || 0) + 1,
       bankName: newBank.bankName!,
       accountNumber: newBank.accountNumber!,
       accountName: newBank.accountName!,
-      bankCode: newBank.bankCode,
-      isDefault: bankAccounts.length === 0, // First account is default
+      bankCode: newBank.bankCode || '',
+      isDefault: !bankDetails?.length,
+      recipientCode: '',
     };
 
-    const newAccounts = [...bankAccounts, newAccount]
-    setBankAccounts(newAccounts);
+    const newAccounts = [...(bankDetails || []), newAccount];
+    setBankDetails(newAccounts);
     setIsModalOpen(false); // Close modal
     setNewBank({ bankName: "", accountNumber: "", accountName: "" }); // Reset form
 
@@ -223,7 +222,7 @@ console.log(bankAccounts)
                         </div>
                         <div>
                             <p className='text-[15px] font-semi'>Account Name</p>
-                            <p className='text-[17px] font-light'>{bankAccount?.accountNumber}</p>
+                            <p className='text-[17px] font-light'>{bankAccount?.accountName}</p>
                         </div>
                     </div>
                 </div>
@@ -288,7 +287,7 @@ console.log(bankAccounts)
                     value={selectedBank.bankName}
                     onChange={handleSelectChangeTwo}
                     >
-                        {bankAccounts.map((bank, index) => (
+                        {bankDetails?.map((bank, index) => (
                             <option key={index} value={bank.bankName}>
                                 {bank.bankName}
                             </option>
