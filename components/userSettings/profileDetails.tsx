@@ -47,7 +47,6 @@ interface Employee {
 
 export default function ProfileDetails() {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [employee, setEmployee] = useState([])
     const [userInfo, setUserInfo] = useState<Employee | null>(null);
     const [isEditing, setIsEditing] = useState(false);
@@ -72,8 +71,7 @@ export default function ProfileDetails() {
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0] && userInfo?.company?.id) {
-            const file = e.target.files[0];
-            setSelectedFile(file); 
+            const file = e.target.files[0]; 
             const imageResult = await uploadImage(token || "", userInfo.company.id, userInfo.id || 0, file); 
             console.log(imageResult);
         }
