@@ -4,11 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '../Cards'
 import { Button } from '../Button'
 import Modal from '../Modal'
 import { GoPlus } from "react-icons/go";
+import { getAccountName } from '@/apiService'
+import { Employee } from './profileDetails'
 
 
 interface Bank {
     name: string;
-    code?: string; // Some banks might not have a code
+    code: string; // Some banks might not have a code
 }
 
 
@@ -27,7 +29,7 @@ interface BankAccount {
     bankName: string;
     accountNumber: string;
     accountName: string;
-    bankCode: string | undefined;
+    bankCode: string;
     isDefault: boolean;
     recipientCode: string;
 }
@@ -35,6 +37,7 @@ interface BankAccount {
   const BANKS_API_URL = "https://nigerianbanks.xyz"
 
 export default function BankDetails() {
+    const [employeeDetails, setEmployeeDetails] = useState<Employee>()
     const [selectedBank, setSelectedBank] = useState<Partial<BankAccount>>({
         bankName: "",
         accountNumber: "",
@@ -50,8 +53,13 @@ export default function BankDetails() {
         accountName: "",
       });
 
+    const [selectedBankCode, setSelectedBankCode] = useState<string>("");
+
+
     const [bankDetails, setBankDetails] = useState<BankDetails[] | null>(null);
 
+
+    const token = sessionStorage.getItem("userToken")
 
 
     useEffect(() => {
@@ -72,6 +80,7 @@ export default function BankDetails() {
         const storedData = localStorage.getItem("employeeInfo");
         if (storedData) {
         const parsedData = JSON.parse(storedData);
+        setEmployeeDetails(parsedData)
         setBankDetails(parsedData?.bankDetails)
         }
       }, []);
@@ -84,7 +93,7 @@ export default function BankDetails() {
 
     // Handle Input Change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAccountNumber(e.target.value);
+    setAccountNumber(e.target.value);   
   };
 
    // Handle Bank Selection Change
@@ -96,9 +105,10 @@ export default function BankDetails() {
         setNewBank(prevState => ({
             ...prevState,
             bankName: selectedBank.name,  // Update bank name
-            bankCode: selectedBank.code,  // Store bank code too
         }));
+        setSelectedBankCode(selectedBank?.code)
     }
+    console.log(newBank.bankCode)
 };
 
 // Handle Bank Selection Change
@@ -123,6 +133,36 @@ const resetDefault = () => {
         ...account, isDefault: false
     }))
 }
+
+
+const handleAccountChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setAccountNumber(value);
+    setNewBank(prevState => ({
+        ...prevState,
+        accountNumber: value
+    }));
+
+    // Fetch account name when account number length is 10
+    if (value.length === 10 && selectedBankCode) {
+        try {
+            const accountNameResponse = await getAccountName(
+                employeeDetails?.company?.id || '', 
+                value, 
+                selectedBankCode, 
+                token || "",// Pass the selected bank code
+            );
+            
+            setNewBank(prevState => ({
+                ...prevState,
+                accountName: accountNameResponse.accountName // Adjust based on your API response
+            }));
+        } catch (error) {
+            console.error('Error fetching account name:', error);
+        }
+    }
+};
+
 
 const handleMakeDefaultAccount = (id: number | undefined) => {
 
@@ -254,7 +294,7 @@ console.log(bankDetails)
                     <input
                     type="text"
                     value={accountNumber}
-                    onChange={handleChange}
+                    onChange={handleAccountChange}
                     className="w-full p-2 border rounded-lg"
                     />
                 </div>
@@ -263,7 +303,7 @@ console.log(bankDetails)
                     <label className="block text-left font-medium">Account Name</label>
                     <input
                     type="text"
-                    value='Account Name'
+                    value={newBank?.accountName}
                     readOnly
                     className="w-full p-2 border rounded-lg"
                     />

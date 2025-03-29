@@ -94,7 +94,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <div className="flex gap-x-3 items-center">
                     <div className="flex gap-x-2 items-center">
                         <div className="h-[35px] w-[35px] rounded-full bg-red-500 overflow-hidden">
-                            <img src="/user.jpg" alt="user image" className="w-[100%] h-[100%]"/>
+                            {userInfo?.profilePictureUrl ? (
+                                <img src={userInfo?.profilePictureUrl} alt="user image" className="w-[100%] h-[100%]"/>
+                            )
+                            :
+                            (
+                                <FaUser color={Colors.greyBorder} size={20} />
+                            )
+                        }
+                           
                         </div>
                                     
                         <div>

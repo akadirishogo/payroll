@@ -1,5 +1,6 @@
 const BASE_URL = "https://credpay-936l.onrender.com"
 import { Payroll } from "./app/admin/[adminid]/payroll/[month]/list/page";
+import { Employee } from "./components/userSettings/profileDetails";
 
 
 export interface Allowance {
@@ -642,6 +643,36 @@ export const uploadImage = async(token: string, companyId: string, id: number, f
     throw new Error(error.message || "Something went wrong while uploading image");
   }
 }
+
+export const updateEmployeeData = async(companyId: string, id: number, token: string, payload: Employee) => {
+
+  try {
+    const response = await fetch(`${BASE_URL}/companies/${companyId}/employees/${id}/personal-info`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${token}` 
+        },
+        body: JSON.stringify(payload),
+    });
+
+
+    const result = await response.json()
+
+    if (!response.ok) {
+      throw new Error(result.message || "Failed to fetch payroll data");// Ensure an empty array is returned on failure
+    }
+    
+    
+  
+    return result
+    
+  } catch (error: any) {
+    console.log(`Check your internet connection: ${error.message}`);
+    throw new Error(error.message || "Something went wrong while fetching payroll data");
+  }
+}
+
 
 
 

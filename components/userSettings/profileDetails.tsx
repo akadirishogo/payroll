@@ -7,7 +7,7 @@ import { Button } from '../Button'
 import { Input } from '../Inputs'
 // import { RiDeleteBin6Line } from 'react-icons/ri'
 import { Loader2 } from 'lucide-react'
-
+import { updateEmployeeData } from '@/apiService'
 import { FaUser } from "react-icons/fa6";
 import { Colors } from '@/Colors'
 import { uploadImage } from '@/apiService'
@@ -22,13 +22,14 @@ interface Company {
     updatedAt: string;
 }
 
-interface Employee {
+export interface Employee {
     id: number;
     DOB: string;
     maritalStatus: string;
     company: Company;
     firstname: string;
     lastname: string;
+    gender: string;
     deduction: number;
     email: string;
     role: string;
@@ -48,14 +49,19 @@ interface Employee {
 export default function ProfileDetails() {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [loading, setLoading] = useState(false);
-    const [employee, setEmployee] = useState([])
+    const [saveLoading, setSaveLoading] = useState(false)
     const [userInfo, setUserInfo] = useState<Employee | null>(null);
+    const [modifiedFields, setModifiedFields] = useState<Partial<Employee>>({});
     const [isEditing, setIsEditing] = useState(false);
 
     const token = sessionStorage.getItem("userToken")
 
    
-    
+    const formatForBackend = (uiDate: string) => {
+        if (!uiDate) return "";
+        const [month, day, year] = uiDate.split("-");
+        return `${day}-${month}-${year}`; // Convert to dd-mm-yyyy for backend
+    };
  
         
     useEffect(() => {
@@ -96,7 +102,34 @@ export default function ProfileDetails() {
         localStorage.setItem("employeeInfo", JSON.stringify(updatedInfo)); // Save to localStorage
         setUserInfo(updatedInfo);      
     };
+
+
     
+    
+
+
+    const handleSubmit = async () => {
+        setSaveLoading(true)
+        if (!Object.keys(modifiedFields).length) {
+            console.log("No changes to update.");
+            return;
+        }
+
+        const payload: Partial<Employee> = { ...modifiedFields };
+
+        if (payload.DOB) {
+            payload.DOB = formatForBackend(payload.DOB);
+        }
+        await updateEmployeeData(
+            userInfo?.company?.id || "", 
+            userInfo?.id || 0, 
+            token || "", 
+            payload as Employee  // Cast the partial payload to Employee
+        );
+        console.log("Submitting Data:", payload);
+        setSaveLoading(false)
+        setIsEditing(false)
+    }
 
   
 
@@ -108,9 +141,28 @@ export default function ProfileDetails() {
   );
 
   // Handle input changes
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     if (!userInfo) return;
-    setEmployee({ ...employee, [e.target.name]: e.target.value });
+
+    const { name, value } = e.target;
+    let updatedValue = value;
+
+    if (name === "DOB") {
+        updatedValue = value; // UI uses yyyy-mm-dd
+    }
+
+    const updatedInfo = { ...userInfo, [name]: updatedValue };
+
+    // Save to localStorage
+    localStorage.setItem("employeeInfo", JSON.stringify(updatedInfo));
+
+    // Track modified fields
+    setModifiedFields(prev => ({
+        ...prev,
+        [name]: updatedValue
+    }));
+
+    setUserInfo(updatedInfo); // Update state to trigger re-render
   };
 
 
@@ -176,6 +228,30 @@ export default function ProfileDetails() {
                     />
                 </div>
             </div>
+            <div className='mt-6 items-center'>
+                <label className="text-sm text-gray-500">Date of Birth</label>
+                <input 
+                        type="date" 
+                        name="DOB" 
+                        value={userInfo?.DOB || ""} 
+                        disabled={!isEditing}
+                        onChange={handleChange}
+                        className="lg:min-w-[250px] border mx-4 text-gray-500"
+                />
+
+                <label className='text-sm text-gray-500'>Gender</label>
+                <select 
+                    className='border text-sm text-gray-500' 
+                    name="gender"
+                    value={userInfo?.gender}
+                    onChange={handleChange} 
+                    disabled={!isEditing}>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            
         </div>
 
        
@@ -192,7 +268,7 @@ export default function ProfileDetails() {
             />
         </div>
 
-        <div className="mt-6 sm:flex sm:gap-x-2 md:flex md:gap-x-4 lg:flex lg:gap-x-4">
+        <div className="mt-6 sm:flex sm:gap-x-2 md:flex md:items-center md:gap-x-4 lg:flex lg:gap-x-4">
             <div>
                 <label className="text-sm text-gray-500">Phone</label>
                 <Input
@@ -203,14 +279,18 @@ export default function ProfileDetails() {
                 />
             </div>
 
-            <div>
+            <div className='flex flex-col'>
                 <label className="text-sm text-gray-500">Marital Status</label>
-                <Input
-                    name="status"
-                    value={userInfo?.maritalStatus || ""}
-                    onChange={handleChange}
-                    disabled={!isEditing}
-                />
+                <select 
+                    className='border text-sm text-gray-500' 
+                    name="maritalStatus"
+                    value={userInfo?.maritalStatus}
+                    onChange={handleChange} 
+                    disabled={!isEditing}>
+                    <option value="">Select Status</option>
+                    <option value="Single">Single</option>
+                    <option value="Married">Married</option>
+                </select>
             </div>
         </div>
 
@@ -218,7 +298,7 @@ export default function ProfileDetails() {
          <div className="mt-6">
         <label className="text-sm text-gray-500">Address</label>
             <Input
-                name="address"
+                name="residentialAddress"
                 value={userInfo?.residentialAddress || ""}
                 onChange={handleChange}
                 disabled={!isEditing}
@@ -230,10 +310,10 @@ export default function ProfileDetails() {
         <div className="flex gap-x-6 mt-8">
         {isEditing ? (
             <Button
-            onClick={() => setIsEditing(false)}
+            onClick={handleSubmit}
             className="bg-primary text-white"
             >
-            Save
+            {saveLoading ? "Saving..." : "Save"}
             </Button>
         ) : (
             <Button
@@ -245,7 +325,10 @@ export default function ProfileDetails() {
         )}
         {isEditing && (
             <Button
-            onClick={() => setIsEditing(false)}
+            onClick={() => {
+                setIsEditing(false);
+                setModifiedFields({}); // Clear modified fields when canceling
+            }}
             variant="outline"
             className="border-gray-300"
             >
